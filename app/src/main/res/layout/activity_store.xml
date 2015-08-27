@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:listSelector="@null"
+        android:id="@+id/cate_list"/>
+
+    <cn.walkpos.wpospad.ui.DragGridView
+        android:numColumns="6"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/pro_grid"
+        android:listSelector="@null"
+        android:layout_toRightOf="@id/cate_list"/>
+
+    <!--<cn.walkpos.wpospad.ui.DragImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/drag_itemv"-->
+        <!--android:background="@color/red"/>-->
+</RelativeLayout>
