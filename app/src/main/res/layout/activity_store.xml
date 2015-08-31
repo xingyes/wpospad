@@ -3,18 +3,18 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:layout_width="100dp"
+        android:layout_width="180dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:listSelector="@null"
+        android:listSelector="@drawable/none"
         android:id="@+id/cate_list"/>
 
     <cn.walkpos.wpospad.ui.DragGridView
-        android:numColumns="6"
+        android:numColumns="10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/pro_grid"
-        android:listSelector="@null"
+        android:listSelector="@drawable/none"
         android:layout_toRightOf="@id/cate_list"/>
 
     <!--<cn.walkpos.wpospad.ui.DragImageView-->

@@ -4,20 +4,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.DPIUtil;
 import com.xingy.util.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.adapter.BottonAdapter;
 import cn.walkpos.wpospad.ui.DragGridView;
 
 import static cn.walkpos.wpospad.ui.DragGridView.OnChanageListener;
@@ -25,17 +24,21 @@ import static cn.walkpos.wpospad.ui.DragGridView.OnChanageListener;
 
 public class StoreActivity extends BaseActivity {
 
-    public static final int MSG_DELAY = 2500;
+    public static final int MSG_DELAY = 600;
     public static final int MSG_CHANGE_CATE = 101;
     private ArrayList<String> cateArray;
     private ListView      cateListV;
-    private CateAdapter   cateAdapter;
+    private BottonAdapter   cateAdapter;
     private int           cateItemViewHeight;
+    private int           fromCatePos;
+
     private int           toCatePos;
+    private long           curCateIdx = -1;
+    private long          lastCateIdx = -1;
 
     private DragGridView proGridV;
     private ArrayList<String> proArray;
-    private CateAdapter   proAdapter;
+    private BottonAdapter proAdapter;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg)
@@ -58,7 +61,7 @@ public class StoreActivity extends BaseActivity {
 
 
         cateListV = (ListView)this.findViewById(R.id.cate_list);
-        cateAdapter = new CateAdapter(this);
+        cateAdapter = new BottonAdapter(this);
         cateListV.setAdapter(cateAdapter);
         cateListV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,16 +69,22 @@ public class StoreActivity extends BaseActivity {
                 loadCate(position);
                 cateAdapter.setPick(position);
                 cateAdapter.notifyDataSetChanged();
+
+//                scrollPos(cateListV,view,position);
             }
         });
         initCate();
 
         proGridV = (DragGridView)this.findViewById(R.id.pro_grid);
-        proAdapter = new CateAdapter(this);
+        proAdapter = new BottonAdapter(this);
         proGridV.setAdapter(proAdapter);
+        int num = DPIUtil.getWidth()/DPIUtil.dip2px(100);
+        proGridV.setNumColumns(num-3);
         proGridV.setOnChangeListener(new OnChanageListener() {
             @Override
             public void onChange(int form, int to) {
+                int curcate = cateAdapter.getPick();
+
                 if (form > proArray.size() - 1)
                     form = proArray.size() - 1;
                 if (form < to) {
@@ -93,11 +102,16 @@ public class StoreActivity extends BaseActivity {
             }
 
             @Override
-            public void onStop() {
+            public void onDrapStop() {
                 if (proGridV.getChildAt(proArray.size() - 1 - proGridV.getFirstVisiblePosition()) != null)
                     proGridV.getChildAt(proArray.size() - 1 - proGridV.getFirstVisiblePosition()).setVisibility(View.VISIBLE);
             }
 
+            @Override
+            public void onDrapStart(int from)
+            {
+                fromCatePos = cateAdapter.getPick();
+            }
             @Override
             public void onPositon(int x, int y) {
                 if (cateItemViewHeight <= 0)
@@ -119,7 +133,8 @@ public class StoreActivity extends BaseActivity {
                         cateListV.smoothScrollToPosition(curpos);
                     } else {
                         int pos = cateListV.getFirstVisiblePosition();
-                        int pickpos = pos +  (int)( (y - cateListV.getY()) / cateItemViewHeight);
+                        int offset = cateListV.getChildAt(0).getTop();
+                        int pickpos = pos +  (int)( (y - cateListV.getY() - offset) / cateItemViewHeight);
                         if(pickpos!=toCatePos) {
                             toCatePos = pickpos;
                             mHandler.removeCallbacksAndMessages(null);
@@ -168,7 +183,7 @@ public class StoreActivity extends BaseActivity {
         }
         proArray.clear();
 
-        for(int i = 0; i < 100; i++) {
+        for(int i = 1; i < 100; i++) {
             proArray.add(("" + cateid + "商品" + i));
         }
 
@@ -176,71 +191,23 @@ public class StoreActivity extends BaseActivity {
         proGridV.setAdapter(proAdapter);
         proGridV.setTotalPosition(proArray.size());
         toCatePos = -1;
+
+        curCateIdx = cateid;
+        if(lastCateIdx <0)
+            lastCateIdx = cateid;
+
     }
 
 
-    public class CateAdapter extends BaseAdapter
+
+
+    private void scrollPos(ListView listv,View childv,int pos)
     {
-
-        private int pickIdx = -1;
-        private ArrayList<String> dataSet;
-        private LayoutInflater mInflater;
-        public CateAdapter(BaseActivity activity){
-            mInflater = LayoutInflater.from(activity);
-        }
-
-        public void setPick(int pick)
-        {
-            pickIdx = pick;
-        }
-        public void setData(ArrayList<String> alist) {
-            if (null == dataSet)
-                dataSet = new ArrayList<String>();
-            dataSet.clear();
-            dataSet.addAll(alist);
-        }
-
-        @Override
-        public int getCount() {
-            return (null==dataSet ? 0 : dataSet.size());
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return (null==dataSet ? 0 : dataSet.get(position));
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ItemHolder holder = null;
-
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.item_tv, null);
-                holder = new ItemHolder();
-                holder.tv = (TextView) convertView.findViewById(R.id.info);
-
-                convertView.setTag(holder);
-            } else {
-                holder = (ItemHolder) convertView.getTag();
-            }
-
-            holder.tv.setText(dataSet.get(position));
-            holder.tv.setTextColor(getResources().getColor(pickIdx == position? R.color.red : R.color.black));
-            return convertView;
-        }
+        if(Build.VERSION.SDK_INT >=8)
+            listv.smoothScrollBy(childv.getTop(),500);
+        else
+            listv.setSelection(pos);
     }
-
-
-    public class ItemHolder
-    {
-        public TextView tv;
-    }
-
     @Override
     public void onClick(View v)
     {

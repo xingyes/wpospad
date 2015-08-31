@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--right keyborad-->
+    <LinearLayout
+        android:id="@+id/right_keyboard"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/global_gray"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <!--left layout-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/right_keyboard">
+
+        <!--bottom cate pick-->
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/cate_list"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/cate_list"
+            android:id="@+id/pro_layout"
+            android:background="@color/global_bg"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="show all"
+                android:textSize="20dp"
+                android:gravity="center"
+                android:textColor="@color/red"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_above="@id/cate_list"
+                android:id="@+id/pro_list"/>
+        </LinearLayout>
+
+
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/pro_layout"
+            android:background="@color/global_blue"
+            android:id="@+id/goods_list"/>
+
+
+    </RelativeLayout>
+</RelativeLayout>

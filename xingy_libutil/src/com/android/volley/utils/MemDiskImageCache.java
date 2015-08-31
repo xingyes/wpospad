@@ -8,8 +8,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.xingy.util.db.ImageFileUtils;
 
 import java.io.IOException;
-import java.lang.ref.SoftReference;
-import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
