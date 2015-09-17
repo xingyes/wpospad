@@ -6,6 +6,9 @@
     <color name="global_blue_bright">#2948a2</color>
     <color name="global_text_gray">#666666</color>
     <color name="global_text_bold">#111111</color>
+    <color name="global_wpos_red">#ff501a</color>
+    <color name="global_wpos_gray_bg">#dddddd</color>
+
     <color name="global_text_info_color">#ff999999</color>
     <color name="global_text_label">#444444</color>
     

@@ -3,4 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+
+    <string name="forget_passwd_underline"><u>忘记密码</u></string>
+    <string name="register_underline"><u>前去注册</u></string>
+
 </resources>

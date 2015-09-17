@@ -151,7 +151,7 @@
     </style>
     
     <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/black</item>
     </style>
     <style name="TransparentAppTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">@color/transparent</item>

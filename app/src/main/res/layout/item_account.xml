@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="center_vertical"
+    android:background="@color/global_wpos_gray_bg">
+
+
+    <ImageView
+        android:layout_marginRight="20dp"
+        android:layout_centerVertical="true"
+        android:padding="6dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/del_account"
+        android:src="@mipmap/icon_del"/>
+
+    <TextView
+        android:layout_toLeftOf="@id/del_account"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/info"
+        android:gravity="left|center_vertical"
+        android:textColor="@color/global_text_info_color"
+        android:textSize="32dp"
+        android:layout_marginLeft="20dp"
+        android:text="111"/>
+</RelativeLayout>

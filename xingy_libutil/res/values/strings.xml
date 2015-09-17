@@ -70,6 +70,7 @@
 	
 	<!-- login  -->
     <string name="account">账户</string>
+    <string name="account_">账户:</string>
     <string name="create_account">创建账户</string>
     <string name="send_verify_code">发送验证码</string>
     <string name="verify_code">验证码:</string>
@@ -93,10 +94,16 @@
 	
 	<string name="pswd_not_empty">密码不能为空</string>
 	
-	<string name="mobile_num">手机号:</string>
-	<string name="password">密码:</string>
-	
-	<!-- 活动list -->
+	<string name="mobile_num_">手机号:</string>
+	<string name="password_">密码:</string>
+    <string name="new_password">输入新密码</string>
+    <string name="confirm_new_password">确认新密码</string>
+
+    <string name="mobile_num">手机号</string>
+    <string name="password">密码</string>
+    <string name="reset_password">重置密码</string>
+
+    <!-- 活动list -->
 	<string name="join_">参加:</string>
 	<string name="read_">已读:</string>
    	<string name="unread_">未读:</string>
@@ -174,10 +181,13 @@
 	<!-- my -->
 	<string name="avatar">头像</string>
 	<string name="please_input_nickname">请填写昵称</string>
-	<string name="clubook_id">聚乐号</string>
+    <string name="please_input_realname">请填写真实姓名</string>
+    <string name="clubook_id">聚乐号</string>
 	<string name="clubook_id_x">聚乐号： %s</string>
 	<string name="real_name">真实姓名</string>
-	<string name="gender">性别</string>
+    <string name="real_name_">真实姓名:</string>
+
+    <string name="gender">性别</string>
 	<string name="district">地区</string>
 	<string name="address_detail">详细地址</string>
 	<string name="phone_num">手机号</string>
@@ -185,7 +195,10 @@
 
     <string name="weixin_id">微信号</string>
 	<string name="id_card">身份证</string>
-	<string name="email">邮箱</string>
+    <string name="id_card_">身份证:</string>
+    <string name="please_input_id_card_info">请输入身份证号码</string>
+
+    <string name="email">邮箱</string>
 	<string name="emergency_contact">紧急联系人</string>
 	<string name="emergency_contact_phone">紧急联系人电话</string>
 	<string name="personal_slogan">个性签名</string>
