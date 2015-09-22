@@ -286,7 +286,7 @@
             android:textSize="30dp"
             android:id="@+id/submit_btn"
             android:textColor="@color/white"
-            android:text="@string/btn_ok"/>
+            android:text="@string/btn_next"/>
         </RelativeLayout>
     </LinearLayout>
 

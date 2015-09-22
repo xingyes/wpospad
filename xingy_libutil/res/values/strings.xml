@@ -26,6 +26,9 @@
     <string name="btn_edit">编辑</string>
     <string name="btn_done">完成</string>
     <string name="btn_ok">确定</string>
+    <string name="btn_next">下一步</string>
+    <string name="btn_pre">上一步</string>
+
     <string name="btn_close">关闭</string>
     
     <string name="btn_back">返回</string>

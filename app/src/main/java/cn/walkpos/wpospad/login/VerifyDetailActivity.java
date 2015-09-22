@@ -16,6 +16,7 @@ public class VerifyDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_detail);
+        this.findViewById(R.id.submit_btn).setOnClickListener(this);
 
 
     }
@@ -32,23 +33,15 @@ public class VerifyDetailActivity extends BaseActivity {
     @Override
     public void onClick(View v)
     {
-//        Bundle  bundle = null;
-//        switch (v.getId()) {
-//            case R.id.go_verify_btn:
-//                bundle = new Bundle();
-//                bundle.putInt(RegisterActivity.REGISTER_TYPE, RegisterActivity.TYPE_REGISTER_NEW);
-//                UiUtils.startActivity(VerifyDetailActivity.this,RegisterActivity.class,bundle,true);
-//                break;
-//            case R.id.skip_verify_btn:
-//                bundle = new Bundle();
-//                bundle.putInt(RegisterActivity.REGISTER_TYPE, RegisterActivity.TYPE_RESET_FORGET);
-//                UiUtils.startActivity(VerifyDetailActivity.this,RegisterActivity.class,bundle,true);
-//                break;
-//
-//            default:
-//                super.onClick(v);
-//                break;
-//        }
+        Bundle  bundle = null;
+        switch (v.getId()) {
+            case R.id.submit_btn:
+                UiUtils.startActivity(VerifyDetailActivity.this,VerifyPicActivity.class,bundle,true);
+                break;
+            default:
+                super.onClick(v);
+                break;
+        }
 
     }
 
