@@ -7,7 +7,7 @@
 
     <com.xingy.lib.ui.NavigationBar
         android:layout_alignParentTop="true"
-        android:id="@+id/login_nav"
+        android:id="@+id/verify_detail_nav"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         inmost:leftVisiable="true"
@@ -15,9 +15,288 @@
         inmost:drawableLeft="@drawable/ico_back"
         inmost:bgColor="@color/global_text_gray"
         inmost:textColor="@color/white"/>
-    
 
 
+    <TextView
+        android:layout_marginLeft="100dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:layout_below="@id/verify_detail_nav"
+        android:background="@drawable/button_wpos_red_round_rect"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:textSize="24dp"
+        android:id="@+id/bind_pos_btn"
+        android:textColor="@color/white"
+        android:text="查找绑定MPOS"/>
 
+    <TextView
+        android:layout_toRightOf="@id/bind_pos_btn"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@id/verify_detail_nav"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:textSize="24dp"
+        android:id="@+id/no_pos_btn"
+        android:textColor="@color/global_text_info_color"
+        android:text="我还没有过MPOS"/>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/no_pos_btn"
+        android:orientation="vertical">
+        <!--line one 店铺类型-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_marginLeft="110dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28dp"
+                android:textColor="@color/white"
+                android:text="店铺类型"/>
+            <com.xingy.lib.ui.CheckBox
+                android:layout_marginLeft="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/shop_single"
+                android:layout_gravity="center_vertical"
+                inmost:checkboxImageOff="@drawable/choose_radio_off"
+                inmost:checkboxImageOn="@drawable/choose_radio_on"
+                inmost:text="@string/shop_single"
+                inmost:contentColor="@color/white"
+                inmost:contentSize="24dp"/>
+            <com.xingy.lib.ui.CheckBox
+                android:layout_marginLeft="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/shop_store"
+                android:layout_gravity="center_vertical"
+                inmost:checkboxImageOff="@drawable/choose_radio_off"
+                inmost:checkboxImageOn="@drawable/choose_radio_on"
+                inmost:text="@string/shop_store"
+                inmost:contentColor="@color/white"
+                inmost:contentSize="24dp"/>
+        </LinearLayout>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="250dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="@color/global_wpos_red"
+            android:text="*商铺类型需要提供企业执照及管理员在门店合照"/>
+
+
+        <!--line 2 法人 ＋ 身份证-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_marginLeft="110dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28dp"
+                android:textColor="@color/white"
+                android:text="法人姓名"/>
+            <EditText
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="24dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/white"
+                android:singleLine="true"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:id="@+id/law_owner_name"
+                android:text="我喔喔我"
+                android:gravity="left|center_vertical"
+                android:background="@drawable/button_gray_frame_round"
+                android:textColorHint="@color/global_text_info_color"/>
+            <TextView
+                android:layout_marginLeft="125dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28dp"
+                android:textColor="@color/white"
+                android:text="身份证号"/>
+            <EditText
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="24dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/white"
+                android:singleLine="true"
+                android:layout_width="380dp"
+                android:layout_height="60dp"
+                android:id="@+id/law_owner_idcard"
+                android:text="33050120001010203x"
+                android:gravity="left|center_vertical"
+                android:background="@drawable/button_gray_frame_round"
+                android:textColorHint="@color/global_text_info_color"/>
+        </LinearLayout>
+
+        <!--line 3 法人 ＋ 身份证-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_marginLeft="110dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28dp"
+                android:textColor="@color/white"
+                android:text="银行卡号"/>
+            <EditText
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="24dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/white"
+                android:singleLine="true"
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:id="@+id/bank_account"
+                android:text="622020300303012345"
+                android:gravity="left|center_vertical"
+                android:background="@drawable/button_gray_frame_round"
+                android:textColorHint="@color/global_text_info_color"/>
+            <TextView
+                android:layout_marginLeft="125dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28dp"
+                android:textColor="@color/white"
+                android:text="开户银行"/>
+            <RelativeLayout
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:background="@drawable/button_gray_frame_round"
+                android:layout_marginLeft="20dp"
+                >
+                <ImageView
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/bank_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/icon_arrow_down"/>
+            <EditText
+                android:layout_toLeftOf="@id/bank_more"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/none"
+                android:layout_centerVertical="true"
+                android:textSize="24dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textColor="@color/white"
+                android:singleLine="true"
+                android:id="@+id/bank_name"
+                android:text="33050120001010203x"
+                android:gravity="left|center_vertical"
+                android:textColorHint="@color/global_text_info_color"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <!--line 4 行业-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_marginLeft="110dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="28dp"
+                android:textColor="@color/white"
+                android:text="所属行业"/>
+            <RelativeLayout
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:background="@drawable/button_gray_frame_round"
+                android:layout_marginLeft="20dp"
+                >
+                <ImageView
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/business_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/icon_arrow_down"/>
+                <EditText
+                    android:layout_toLeftOf="@id/business_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/none"
+                    android:layout_centerVertical="true"
+                    android:textSize="24dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/white"
+                    android:singleLine="true"
+                    android:id="@+id/business_name"
+                    android:text="百货"
+                    android:gravity="left|center_vertical"
+                    android:textColorHint="@color/global_text_info_color"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            >
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_wpos_red_round_rect"
+            android:layout_marginTop="46dp"
+            android:layout_width="450dp"
+            android:layout_height="90dp"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:textSize="30dp"
+            android:id="@+id/submit_btn"
+            android:textColor="@color/white"
+            android:text="@string/btn_ok"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!--cover 蒙板-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tail_cover"
+        android:layout_below="@id/no_pos_btn"
+        android:background="@color/cover_white"
+        android:visibility="gone"/>
 
 </RelativeLayout>

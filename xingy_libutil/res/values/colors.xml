@@ -73,7 +73,10 @@
     <color name="viewfinder_frame">#ff317ee7</color>
     <color name="viewfinder_laser">#ff317ee7</color>
     <color name="viewfinder_mask">#60000000</color>
+
     <color name="user_guide_bg">#ff7bd2c9</color>
+
+    <color name="cover_white">#34ffffff</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>

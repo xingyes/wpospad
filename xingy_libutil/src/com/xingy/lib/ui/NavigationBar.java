@@ -161,13 +161,13 @@ public class NavigationBar extends RelativeLayout implements OnClickListener {
 		mRootView.setId(ID_NAV_LAYOUT);
 		addView(mRootView, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		
-		View divider = new View(context);//inflate(context, R.layout.divider_1, null);
-		divider.setBackgroundColor(0xeee9e9e9);
-//		divider.setBackgroundColor(Color.RED);
-		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, 2);
-		params.addRule(BELOW, ID_NAV_LAYOUT);
-		divider.setLayoutParams(params);
-		addView(divider, params);
+//		View divider = new View(context);//inflate(context, R.layout.divider_1, null);
+//		divider.setBackgroundColor(0xeee9e9e9);
+////		divider.setBackgroundColor(Color.RED);
+//		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, 2);
+//		params.addRule(BELOW, ID_NAV_LAYOUT);
+//		divider.setLayoutParams(params);
+//		addView(divider, params);
 		
 		mLeftText = (TextView)findViewById(R.id.navigationbar_text_left);
 		if(TextUtils.isEmpty(tLeftText))

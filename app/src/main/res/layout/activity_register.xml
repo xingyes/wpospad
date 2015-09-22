@@ -131,6 +131,7 @@
                 android:layout_gravity="center_vertical"
                 inmost:checkboxImageOff="@drawable/choose_radio_off"
                 inmost:checkboxImageOn="@drawable/choose_radio_on"
+
                 />
             <TextView
                 android:layout_marginLeft="10dp"
