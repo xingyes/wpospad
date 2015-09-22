@@ -1,5 +1,6 @@
 package cn.walkpos.wpospad.login;
 
+import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,38 +20,39 @@ import cn.walkpos.wpospad.adapter.AccountAdapter;
 import cn.walkpos.wpospad.main.MainActivity;
 
 
-public class LoginIdentyActivity extends BaseActivity {
+public class VerifyMidActivity extends BaseActivity {
 
-    private EditText nameEdt;
-    private EditText IDcardEdt;
 
-    private TextView submitBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_identy);
+        setContentView(R.layout.activity_verify_mid);
 
-        loadNavBar(R.id.login_identy_nav);
+        this.findViewById(R.id.go_verify_btn).setOnClickListener(this);
+        this.findViewById(R.id.skip_verify_btn).setOnClickListener(this);
 
-        nameEdt = (EditText)this.findViewById(R.id.real_name);
-        IDcardEdt = (EditText)this.findViewById(R.id.id_card);
-
-
-        submitBtn = (TextView)this.findViewById(R.id.submit_btn);
-        submitBtn.setOnClickListener(this);
 
     }
 
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+    }
 
 
 
     @Override
     public void onClick(View v)
     {
+        Bundle  bundle = null;
         switch (v.getId()) {
-            case R.id.submit_btn:
-                UiUtils.makeToast(this, "Succ");
-                UiUtils.startActivity(this,MainActivity.class,true);
+            case R.id.go_verify_btn:
+                UiUtils.startActivity(VerifyMidActivity.this,VerifyDetailActivity.class,true);
+                break;
+            case R.id.skip_verify_btn:
+                UiUtils.startActivity(VerifyMidActivity.this,MainActivity.class,true);
                 break;
             default:
                 super.onClick(v);

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.xingy.lib.ILogin;
 import com.xingy.lib.model.Account;
 import com.xingy.lib.ui.AppDialog;
+import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.Config;
 import com.xingy.util.ServiceConfig;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
 import java.util.Date;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.main.MainActivity;
 
 
 public class RegisterActivity extends BaseActivity{
@@ -44,7 +46,6 @@ public class RegisterActivity extends BaseActivity{
     public static final int   COUTING_DOWN_SECOND = 120;
     public static final int   MSG_INTERVAL = 0x100;
 
-    private TextView    titleTv;
     private EditText    mPhonev;
     private EditText    mPass1v;
     private EditText    mPass2v;
@@ -60,6 +61,8 @@ public class RegisterActivity extends BaseActivity{
     public static final int   REQ_REGISTER = 1;
     public static final int   REQ_SMS = 2;
     public static final int   REQ_CHANGE_PHONE = 3;
+
+    private CheckBox   agreeCheckBtn;
 
     private Ajax  mAjax;
     private Account act;
@@ -108,12 +111,11 @@ public class RegisterActivity extends BaseActivity{
         setContentView(R.layout.activity_register);
         // 初始化布局元素
         initViews();
-
     }
 
     private void initViews() {
-        titleTv = (TextView)this.findViewById(R.id.register_title);
-        titleTv.setText(registerType== TYPE_REGISTER_NEW ? R.string.register_now : R.string.reset_password);
+        loadNavBar(R.id.register_nav);
+        mNavBar.setText(registerType== TYPE_REGISTER_NEW ? R.string.register_now : R.string.reset_password);
 
         mPhonev = (EditText) this.findViewById(R.id.phone_num);
         mPhonev.setOnClickListener(this);
@@ -132,6 +134,14 @@ public class RegisterActivity extends BaseActivity{
 
         mSubmitBtn = (TextView)findViewById(R.id.submit_btn);
         mSubmitBtn.setOnClickListener(this);
+
+        findViewById(R.id.agree_layout).setVisibility(View.GONE);
+
+        if(registerType == TYPE_REGISTER_NEW ) {
+            agreeCheckBtn = (CheckBox) findViewById(R.id.agree_btn);
+            findViewById(R.id.agree_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.agreement_info).setOnClickListener(this);
+        }
 
     }
 
@@ -154,7 +164,19 @@ public class RegisterActivity extends BaseActivity{
 
                 }
                 break;
+            case R.id.agreement_info:
+                UiUtils.makeToast(this,"Show agreement");
+                break;
             case R.id.submit_btn:
+                if(registerType == TYPE_REGISTER_NEW) {
+                    UiUtils.makeToast(this, "Register succ");
+                    UiUtils.startActivity(RegisterActivity.this, VerifyMidActivity.class, true);
+                }
+                else
+                {
+                    UiUtils.makeToast(this, "Reset password succ");
+                    UiUtils.startActivity(RegisterActivity.this, LoginActivity.class, true);
+                }
                 break;
             default:
                 super.onClick(v);

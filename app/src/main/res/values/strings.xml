@@ -8,4 +8,7 @@
     <string name="forget_passwd_underline"><u>忘记密码</u></string>
     <string name="register_underline"><u>前去注册</u></string>
 
+    <string name="realname_verify">实名认证</string>
+    <string name="agreement_detail">《小云管家服务协议》</string>
+
 </resources>

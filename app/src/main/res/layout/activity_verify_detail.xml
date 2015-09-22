@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@mipmap/login_bg">
+
+    <com.xingy.lib.ui.NavigationBar
+        android:layout_alignParentTop="true"
+        android:id="@+id/login_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/realname_verify"
+        inmost:drawableLeft="@drawable/ico_back"
+        inmost:bgColor="@color/global_text_gray"
+        inmost:textColor="@color/white"/>
+    
+
+
+
+
+</RelativeLayout>

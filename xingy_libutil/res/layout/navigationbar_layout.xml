@@ -53,9 +53,10 @@
         android:singleLine="true"
         android:marqueeRepeatLimit="marquee_forever"
         android:ellipsize="marquee"
-        android:focusable="true" 
-        android:focusableInTouchMode="true" 
-        android:textSize="@dimen/font_size_36xp" />
+        android:focusable="true"
+        android:text="111"
+        android:focusableInTouchMode="true"
+        android:textSize="24dp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"

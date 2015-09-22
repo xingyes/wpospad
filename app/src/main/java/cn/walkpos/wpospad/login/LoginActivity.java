@@ -1,12 +1,15 @@
 package cn.walkpos.wpospad.login;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,7 +26,7 @@ import cn.walkpos.wpospad.adapter.AccountAdapter;
 public class LoginActivity extends BaseActivity {
 
     private ListView accountListV;
-    private View     showAccountBtn;
+    private ImageView     showAccountBtn;
     private View     delCurAccountBtn;
     private EditText accountEdt;
 
@@ -65,7 +68,7 @@ public class LoginActivity extends BaseActivity {
         });
         delCurAccountBtn = this.findViewById(R.id.del_account);
         delCurAccountBtn.setVisibility(View.GONE);
-        showAccountBtn = this.findViewById(R.id.show_account_list_btn);
+        showAccountBtn = (ImageView)this.findViewById(R.id.show_account_list_btn);
         showAccountBtn.setOnClickListener(this);
         delCurAccountBtn.setOnClickListener(this);
 
@@ -90,7 +93,6 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
-
     }
 
 
@@ -133,10 +135,12 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.show_account_list_btn:
                 accountListV.setVisibility(accountListV.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                showAccountBtn.setImageResource(accountListV.getVisibility() == View.VISIBLE ?
+                        R.mipmap.icon_arrow_up : R.mipmap.icon_arrow_down);
                 break;
             case R.id.login_btn:
                 String actStr = accountEdt.getText().toString();
-                if(!accountArray.contains(actStr))
+                if(!TextUtils.isEmpty(actStr) && !accountArray.contains(actStr))
                 {
                     accountArray.add(0, actStr);
                 }

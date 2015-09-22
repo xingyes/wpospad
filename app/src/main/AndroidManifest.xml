@@ -25,6 +25,11 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".login.RegisterActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name=".login.VerifyDetailActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".login.VerifyMidActivity"
+            android:screenOrientation="landscape"/>
+
     </application>
 
 </manifest>
