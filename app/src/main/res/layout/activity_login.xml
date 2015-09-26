@@ -44,6 +44,7 @@
             android:gravity="left|center_vertical"
             android:background="@drawable/none"
             android:hint="@string/account"
+            android:imeOptions="actionNext"
             android:textColorHint="@color/global_text_info_color"/>
     </RelativeLayout>
 
@@ -70,6 +71,7 @@
             android:gravity="left|bottom"
             android:inputType="textPassword"
             android:background="@drawable/none"
+            android:imeOptions="actionDone"
             android:hint="@string/password"
             android:textColorHint="@color/global_text_info_color"/>
         <View

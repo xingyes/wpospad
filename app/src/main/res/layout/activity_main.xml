@@ -1,15 +1,129 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:layout_height="match_parent"
+    android:background="@mipmap/setting_bg">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:id="@+id/main_nav_layout">
+
+        <TextView
+            android:layout_marginLeft="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/verify_statinfo"
+            android:textSize="24dp"
+            android:textColor="@color/white"
+            android:text="目前尚未完成实名认证"/>
+        <TextView
+            android:layout_toRightOf="@id/verify_statinfo"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/verify_check"
+            android:textSize="24dp"
+            android:textColor="@color/red"
+            android:text="查看认证进度>"/>
+
+        <TextView
+            android:layout_marginRight="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/store_name"
+            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:text="小二小店"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="主页"
-        android:layout_centerInParent="true"
+        android:id="@+id/checkout_btn"
+        android:layout_width="360dp"
+        android:layout_height="match_parent"
+        android:text="营业结算"
+        android:gravity="center"
         android:textColor="@color/white"
-        android:textSize="40dp"/>
+        android:background="@drawable/button_gray_round"
+        android:textSize="36dp"/>
+    <TextView
+        android:id="@+id/pro_btn"
+        android:layout_marginLeft="20dp"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:text="商品管理"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/button_gray_round"
+        android:textSize="36dp"/>
+
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp">
+            <TextView
+                android:id="@+id/staff_btn"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="店员管理"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/button_gray_round"
+                android:textSize="36dp"/>
+            <TextView
+                android:id="@+id/statistics_btn"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="统计报表"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/button_gray_round"
+                android:textSize="36dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp">
+            <TextView
+                android:id="@+id/money_btn"
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="款项管理"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/button_gray_round"
+                android:textSize="40dp"/>
+            <TextView
+                android:id="@+id/setting_btn"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="基本设置"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/button_gray_round"
+                android:textSize="40dp"/>
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

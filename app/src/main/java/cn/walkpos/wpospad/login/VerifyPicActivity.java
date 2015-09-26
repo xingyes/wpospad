@@ -3,9 +3,11 @@ package cn.walkpos.wpospad.login;
 import android.os.Bundle;
 import android.view.View;
 
+import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.main.MainActivity;
 
 
 public class VerifyPicActivity extends BaseActivity {
@@ -16,6 +18,8 @@ public class VerifyPicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_pic);
 
+        findViewById(R.id.use_wx).setOnClickListener(this);
+        findViewById(R.id.submit_btn).setOnClickListener(this);
 
     }
 
@@ -32,23 +36,17 @@ public class VerifyPicActivity extends BaseActivity {
     public void onClick(View v)
     {
 //        Bundle  bundle = null;
-//        switch (v.getId()) {
-//            case R.id.go_verify_btn:
-//                bundle = new Bundle();
-//                bundle.putInt(RegisterActivity.REGISTER_TYPE, RegisterActivity.TYPE_REGISTER_NEW);
-//                UiUtils.startActivity(VerifyDetailActivity.this,RegisterActivity.class,bundle,true);
-//                break;
-//            case R.id.skip_verify_btn:
-//                bundle = new Bundle();
-//                bundle.putInt(RegisterActivity.REGISTER_TYPE, RegisterActivity.TYPE_RESET_FORGET);
-//                UiUtils.startActivity(VerifyDetailActivity.this,RegisterActivity.class,bundle,true);
-//                break;
-//
-//            default:
-//                super.onClick(v);
-//                break;
-//        }
-
+        switch (v.getId()) {
+            case R.id.use_wx:
+                UiUtils.makeToast(this, "call wx");
+                break;
+            case R.id.submit_btn:
+                UiUtils.startActivity(this,MainActivity.class,true);
+                break;
+            default:
+                super.onClick(v);
+                break;
+        }
     }
 
 }

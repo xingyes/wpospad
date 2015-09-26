@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
@@ -15,11 +16,18 @@ import cn.walkpos.wpospad.ui.NoinputEditText;
 
 public class MainActivity extends BaseActivity {
 
-    private NoinputEditText  accountEt;
-    private NoinputEditText passEt;
-
-    private NoinputEditText curEt;
     private PowerManager.WakeLock wakeLock;
+
+    private TextView     verifyHintV;
+    private TextView     verifyCheckV;
+    private TextView     storeNameV;
+
+    private TextView     checkoutBtn;
+    private TextView     proBtn;
+    private TextView     staffBtn;
+    private TextView     statisticsBtn;
+    private TextView     moneyBtn;
+    private TextView     settingBtn;
 
 
     @Override
@@ -32,6 +40,28 @@ public class MainActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        verifyHintV = (TextView)this.findViewById(R.id.verify_statinfo);
+        verifyCheckV = (TextView)this.findViewById(R.id.verify_check);
+        storeNameV = (TextView)this.findViewById(R.id.store_name);
+
+        checkoutBtn = (TextView)this.findViewById(R.id.checkout_btn);
+        proBtn = (TextView)this.findViewById(R.id.pro_btn);
+        staffBtn = (TextView)this.findViewById(R.id.staff_btn);
+        statisticsBtn = (TextView)this.findViewById(R.id.statistics_btn);
+        moneyBtn = (TextView)this.findViewById(R.id.money_btn);
+        settingBtn = (TextView)this.findViewById(R.id.setting_btn);
+
+        verifyCheckV.setOnClickListener(this);
+        checkoutBtn.setOnClickListener(this);
+        proBtn.setOnClickListener(this);
+        staffBtn.setOnClickListener(this);
+        statisticsBtn.setOnClickListener(this);
+        moneyBtn.setOnClickListener(this);
+        settingBtn.setOnClickListener(this);
+
+
+
 
 
     }
@@ -47,47 +77,32 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onClick(View v)
     {
-//        switch (v.getId()) {
-//            case R.id.btn_0:
-//                curEt.append("0");
-//                break;
-//            case R.id.btn_1:
-//                curEt.append("1");
-//                break;
-//            case R.id.btn_2:
-//                curEt.append("2");
-//                break;
-//            case R.id.btn_3:
-//                curEt.append("3");
-//                break;
-//            case R.id.btn_4:
-//                curEt.append("4");
-//                break;
-//            case R.id.btn_5:
-//                curEt.append("5");
-//                break;
-//            case R.id.btn_6:
-//                curEt.append("6");
-//                break;
-//            case R.id.btn_7:
-//                curEt.append("7");
-//                break;
-//            case R.id.btn_8:
-//                curEt.append("8");
-//                break;
-//            case R.id.btn_9:
-//                curEt.append("9");
-//                break;
-//
-//            case R.id.btn_ok:
-//                UiUtils.startActivity(this, StoreActivity.class,true);
-//                break;
-//            case R.id.verify_login:
-//                UiUtils.startActivity(this, StoreActivity.class,true);
-//                break;
-//            default:
-//                super.onClick(v);
-//                break;
-//        }
+        switch (v.getId()) {
+            case R.id.verify_check:
+                UiUtils.makeToast(this,"去查看进度");
+                break;
+            case R.id.checkout_btn:
+                UiUtils.makeToast(this,"去结账页面");
+                break;
+            case R.id.pro_btn:
+                UiUtils.makeToast(this,"去管理商品界面");
+                break;
+            case R.id.staff_btn:
+                UiUtils.makeToast(this,"管理员工界面");
+                break;
+            case R.id.statistics_btn:
+                UiUtils.makeToast(this,"统计报表界面");
+                break;
+            case R.id.money_btn:
+                UiUtils.makeToast(this,"金额提现管理界面");
+                break;
+            case R.id.setting_btn:
+                UiUtils.makeToast(this,"基本设置界面");
+                break;
+            default:
+                super.onClick(v);
+                break;
+        }
+
     }
 }

@@ -36,6 +36,7 @@
             android:background="@drawable/none"
             android:textColor="@color/white"
             android:hint="@string/phone_num"
+            android:imeOptions="actionNext"
             android:textColorHint="@color/global_text_info_color"/>
         <View
             android:layout_marginTop="16dp"
@@ -54,6 +55,7 @@
             android:inputType="textPassword"
             android:background="@drawable/none"
             android:hint="@string/new_password"
+            android:imeOptions="actionNext"
             android:textColorHint="@color/global_text_info_color"/>
         <View
             android:layout_marginTop="16dp"
@@ -73,6 +75,7 @@
             android:inputType="textPassword"
             android:background="@drawable/none"
             android:hint="@string/confirm_new_password"
+            android:imeOptions="actionNext"
             android:textColorHint="@color/global_text_info_color"/>
         <View
             android:layout_marginTop="16dp"
@@ -105,6 +108,7 @@
                 android:id="@+id/input_verify"
                 android:background="@drawable/none"
                 android:hint="@string/verify_code"
+                android:imeOptions="actionDone"
                 android:textSize="32dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/global_text_info_color"/>
