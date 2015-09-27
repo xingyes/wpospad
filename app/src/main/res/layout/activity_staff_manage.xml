@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/setting_bg">
+
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_margin="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_wpos_red_round_rect"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:id="@+id/add_btn"
+        android:textColor="@color/white"
+        android:text="增加店员"/>
+
+    <android.support.v4.view.ViewPager
+        android:layout_above="@id/add_btn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewpager"
+        android:clipChildren="false"/>
+
+    <include layout="@layout/global_loading" />
+
+
+</RelativeLayout>

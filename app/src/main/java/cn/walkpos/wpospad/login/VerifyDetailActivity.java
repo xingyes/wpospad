@@ -1,7 +1,6 @@
 package cn.walkpos.wpospad.login;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,9 +23,7 @@ import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
-import cn.walkpos.wpospad.BlueBle.BluetoothLeClass;
 import cn.walkpos.wpospad.R;
 
 

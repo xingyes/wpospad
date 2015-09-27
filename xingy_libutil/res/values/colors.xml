@@ -9,6 +9,11 @@
     <color name="global_wpos_red">#ff501a</color>
     <color name="global_wpos_gray_bg">#dddddd</color>
 
+    <color name="global_75_transparent">#40ffffff</color>
+    <color name="global_50_transparent">#80ffffff</color>
+    <color name="global_75_black">#40000000</color>
+
+
     <color name="global_text_info_color">#ff999999</color>
     <color name="global_text_label">#444444</color>
     

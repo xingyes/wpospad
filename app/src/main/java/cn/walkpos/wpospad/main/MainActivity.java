@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
                 UiUtils.makeToast(this,"去管理商品界面");
                 break;
             case R.id.staff_btn:
-                UiUtils.makeToast(this,"管理员工界面");
+                UiUtils.startActivity(this,StaffManageActivity.class,true);
                 break;
             case R.id.statistics_btn:
                 UiUtils.makeToast(this,"统计报表界面");
@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity {
                 UiUtils.makeToast(this,"金额提现管理界面");
                 break;
             case R.id.setting_btn:
-                UiUtils.makeToast(this,"基本设置界面");
+                UiUtils.startActivity(this,SettingActivity.class,true);
                 break;
             default:
                 super.onClick(v);

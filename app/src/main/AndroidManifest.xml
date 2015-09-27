@@ -25,8 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.MainActivity"
-            android:screenOrientation="landscape"/>
         <activity android:name=".login.LoginIdentyActivity"
             android:screenOrientation="landscape"/>
         <activity android:name=".login.RegisterActivity"
@@ -36,6 +34,13 @@
         <activity android:name=".login.VerifyMidActivity"
             android:screenOrientation="landscape"/>
         <activity android:name=".login.VerifyPicActivity"
+            android:screenOrientation="landscape"/>
+
+        <activity android:name=".main.MainActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".main.SettingActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".main.StaffManageActivity"
             android:screenOrientation="landscape"/>
 
     </application>
