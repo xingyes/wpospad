@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="60dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+    <EditText
+        android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
+        android:textSize="24dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/white"
+        android:minLines="6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/store_slogn"
+        android:text="我的小店最nb"
+        android:gravity="left|center_vertical|top"
+        android:background="@drawable/button_gray_frame_round"
+        android:textColorHint="@color/global_text_info_color"/>
+
+    <TextView
+        android:background="@drawable/button_wpos_red_round_rect"
+        android:layout_marginTop="60dp"
+        android:layout_width="400dp"
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        android:id="@+id/login_btn"
+        android:textColor="@color/white"
+        android:text="@string/login"/>
+
+</LinearLayout>
+

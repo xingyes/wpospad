@@ -15,4 +15,17 @@
     <string name="shop_single">个体户</string>
     <string name="shop_store">商铺</string>
 
+    <string name="manage_staff">管理店员</string>
+    <string name="basic_setting">基本设置</string>
+    <string name="print_on_invoice">打印上发票</string>
+    <string name="mpos">mPOS</string>
+    <string name="swip_machine">刷卡器</string>
+    <string name="not_bind">未绑定</string>
+    <string name="yes_bind">已绑定</string>
+    <string name="bind_dev">绑定设备</string>
+
+    <string name="version_info_x">当前版本：%s</string>
+    <string name="update_time_x">更新时间：%s</string>
+
+
 </resources>

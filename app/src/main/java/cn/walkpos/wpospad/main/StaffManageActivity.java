@@ -49,6 +49,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_manage);
+        loadNavBar(R.id.staff_nav);
         this.findViewById(R.id.add_btn).setOnClickListener(this);
 
         staffVpger = (ViewPager)findViewById(R.id.viewpager);
