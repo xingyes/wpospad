@@ -14,8 +14,6 @@ import com.xingy.util.activity.BaseActivity;
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.adapter.BottonAdapter;
-import cn.walkpos.wpospad.store.StoreActivity;
 
 
 public class CounterActivity extends BaseActivity {

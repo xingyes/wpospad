@@ -27,5 +27,7 @@
     <string name="version_info_x">当前版本：%s</string>
     <string name="update_time_x">更新时间：%s</string>
 
+    <string name="manage_pro">管理商品</string>
+
 
 </resources>

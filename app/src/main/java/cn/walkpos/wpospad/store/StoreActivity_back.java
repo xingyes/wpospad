@@ -56,7 +56,7 @@
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_store);
+//        setContentView(R.layout.activity_pro_manage);
 //
 //
 //        cateListV = (ListView)this.findViewById(R.id.cate_list);

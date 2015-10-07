@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/TransparentAppTheme">
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".store.StoreManageActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,6 +42,9 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".main.StaffManageActivity"
             android:screenOrientation="landscape"/>
+
+        <!--<activity android:name=".store.StoreManageActivity"-->
+            <!--android:screenOrientation="landscape"/>-->
 
     </application>
 

@@ -2,7 +2,6 @@ package cn.walkpos.wpospad.main;
 
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,8 +9,7 @@ import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.store.StoreActivity;
-import cn.walkpos.wpospad.ui.NoinputEditText;
+import cn.walkpos.wpospad.store.StoreManageActivity;
 
 
 public class MainActivity extends BaseActivity {
@@ -85,7 +83,7 @@ public class MainActivity extends BaseActivity {
                 UiUtils.makeToast(this,"去结账页面");
                 break;
             case R.id.pro_btn:
-                UiUtils.makeToast(this,"去管理商品界面");
+                UiUtils.startActivity(this,StoreManageActivity.class,true);
                 break;
             case R.id.staff_btn:
                 UiUtils.startActivity(this,StaffManageActivity.class,true);
