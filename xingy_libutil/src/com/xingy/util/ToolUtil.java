@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -1263,4 +1264,12 @@ public class ToolUtil {
 		return true;
 
 	}
+
+
+    public static boolean isScreenOriatationPortrait(Context context) {
+        if(context==null || context.getResources()==null || context.getResources().getConfiguration() == null)
+            return true;
+        else
+            return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+    }
 }

@@ -14,6 +14,7 @@ package com.xingy.lib.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.xingy.R;
+import com.xingy.util.ToolUtil;
 
 
 public class AppDialog extends Dialog implements View.OnClickListener
@@ -257,9 +259,13 @@ public class AppDialog extends Dialog implements View.OnClickListener
 		pWindow.getWindowManager().getDefaultDisplay().getMetrics(pMetrics);
 		
 		WindowManager.LayoutParams pParams = pWindow.getAttributes();
-		pParams.gravity = Gravity.CENTER_HORIZONTAL;
-		pParams.width = (int) (pMetrics.widthPixels * 0.9);
-		pWindow.setAttributes(pParams);
+        pParams.gravity = Gravity.CENTER_HORIZONTAL;
+        Context context = getContext();
+        if(ToolUtil.isScreenOriatationPortrait(context))
+            pParams.width = (int) (pMetrics.widthPixels * 0.9);
+        else
+            pParams.width = (int) (pMetrics.widthPixels * 0.5);
+        pWindow.setAttributes(pParams);
 		
 		// Clean up.
 		pMetrics = null;

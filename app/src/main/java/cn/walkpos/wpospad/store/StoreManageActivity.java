@@ -1,5 +1,6 @@
 package cn.walkpos.wpospad.store;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,10 +9,15 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,20 +28,36 @@ import cn.walkpos.wpospad.adapter.ProInfoAdapter;
 import cn.walkpos.wpospad.module.CateGroupModule;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.module.ProModule;
+import cn.walkpos.wpospad.ui.InStockDialog;
 
 
-public class StoreManageActivity extends BaseActivity implements DrawerLayout.DrawerListener {
+public class StoreManageActivity extends BaseActivity implements DrawerLayout.DrawerListener,
+        ProInfoAdapter.InstockListener,InStockDialog.WithEditNumClickListener {
 
 
     private RecyclerView   proListV;
     private ProInfoAdapter proAdapter;
     private ArrayList<ProModule> proArray;
 
+//    分类选择
     private TextView       cateDrawerBtn;
     private DrawerLayout   cateDrawer;
     private ExpandableListView  cateListV;
     private ArrayList<CateGroupModule> cateGroupArray;
     private CateExpandableAdapter cateAdapter;
+
+    //排序sortRadioGroup
+    private RadioGroup     sortRg;
+    private LinearLayout   norTitleLayout;
+    private TextView       batStartBtn;
+    private TextView       batCancelBtn;
+    private TextView       batChooseAllBtn;
+    private TextView       batChooseNoneBtn;
+    private TextView       batDelBtn;
+    private AppDialog      batDelDialog;
+
+    private InStockDialog mInstockDialog;
+    private int           mInstockProIdx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,14 +111,57 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
 
         proArray = new ArrayList<ProModule>();
-        proAdapter = new ProInfoAdapter(this,proArray);
+        proAdapter = new ProInfoAdapter(this,proArray,this);
         proListV.setAdapter(proAdapter);
 
         loadCateData();
+
+        initTitleLayout();
         loadProData();
 
     }
 
+    /**
+     * radioGroup + titleLayout
+     */
+    private void initTitleLayout()
+    {
+        sortRg = (RadioGroup)this.findViewById(R.id.sort_rg);
+        sortRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            private int lastid;
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == lastid)
+                    return;
+
+                lastid = checkedId;
+                UiUtils.makeToast(StoreManageActivity.this,"改变排列顺序，重新请求数据");
+            }
+        });
+
+        sortRg.check(R.id.by_stock_opt);
+
+        norTitleLayout = (LinearLayout)this.findViewById(R.id.nor_title_layout);
+        batStartBtn = (TextView)this.findViewById(R.id.batch_start_btn);
+        batCancelBtn = (TextView)this.findViewById(R.id.batch_cancel_btn);
+        batDelBtn = (TextView)this.findViewById(R.id.batch_del_btn);
+        batChooseAllBtn = (TextView)this.findViewById(R.id.pick_all_btn);
+        batChooseNoneBtn = (TextView)this.findViewById(R.id.pick_none_btn);
+        batStartBtn.setOnClickListener(this);
+        batCancelBtn.setOnClickListener(this);
+        batDelBtn.setOnClickListener(this);
+        batChooseAllBtn.setOnClickListener(this);
+        batChooseNoneBtn.setOnClickListener(this);
+
+        batCancelBtn.setVisibility(View.GONE);
+        batDelBtn.setVisibility(View.GONE);
+        batChooseAllBtn.setVisibility(View.GONE);
+        batChooseNoneBtn.setVisibility(View.GONE);
+
+
+
+
+    }
     private void loadCateData()
     {
         cateGroupArray.clear();
@@ -121,6 +186,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         for(int i=0; i < 30; i++)
         {
             ProModule item = new ProModule();
+            item.code = ""+i;
             item.title = "商品" + i;
             item.pricein = i;
             item.priceout = i+1;
@@ -138,17 +204,49 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                     cateDrawer.closeDrawer(cateListV);
                 else
                     cateDrawer.openDrawer(cateListV);
-
                 break;
-//            case R.id.checkout_btn:
-//                UiUtils.makeToast(this,"去结账页面");
-//                break;
-//            case R.id.pro_btn:
-//                UiUtils.makeToast(this,"去管理商品界面");
-//                break;
-//            case R.id.staff_btn:
-//                UiUtils.makeToast(this,"管理员工界面");
-//                break;
+            case R.id.batch_cancel_btn:
+                norTitleLayout.setVisibility(View.VISIBLE);
+                batCancelBtn.setVisibility(View.GONE);
+                batDelBtn.setVisibility(View.GONE);
+                batChooseAllBtn.setVisibility(View.GONE);
+                batChooseNoneBtn.setVisibility(View.GONE);
+                proAdapter.setBatOptMod(false);
+                proAdapter.notifyDataSetChanged();
+                break;
+            case R.id.batch_start_btn:
+                norTitleLayout.setVisibility(View.GONE);
+                batCancelBtn.setVisibility(View.VISIBLE);
+                batDelBtn.setVisibility(View.VISIBLE);
+                batChooseAllBtn.setVisibility(View.VISIBLE);
+                batChooseNoneBtn.setVisibility(View.VISIBLE);
+                proAdapter.setBatOptMod(true);
+                proAdapter.notifyDataSetChanged();
+                break;
+            case R.id.batch_del_btn:
+                if(null == batDelDialog)
+                {
+                    batDelDialog = UiUtils.showDialog(StoreManageActivity.this,R.string.caption_hint,
+                            R.string.bat_del_sure,R.string.btn_delete,R.string.btn_cancel,new AppDialog.OnClickListener() {
+                                @Override
+                                public void onDialogClick(int nButtonId) {
+                                    if(nButtonId == AppDialog.BUTTON_POSITIVE)
+                                    {
+                                        UiUtils.makeToast(StoreManageActivity.this,R.string.del_succ);
+                                    }
+                                }
+                            });
+                }
+                batDelDialog.show();
+                break;
+            case R.id.pick_all_btn:
+                proAdapter.chooseAll();
+                proAdapter.notifyDataSetChanged();
+                break;
+            case R.id.pick_none_btn:
+                proAdapter.chooseNone();
+                proAdapter.notifyDataSetChanged();
+                break;
 //            case R.id.statistics_btn:
 //                UiUtils.makeToast(this,"统计报表界面");
 //                break;
@@ -165,6 +263,15 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
     }
 
+
+    @Override
+    protected void onDestroy()
+    {
+        if(null!=batDelDialog && batDelDialog.isShowing())
+            batDelDialog.dismiss();
+        batDelDialog = null;
+        super.onDestroy();
+    }
 
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -184,5 +291,32 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
     @Override
     public void onDrawerStateChanged(int newState) {
 
+    }
+
+    /**
+     * adapter's 进货 click with proId
+     * @param position
+     */
+    @Override
+    public void onInStock(int position) {
+        mInstockProIdx = position;
+        if(null ==mInstockDialog)
+        {
+            mInstockDialog = new InStockDialog(this,this);
+        }
+        mInstockDialog.setProperty("进货",proArray.get(mInstockProIdx).title,"","");
+        mInstockDialog.show();
+
+    }
+
+    /**
+     * 进货dialog onclick 确认或者取消
+     * @param nButtonId
+     * @param num
+     */
+    @Override
+    public void onDialogClick(int nButtonId, long num) {
+        if(nButtonId == DialogInterface.BUTTON_POSITIVE)
+            UiUtils.makeToast(this,"进货" + proArray.get(mInstockProIdx).title + ":"+num );
     }
 }

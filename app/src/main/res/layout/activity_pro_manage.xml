@@ -79,12 +79,14 @@
         android:layout_width="match_parent"
         android:layout_height="60dp">
         <RadioGroup
+            android:id="@+id/sort_rg"
             android:orientation="horizontal"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="10dp">
             <RadioButton
+                android:id="@+id/by_stock_opt"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:textSize="24dp"
@@ -93,25 +95,22 @@
                 android:button="@drawable/none"
                 android:background="@drawable/button_gray_frame_round"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent"/>
             <RadioButton
+                android:id="@+id/by_discount_opt"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:textSize="24dp"
                 android:text="折扣"
                 android:textColor="@color/white"
                 android:button="@drawable/none"
-                android:background="@drawable/button_gray_round"
+                android:background="@drawable/button_gray_frame_round"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent"/>
         </RadioGroup>
-
         </RelativeLayout>
 
-
-
+    <!--分类drawer ＋ 主体-->
     <TextView
         android:background="@color/red"
         android:layout_width="300dp"
@@ -122,7 +121,6 @@
         android:text="全部分类"
         android:layout_below="@id/pro_manage_nav_layout"
         android:id="@+id/cate_drawer_btn"/>
-
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/cate_list_drawer"
         android:layout_below="@id/cate_drawer_btn"
@@ -137,98 +135,92 @@
             android:layout_height="match_parent">
             <!--title 层-->
             <RelativeLayout
+                android:background="@color/global_gray"
                 android:layout_width="match_parent"
                 android:layout_height="70dp">
                 <!--默认title-->
                 <LinearLayout
                     android:layout_centerHorizontal="true"
-                android:id="@+id/pro_nor_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <TextView
+                    android:id="@+id/nor_title_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="10dp">
+                    <TextView
                     android:layout_width="160dp"
                     android:layout_height="80dp"
-                    android:id="@+id/category"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
                     android:text="类别"/>
-                <TextView
+                    <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="160dp"
                     android:layout_height="80dp"
-                    android:id="@+id/code"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
                     android:text="条码编号"/>
-                <TextView
+                    <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="200dp"
                     android:layout_height="80dp"
-                    android:id="@+id/title"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
                     android:text="名称"/>
-                <TextView
+                    <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="160dp"
                     android:layout_height="80dp"
-                    android:id="@+id/title_short"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
                     android:text="简称"/>
-                <TextView
+                    <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="100dp"
                     android:layout_height="80dp"
-                    android:id="@+id/price_in"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
                     android:text="进货价格"/>
-                <TextView
+                    <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="100dp"
                     android:layout_height="80dp"
-                    android:id="@+id/price_out"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
                     android:text="销售价格"/>
-                <TextView
+                    <TextView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:id="@+id/stock"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
                     android:text="库存"/>
-                <TextView
+                    <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:id="@+id/discount"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
                     android:text="折扣"/>
-                <TextView
+                    <TextView
                     android:layout_width="120dp"
                     android:layout_height="80dp"
-                    android:id="@+id/instock"
+                    android:id="@+id/batch_start_btn"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -237,35 +229,45 @@
                     android:background="@color/red"/>
             </LinearLayout>
                 <!--批量操作按钮-->
-                <!--<TextView-->
-                <!--android:id="@+id/pick_opt_btn"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_width="130dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:text="全选"-->
-                <!--android:textSize="24dp"-->
-                <!--android:textColor="@color/red"-->
-                <!--android:layout_alignParentRight="true"/>-->
-                <!--<TextView-->
-                <!--android:id="@+id/batch_del_btn"-->
-                <!--android:layout_toLeftOf="@id/pick_opt_btn"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_width="130dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:text="删除勾选"-->
-                <!--android:textSize="24dp"-->
-                <!--android:textColor="@color/red"/>-->
-                <!--<TextView-->
-                <!--android:id="@+id/batch_cancel_btn"-->
-                <!--android:layout_toLeftOf="@id/batch_del_btn"-->
-                <!--android:gravity="center"-->
-                <!--android:layout_width="130dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:text="取消"-->
-                <!--android:textSize="24dp"-->
-                <!--android:textColor="@color/red"/>-->
+                <TextView
+                android:id="@+id/pick_all_btn"
+                android:gravity="center"
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:text="全选"
+                android:textSize="24dp"
+                android:textColor="@color/red"
+                android:layout_alignParentRight="true"/>
+                <TextView
+                android:id="@+id/pick_none_btn"
+                android:layout_toLeftOf="@id/pick_all_btn"
+                android:gravity="center"
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:text="全不选"
+                android:textSize="24dp"
+                android:textColor="@color/red"/>
+                <TextView
+                android:id="@+id/batch_del_btn"
+                android:layout_toLeftOf="@id/pick_none_btn"
+                android:gravity="center"
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:text="删除勾选"
+                android:textSize="24dp"
+                android:textColor="@color/red"/>
+                <TextView
+                android:id="@+id/batch_cancel_btn"
+                android:layout_toLeftOf="@id/batch_del_btn"
+                android:gravity="center"
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:text="取消"
+                android:textSize="24dp"
+                android:textColor="@color/red"/>
             </RelativeLayout>
         <android.support.v7.widget.RecyclerView
+            android:background="@color/global_gray_light"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/pro_list"/>

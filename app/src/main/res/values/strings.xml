@@ -29,5 +29,8 @@
 
     <string name="manage_pro">管理商品</string>
 
+    <string name="bat_del_sure">是否确认删除所选商品？</string>
+
+
 
 </resources>

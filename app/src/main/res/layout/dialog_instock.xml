@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xingy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/button_gray_round">
+
+    <TextView
+        android:id="@+id/dialog_caption"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
+        android:textColor="#ff222222"
+        android:text="进货"
+        android:textSize="32dp" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <!-- Message part -->
+
+            <TextView
+                android:gravity="center_horizontal"
+                android:id="@+id/dialog_message"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_size_40xp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginRight="100dp"
+                android:layout_marginTop="@dimen/margin_size_30xp"
+                android:textColor="@color/global_text_color"
+                android:textSize="26dp"
+                android:text="康师傅统一冰红茶 350ml康师傅统一冰红茶 350ml康师傅统一冰红茶 350ml康师傅统一冰红茶 350ml康师傅统一冰红茶 350ml"/>
+
+
+            <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <EditText
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_centerInParent="true"
+                    android:textSize="26dp"
+                    android:textColor="@color/black"
+                    android:singleLine="true"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/instock_num"
+                    android:gravity="left|center_vertical"
+                    android:background="@drawable/button_white_10round_shape"
+                    android:inputType="number"/>
+                <TextView
+                    android:layout_marginRight="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@id/instock_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="进货数量"
+                    android:textSize="26dp"/>
+
+            </RelativeLayout>
+
+
+
+
+            <!-- Image for Split line -->
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/separator_line" />
+
+            <!-- Button options -->
+
+            <LinearLayout
+                android:id="@+id/dialog_btn_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/dialog_btn_positive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/global_transparent_shadow_click_state"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:textColor="#ff4f96f8"
+                    android:textSize="26dp"
+                    android:text="确认"/>
+                <View
+                    android:id="@+id/dialog_btn_separator"
+                    android:layout_width="1dp"
+                    android:layout_height="fill_parent"
+                    android:background="@color/separator_line" />
+                <TextView
+                    android:id="@+id/dialog_btn_negative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/global_transparent_shadow_click_state"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:textColor="#ff4f96f8"
+                    android:text="取消"
+                    android:textSize="26dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
