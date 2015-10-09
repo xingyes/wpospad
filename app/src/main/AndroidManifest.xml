@@ -43,6 +43,11 @@
         <activity android:name=".main.StaffManageActivity"
             android:screenOrientation="landscape"/>
 
+        <activity android:name=".store.AddProductActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".store.CategoryManageActivity"
+            android:screenOrientation="landscape"/>
+
         <!--<activity android:name=".store.StoreManageActivity"-->
             <!--android:screenOrientation="landscape"/>-->
 

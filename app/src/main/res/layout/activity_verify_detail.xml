@@ -269,25 +269,19 @@
         </LinearLayout>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
-            >
-
         <TextView
             android:layout_centerHorizontal="true"
             android:background="@drawable/button_wpos_red_round_rect"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="56dp"
             android:layout_width="450dp"
             android:layout_height="90dp"
             android:gravity="center"
-            android:layout_gravity="right"
+            android:layout_gravity="center_horizontal"
             android:textSize="30dp"
             android:id="@+id/submit_btn"
             android:textColor="@color/white"
             android:text="@string/btn_next"/>
-        </RelativeLayout>
+
     </LinearLayout>
 
     <!--cover 蒙板-->
@@ -299,7 +293,6 @@
         android:layout_below="@id/no_pos_btn"
         android:background="@color/cover_black"
         android:clickable="true"/>
-
     <ListView
         android:layout_width="500dp"
         android:layout_height="400dp"

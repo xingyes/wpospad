@@ -68,6 +68,11 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pro_manage);
 
+        //添加商品
+        findViewById(R.id.add_pro_btn).setOnClickListener(this);
+        //管理分类
+        findViewById(R.id.category_btn).setOnClickListener(this);
+
         loadNavBar(R.id.pro_manage_nav);
 
 
@@ -75,6 +80,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         cateDrawer = (DrawerLayout)this.findViewById(R.id.cate_list_drawer);
         cateDrawer.closeDrawers();
         cateDrawerBtn.setOnClickListener(this);
+
 
         cateListV = (ExpandableListView)this.findViewById(R.id.cate_expand_list);
         cateAdapter = new CateExpandableAdapter(this,cateGroupArray);
@@ -247,12 +253,12 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                 proAdapter.chooseNone();
                 proAdapter.notifyDataSetChanged();
                 break;
-//            case R.id.statistics_btn:
-//                UiUtils.makeToast(this,"统计报表界面");
-//                break;
-//            case R.id.money_btn:
-//                UiUtils.makeToast(this,"金额提现管理界面");
-//                break;
+            case R.id.category_btn:
+                UiUtils.startActivity(this,CategoryManageActivity.class,true);
+                break;
+            case R.id.add_pro_btn:
+                UiUtils.startActivity(this,AddProductActivity.class,true);
+                break;
 //            case R.id.setting_btn:
 //                UiUtils.makeToast(this,"基本设置界面");
 //                break;
