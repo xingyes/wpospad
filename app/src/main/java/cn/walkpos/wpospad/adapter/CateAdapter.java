@@ -102,10 +102,13 @@ public class CateAdapter extends RecyclerView.Adapter<CateAdapter.CateViewHolder
         @Override
         public boolean onLongClick(View v) {
             if(null!=mListener)
-                mListener.onItemLongClick(v,getPosition());
+                mListener.onItemLongClick(v, getPosition());
             return true;
         }
     }
+
+
+
 
 
 }

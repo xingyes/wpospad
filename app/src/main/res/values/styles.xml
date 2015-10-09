@@ -184,7 +184,12 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">1px</item>
     </style>
-    
+    <style name="global_line2_v">
+        <item name="android:background">@color/global_line</item>
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+
     <style name="text_settings_title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

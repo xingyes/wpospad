@@ -20,6 +20,7 @@ import java.util.Random;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateExpandableAdapter;
+import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.adapter.ProInfoAdapter;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.module.ProModule;
@@ -109,6 +110,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
         proListV = (RecyclerView)this.findViewById(R.id.pro_list);
         proListV.setLayoutManager(new LinearLayoutManager(this));
+        proListV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
 
         proArray = new ArrayList<ProModule>();

@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/manage_cate_nav_layout">
+
         <RelativeLayout
             android:id="@+id/left_layout"
             android:layout_width="250dp"
@@ -131,9 +132,19 @@
                 android:layout_height="match_parent"
                 android:id="@+id/subcate_list"/>
         </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/global_line"
+            android:layout_toLeftOf="@id/right_layout"
+            android:id="@+id/split_line_v"
+            />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_toLeftOf="@id/right_layout"
+            android:layout_marginRight="1px"
             android:layout_toRightOf="@id/left_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

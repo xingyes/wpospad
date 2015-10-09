@@ -13,6 +13,7 @@ import java.util.Random;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateAdapter;
+import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.main.SettingActivity;
 import cn.walkpos.wpospad.module.CateItemModule;
 
@@ -48,7 +49,10 @@ public class CategoryManageActivity extends BaseActivity{
         this.findViewById(R.id.basic_set_btn).setOnClickListener(this);
 
         cateRootListV = (RecyclerView)this.findViewById(R.id.cateroot_list);
+        cateRootListV.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
+
         subcateListV = (RecyclerView)this.findViewById(R.id.subcate_list);
+        subcateListV.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
         cateRootListV.setLayoutManager(new LinearLayoutManager(this));
         subcateListV.setLayoutManager(new LinearLayoutManager(this));
