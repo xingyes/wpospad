@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    
+    <color name="btn_wpos_red">#ff501a</color>
+    <color name="btn_wpos_red_dark">#d94416</color>
+    <color name="btn_wpos_gray">#878383</color>
+    <color name="btn_wpos_gray_dark">#3d3f43</color>
+    <color name="nav_wpos_bg">#333333</color>
+
+    <color name="global_wpos_gray_bg">#dddddd</color>
+
+</resources>

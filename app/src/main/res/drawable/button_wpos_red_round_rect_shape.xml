@@ -3,7 +3,7 @@
     <item>
         <shape android:shape="rectangle">
             <!-- 纯色 -->
-            <solid android:color="@color/global_gray"/>
+            <solid android:color="@color/btn_wpos_red"/>
             <!-- 描边 -->
 
             <!-- 圆角 -->

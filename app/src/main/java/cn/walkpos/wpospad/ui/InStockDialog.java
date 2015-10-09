@@ -105,7 +105,8 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
         if(!TextUtils.isEmpty(strNegative) && null!=mNegative)
             mNegative.setText(strNegative);
 
-        mNumEt.setText("");
+        if(null!=mNumEt)
+            mNumEt.setText("");
 
     }
 
@@ -127,8 +128,10 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
 
         if ( null != mListener )
         {
+            long num = 0;
             final String strinput = mNumEt.getText().toString();
-            long num = Long.valueOf(strinput);
+            if(!TextUtils.isEmpty(strinput) && TextUtils.isDigitsOnly(strinput))
+                num = Long.valueOf(strinput);
             if(v== mPositive)
                 mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,num);
             else

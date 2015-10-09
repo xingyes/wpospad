@@ -1,6 +1,5 @@
 package cn.walkpos.wpospad.adapter;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -12,9 +11,7 @@ import com.xingy.util.activity.BaseActivity;
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.module.CateGroupModule;
 import cn.walkpos.wpospad.module.CateItemModule;
-import cn.walkpos.wpospad.module.ProModule;
 
 /**
  * Created by xingyao on 15-8-27.
@@ -23,9 +20,9 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
 {
 
     private BaseActivity  mActivity;
-    private ArrayList<CateGroupModule> cateGroupArray;
+    private ArrayList<CateItemModule> cateGroupArray;
 
-    public CateExpandableAdapter(BaseActivity activity, ArrayList<CateGroupModule> aArray)
+    public CateExpandableAdapter(BaseActivity activity, ArrayList<CateItemModule> aArray)
     {
         mActivity = activity;
         cateGroupArray = aArray;
@@ -38,7 +35,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
     @Override
     public int getChildrenCount(int groupPosition) {
         if(null!=cateGroupArray && cateGroupArray.size() > groupPosition) {
-            CateGroupModule categp = cateGroupArray.get(groupPosition);
+            CateItemModule categp = cateGroupArray.get(groupPosition);
             return (null == categp.subCateArray ? 0 : categp.subCateArray.size());
         }
         else
@@ -56,7 +53,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
     @Override
     public Object getChild(int groupPosition, int childPosition) {
         if(null!=cateGroupArray && cateGroupArray.size() > groupPosition) {
-            CateGroupModule categp = cateGroupArray.get(groupPosition);
+            CateItemModule categp = cateGroupArray.get(groupPosition);
             if(null != categp.subCateArray && categp.subCateArray.size() > childPosition)
                 return categp.subCateArray.get(childPosition);
             else
@@ -86,7 +83,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
         final CateGPHolder gpHolder;
 
         if ( null == convertView ) {
-            convertView = mActivity.getLayoutInflater().inflate(R.layout.cate_gp_item, null);
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.item_cate_expandlist, null);
             gpHolder = new CateGPHolder();
             gpHolder.namev= (TextView) convertView.findViewById(R.id.name);
             gpHolder.arrowv = (ImageView)convertView.findViewById(R.id.arrow);
@@ -98,7 +95,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
             gpHolder = (CateGPHolder) convertView.getTag();
         }
 
-        CateGroupModule gpMod = cateGroupArray.get(groupPosition);
+        CateItemModule gpMod = cateGroupArray.get(groupPosition);
         gpHolder.namev.setText(gpMod.name);
         if(gpMod.subCateArray.size()<=0)
             gpHolder.arrowv.setVisibility(View.GONE);
@@ -112,7 +109,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
         final CateItHolder itHolder;
 
         if ( null == convertView ) {
-            convertView = mActivity.getLayoutInflater().inflate(R.layout.cate_gp_item, null);
+            convertView = mActivity.getLayoutInflater().inflate(R.layout.item_cate_expandlist, null);
             itHolder = new CateItHolder();
             itHolder.namev= (TextView) convertView.findViewById(R.id.name);
             itHolder.arrowv = (ImageView)convertView.findViewById(R.id.arrow);
@@ -124,7 +121,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
             itHolder = (CateItHolder) convertView.getTag();
         }
 
-        CateGroupModule gpMod = cateGroupArray.get(groupPosition);
+        CateItemModule gpMod = cateGroupArray.get(groupPosition);
         CateItemModule  itMod = gpMod.subCateArray.get(childPosition);
         itHolder.namev.setText(itMod.name);
         return convertView;

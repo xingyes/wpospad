@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="60dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +17,7 @@
         android:minLines="6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/store_slogn"
+        android:id="@+id/fb_content"
         android:text="我的小店最nb"
         android:gravity="left|center_vertical|top"
         android:background="@drawable/button_gray_frame_round"
@@ -30,9 +31,9 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:textSize="30dp"
-        android:id="@+id/login_btn"
+        android:id="@+id/submit_btn"
         android:textColor="@color/white"
-        android:text="@string/login"/>
+        android:text="@string/submit"/>
 
 </LinearLayout>
 

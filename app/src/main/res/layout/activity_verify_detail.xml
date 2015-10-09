@@ -13,7 +13,7 @@
         inmost:leftVisiable="true"
         inmost:text="@string/realname_verify"
         inmost:drawableLeft="@drawable/ico_back"
-        inmost:bgColor="@color/global_text_gray"
+        inmost:bgColor="@color/nav_wpos_bg"
         inmost:textColor="@color/white"/>
 
 
@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:textColor="@color/global_wpos_red"
+            android:textColor="@color/btn_wpos_red"
             android:text="*商铺类型需要提供企业执照及管理员在门店合照"/>
 
 

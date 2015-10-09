@@ -87,7 +87,7 @@
             android:layout_gravity="right"
             android:textSize="24dp"
             android:id="@+id/forget_passwd"
-            android:textColor="@color/global_wpos_red"
+            android:textColor="@color/btn_wpos_red"
             android:text="@string/forget_passwd_underline"/>
         <TextView
             android:background="@drawable/button_wpos_red_round_rect"
@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:textSize="24dp"
-                android:textColor="@color/global_wpos_red"
+                android:textColor="@color/btn_wpos_red"
                 android:text="@string/register_underline"/>
         </LinearLayout>
     </LinearLayout>

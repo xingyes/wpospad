@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class CateItemModule extends BaseModel {
     public String id;
     public String name;
-
+    public ArrayList<CateItemModule> subCateArray;
 
     public CateItemModule()
     {
@@ -21,5 +21,10 @@ public class CateItemModule extends BaseModel {
     {
         id = "";
         name = "";
+        if(subCateArray==null)
+            subCateArray = new ArrayList<CateItemModule>();
+        else
+            subCateArray.clear();
     }
+
 }

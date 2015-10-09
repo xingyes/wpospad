@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         inmost:leftVisiable="true"
         inmost:drawableLeft="@drawable/ico_back"
-        inmost:bgColor="@color/global_text_gray"
+        inmost:bgColor="@color/nav_wpos_bg"
         inmost:textColor="@color/white"/>
         <EditText
             android:id="@+id/search_input"

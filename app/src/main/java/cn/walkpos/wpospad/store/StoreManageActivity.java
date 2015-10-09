@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -17,15 +15,12 @@ import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateExpandableAdapter;
 import cn.walkpos.wpospad.adapter.ProInfoAdapter;
-import cn.walkpos.wpospad.module.CateGroupModule;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.module.ProModule;
 import cn.walkpos.wpospad.ui.InStockDialog;
@@ -43,7 +38,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
     private TextView       cateDrawerBtn;
     private DrawerLayout   cateDrawer;
     private ExpandableListView  cateListV;
-    private ArrayList<CateGroupModule> cateGroupArray;
+    private ArrayList<CateItemModule> cateGroupArray;
     private CateExpandableAdapter cateAdapter;
 
     //排序sortRadioGroup
@@ -63,7 +58,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
     protected void onCreate(Bundle savedInstanceState) {
 
         if(null == cateGroupArray)
-            cateGroupArray = new ArrayList<CateGroupModule>();
+            cateGroupArray = new ArrayList<CateItemModule>();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pro_manage);
@@ -88,7 +83,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         cateListV.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                CateGroupModule gp = cateGroupArray.get(groupPosition);
+                CateItemModule gp = cateGroupArray.get(groupPosition);
                 CateItemModule it = gp.subCateArray.get(childPosition);
                 UiUtils.makeToast(StoreManageActivity.this, gp.name + "," + it.name);
                 return false;
@@ -103,7 +98,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                     parent.collapseGroup(lastIdx);
                 parent.smoothScrollToPosition(groupPosition);
                 lastIdx = groupPosition;
-                CateGroupModule gp = cateGroupArray.get(groupPosition);
+                CateItemModule gp = cateGroupArray.get(groupPosition);
                 if (gp != null && gp.subCateArray.size() > 0)
                     parent.expandGroup(lastIdx, true);
                 else
@@ -173,7 +168,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         cateGroupArray.clear();
         for(int i=0; i < 12; i++)
         {
-            CateGroupModule gp = new CateGroupModule();
+            CateItemModule gp = new CateItemModule();
             gp.name = "一级分类" +i;
             Random rd = new Random();
             int x = rd.nextInt(7);

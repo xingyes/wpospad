@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             inmost:leftVisiable="true"
             inmost:drawableLeft="@drawable/ico_back"
-            inmost:bgColor="@color/global_text_gray"
+            inmost:bgColor="@color/nav_wpos_bg"
             inmost:text="@string/manage_category"
             inmost:textColor="@color/white"/>
         <TextView
@@ -25,14 +25,152 @@
             android:layout_alignBottom="@id/manage_cate_nav"
             android:gravity="center"
             android:textSize="24dp"
+            android:drawablePadding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/manage_staff"
+            android:text="@string/add_product"
             android:drawableLeft="@mipmap/icon_del"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
-            android:id="@+id/manage_staff_btn"/>
+            android:id="@+id/add_pro_btn"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/manage_cate_nav_layout">
+        <RelativeLayout
+            android:id="@+id/left_layout"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@color/global_gray_light">
+            <TextView
+                android:gravity="center_horizontal"
+                android:layout_alignParentTop="true"
+                android:id="@+id/basic_set_hint"
+                android:layout_alignParentBottom="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:textSize="22dp"
+                android:text="如需更改，请前往\n基本设置进行修改"
+                android:textColor="@color/global_gray"/>
+            <TextView
+                android:id="@+id/store_type_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="200dp"
+                android:textSize="26dp"
+                android:text="店铺类型"
+                android:textColor="@color/global_gray"/>
+            <TextView
+                android:id="@+id/store_type"
+                android:layout_below="@id/store_type_head"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textSize="26dp"
+                android:text="无"
+                android:textColor="@color/black"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/button_wpos_red_round_rect"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:textSize="30dp"
+                android:id="@+id/basic_set_btn"
+                android:textColor="@color/white"
+                android:text="基本设置"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_width="400dp"
+            android:layout_height="match_parent"
+            android:id="@+id/right_layout"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
+                <TextView
+                   android:layout_margin="30dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerVertical="true"
+                   android:layout_alignParentLeft="true"
+                   android:text="二级分类"
+                   android:textColor="@color/global_text_info_color"
+                   android:textSize="26dp"/>
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="26dp"
+                    android:drawablePadding="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add"
+                    android:drawableLeft="@mipmap/icon_del"
+                    android:textColor="@color/global_text_info_color"
+                    android:id="@+id/add_cate_2"/>
+            </RelativeLayout>
+            <View  style="@style/global_line2" />
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/subcate_list"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_toLeftOf="@id/right_layout"
+            android:layout_toRightOf="@id/left_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:background="@color/btn_wpos_gray">
+                <TextView
+                    android:layout_margin="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:text="一级分类"
+                    android:textColor="@color/white"
+                    android:textSize="26dp"/>
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="26dp"
+                    android:drawablePadding="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add"
+                    android:drawableLeft="@mipmap/icon_del"
+                    android:textColor="@color/white"
+                    android:id="@+id/add_cate_1"/>
+            </RelativeLayout>
+            <View  style="@style/global_line2" />
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/cateroot_list"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

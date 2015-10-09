@@ -5,12 +5,14 @@
     android:background="@color/transparent"
     android:orientation="vertical">
     <TextView
+        android:id="@+id/version_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="32dp"
         android:textColor="@color/white"
         android:text="@string/version_info_x"/>
     <TextView
+        android:id="@+id/update_time"
         android:layout_marginTop="56dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

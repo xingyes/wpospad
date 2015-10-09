@@ -13,7 +13,7 @@
         inmost:leftVisiable="true"
         inmost:text="@string/realname_verify"
         inmost:drawableLeft="@drawable/ico_back"
-        inmost:bgColor="@color/global_text_gray"
+        inmost:bgColor="@color/nav_wpos_bg"
         inmost:textColor="@color/white"/>
 
     <RelativeLayout
@@ -172,7 +172,7 @@
             android:layout_gravity="right"
             android:textSize="24dp"
             android:id="@+id/use_wx"
-            android:textColor="@color/global_wpos_red"
+            android:textColor="@color/btn_wpos_red"
             android:text="手机微信扫码上传"/>
 
         <TextView

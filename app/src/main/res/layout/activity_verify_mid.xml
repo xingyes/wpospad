@@ -103,7 +103,7 @@
         android:id="@+id/skip_verify_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/global_wpos_red"
+        android:textColor="@color/btn_wpos_red"
         android:textSize="24dp"
         android:text="暂不实名认证"/>
 

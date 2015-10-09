@@ -366,6 +366,10 @@ public class ToolUtil {
 		return mDateFormat.format(new Date(milliSeconds));
 	}
 
+    public static String toDateSecond(long milliSeconds) {
+        return mFormat.format(new Date(milliSeconds));
+    }
+
 	public static String formatSuitableDate(long milliSeconds) {
 		long cur = System.currentTimeMillis();
 		if(milliSeconds > cur)

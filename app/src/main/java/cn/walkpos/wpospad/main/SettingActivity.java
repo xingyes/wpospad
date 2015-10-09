@@ -15,9 +15,11 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.xingy.lib.IVersion;
 import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.lib.ui.VerticalRangeSeekBar;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 
 import java.util.ArrayList;
@@ -67,8 +69,16 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
 
         public View    qaV;
         public View    feedbackV;
-        public View    updateV;
+        public EditText fbcontEt;
+
         public View    shareV;
+        public View    updateV;
+        public TextView upVersionV;
+        public TextView upTimeV;
+        public TextView updateBtn;
+
+
+
 
         public InfoVpAdapter vpAdapter;
         public ViewPager    infoVp;
@@ -83,6 +93,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        loadNavBar(R.id.setting_nav);
         container = (RelativeLayout)this.findViewById(R.id.container_layout);
         rl = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rl.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -259,14 +270,36 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
 
         otherHolder.qaV = getLayoutInflater().inflate(R.layout.info_qa_pg,null);
         otherHolder.feedbackV = getLayoutInflater().inflate(R.layout.info_fb_pg,null);
+        otherHolder.fbcontEt = (EditText)otherHolder.feedbackV.findViewById(R.id.fb_content);
+        otherHolder.feedbackV.findViewById(R.id.submit_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UiUtils.makeToast(SettingActivity.this,"提交反馈：" +otherHolder.fbcontEt.getText().toString());
+            }
+        });
+
         otherHolder.updateV = getLayoutInflater().inflate(R.layout.info_update_pg,null);
+        otherHolder.upVersionV = (TextView)otherHolder.updateV.findViewById(R.id.version_info);
+        otherHolder.upTimeV = (TextView)otherHolder.updateV.findViewById(R.id.update_time);
+        otherHolder.upVersionV.setText(getString(R.string.version_info_x, IVersion.getVersionName()));
+        otherHolder.upTimeV.setText(getString(R.string.update_time_x, ToolUtil.toDateSecond(System.currentTimeMillis())));
+        otherHolder.updateBtn = (TextView)otherHolder.updateV.findViewById(R.id.update_btn);
+        otherHolder.updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UiUtils.makeToast(SettingActivity.this,"检查更新");
+                otherHolder.updateBtn.setEnabled(false);
+                otherHolder.upTimeV.setText(getString(R.string.update_time_x, ToolUtil.toDateSecond(System.currentTimeMillis())));
+
+            }
+        });
         otherHolder.shareV = getLayoutInflater().inflate(R.layout.info_share_pg,null);
 
         otherHolder.vpAdapter = new InfoVpAdapter();
         otherHolder.vpAdapter.addPageViews(otherHolder.qaV);
         otherHolder.vpAdapter.addPageViews(otherHolder.feedbackV);
-        otherHolder.vpAdapter.addPageViews(otherHolder.updateV);
         otherHolder.vpAdapter.addPageViews(otherHolder.shareV);
+        otherHolder.vpAdapter.addPageViews(otherHolder.updateV);
 
         otherHolder.infoVp = (ViewPager)otherHolder.rootv.findViewById(R.id.otherinfo_vp);
         otherHolder.infoVp.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
