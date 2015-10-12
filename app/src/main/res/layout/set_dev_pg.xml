@@ -16,13 +16,16 @@
             android:textSize="28dp"
             android:textColor="@color/white"
             android:text="打印发票"/>
-        <RadioButton
-            android:id="@+id/print_invoice_rb"
-            android:layout_marginLeft="20dp"
-            android:button="@drawable/none"
+        <CheckBox
+            android:button="@null"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/btn_off"/>
+            android:background="@drawable/btn_wpos_radio"
+            android:id="@+id/print_invoice_rb"
+            android:layout_marginLeft="20dp"/>
 
         <TextView
             android:layout_marginLeft="110dp"
@@ -31,13 +34,16 @@
             android:textSize="28dp"
             android:textColor="@color/white"
             android:text="扫描枪"/>
-        <RadioButton
-            android:id="@+id/scangun_rb"
-            android:layout_marginLeft="20dp"
-            android:button="@drawable/none"
+        <CheckBox
+            android:button="@null"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/btn_off"/>
+            android:background="@drawable/btn_wpos_radio"
+            android:id="@+id/scangun_rb"
+            android:layout_marginLeft="20dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -52,14 +58,16 @@
             android:textSize="28dp"
             android:textColor="@color/white"
             android:text="钱箱功能"/>
-        <RadioButton
-            android:id="@+id/moneybox_rb"
-            android:layout_marginLeft="20dp"
-            android:button="@drawable/none"
+        <CheckBox
+            android:button="@null"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/btn_off"/>
-
+            android:background="@drawable/btn_wpos_radio"
+            android:id="@+id/moneybox_rb"
+            android:layout_marginLeft="20dp"/>
         <TextView
             android:layout_marginLeft="110dp"
             android:layout_width="wrap_content"
@@ -67,13 +75,16 @@
             android:textSize="28dp"
             android:textColor="@color/white"
             android:text="客户显示屏"/>
-        <RadioButton
-            android:id="@+id/double_screen_rb"
-            android:layout_marginLeft="20dp"
-            android:button="@drawable/none"
+        <CheckBox
+            android:button="@null"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/btn_off"/>
+            android:background="@drawable/btn_wpos_radio"
+            android:id="@+id/double_screen_rb"
+            android:layout_marginLeft="20dp"/>
     </LinearLayout>
 
     <TextView

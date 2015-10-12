@@ -50,7 +50,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_manage);
         loadNavBar(R.id.staff_nav);
-        this.findViewById(R.id.add_btn).setOnClickListener(this);
+        this.findViewById(R.id.add_staff_btn).setOnClickListener(this);
 
         staffVpger = (ViewPager)findViewById(R.id.viewpager);
         staffVpger.setClipChildren(false);
@@ -122,16 +122,17 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
     @Override
     public void onClick(View v)
     {
-        if(v.getId() == R.id.add_btn)
-        {
-            if(staffAdapter.getAdding()) {
+        if(v.getId() == R.id.add_staff_btn) {
+            if (staffAdapter.getAdding()) {
                 staffVpger.setCurrentItem(0);
-            }
-            else {
+            } else {
                 staffAdapter.setAdding(true);
                 staffVpger.setAdapter(staffAdapter);
             }
-
+        }
+        else if(v.getId() == R.id.setting_btn)
+        {
+            UiUtils.startActivity(StaffManageActivity.this,SettingActivity.class,true);
         }
         else
             super.onClick(v);
@@ -282,6 +283,9 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         EditText         phoneV;
         EditText         passwdV;
         TextView         submitV;
+
+        CheckBox         discountAuthV;
+        CheckBox         manageAuthV;
     }
 
 

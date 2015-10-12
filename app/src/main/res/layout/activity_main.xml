@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/setting_bg">
+    android:background="@mipmap/main_bg">
 
 
     <RelativeLayout
@@ -10,34 +11,58 @@
         android:layout_alignParentTop="true"
         android:id="@+id/main_nav_layout">
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/user_layout"
+            android:visibility="visible">
+            <RelativeLayout
+                android:layout_marginLeft="25dp"
+                android:layout_alignParentLeft="true"
+                android:id="@+id/head_layout"
+                android:layout_centerVertical="true"
+                android:layout_width="65dp"
+                android:layout_height="65dp">
+                <com.xingy.lib.ui.CircleImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/user_icon"
+                    android:src="@drawable/blank_circle"/>
+            </RelativeLayout>
+
         <TextView
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/head_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_info"
+            android:text="小二\n12200901111"
+            android:textSize="24dp"
+            android:textColor="@color/white"/>
+        </RelativeLayout>
+        <TextView
+            android:drawablePadding="10dp"
+            android:drawableLeft="@mipmap/icon_pi"
+            android:layout_marginLeft="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:id="@+id/verify_statinfo"
             android:textSize="24dp"
             android:textColor="@color/white"
-            android:text="目前尚未完成实名认证"/>
-        <TextView
-            android:layout_toRightOf="@id/verify_statinfo"
-            android:layout_marginLeft="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:id="@+id/verify_check"
-            android:textSize="24dp"
-            android:textColor="@color/red"
-            android:text="查看认证进度>"/>
+            android:text="@string/verify_stat_not_finish"/>
 
         <TextView
-            android:layout_marginRight="50dp"
+            android:layout_marginRight="30dp"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:id="@+id/store_name"
             android:textSize="30dp"
+            android:gravity="center"
+            android:background="@mipmap/white_round_frame"
             android:textColor="@color/white"
             android:text="小二小店"/>
 
@@ -49,81 +74,81 @@
         android:layout_centerInParent="true"
         android:orientation="horizontal">
 
-    <TextView
+    <ImageView
+        android:padding="100dp"
         android:id="@+id/checkout_btn"
-        android:layout_width="360dp"
+        android:layout_width="470dp"
         android:layout_height="match_parent"
-        android:text="营业结算"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="@drawable/button_gray_round"
+        android:src="@drawable/btn_main_checkout"
+        android:background="@drawable/button_wpos_red_white_round_rect"
         android:textSize="36dp"/>
-    <TextView
+    <ImageView
         android:id="@+id/pro_btn"
-        android:layout_marginLeft="20dp"
-        android:layout_width="240dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="195dp"
         android:layout_height="match_parent"
-        android:text="商品管理"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:background="@drawable/button_gray_round"
+        android:padding="50dp"
+        android:src="@drawable/btn_main_store"
+        android:background="@drawable/button_wpos_red_white_round_rect"
         android:textSize="36dp"/>
 
         <LinearLayout
-            android:layout_width="180dp"
+            android:layout_width="195dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp">
-            <TextView
+            android:layout_marginLeft="10dp">
+            <ImageView
                 android:id="@+id/staff_btn"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="店员管理"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:background="@drawable/button_gray_round"
-                android:textSize="36dp"/>
-            <TextView
+                android:padding="50dp"
+                android:src="@drawable/btn_main_staff"
+                android:background="@drawable/button_wpos_red_white_round_rect"/>
+            <ImageView
                 android:id="@+id/statistics_btn"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="统计报表"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:background="@drawable/button_gray_round"
-                android:textSize="36dp"/>
+                android:padding="50dp"
+                android:src="@drawable/btn_main_report"
+                android:background="@drawable/button_wpos_red_white_round_rect"/>
+
         </LinearLayout>
         <LinearLayout
-            android:layout_width="180dp"
+            android:layout_width="195dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp">
-            <TextView
+            android:layout_marginLeft="10dp">
+            <ImageView
                 android:id="@+id/money_btn"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="款项管理"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:background="@drawable/button_gray_round"
-                android:textSize="40dp"/>
-            <TextView
+                android:padding="50dp"
+                android:src="@drawable/btn_main_money"
+                android:background="@drawable/button_wpos_red_white_round_rect"/>
+            <ImageView
                 android:id="@+id/setting_btn"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="基本设置"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:background="@drawable/button_gray_round"
-                android:textSize="40dp"/>
+                android:padding="50dp"
+                android:src="@drawable/btn_main_set"
+                android:background="@drawable/button_wpos_red_white_round_rect"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

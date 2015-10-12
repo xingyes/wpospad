@@ -4,34 +4,58 @@
     android:layout_height="match_parent"
     android:background="@mipmap/setting_bg">
 
-
-    <com.xingy.lib.ui.NavigationBar
+    <RelativeLayout
+        android:id="@+id/staff_nav_layout"
         android:layout_alignParentTop="true"
-        android:id="@+id/staff_nav"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        inmost:leftVisiable="true"
-        inmost:text="@string/manage_staff"
-        inmost:drawableLeft="@drawable/ico_back"
-        inmost:bgColor="@color/nav_wpos_bg"
-        inmost:textColor="@color/white"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_centerHorizontal="true"
-        android:layout_margin="40dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/button_wpos_red_round_rect"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:id="@+id/add_btn"
-        android:textColor="@color/white"
-        android:text="增加店员"/>
+
+        <com.xingy.lib.ui.NavigationBar
+            android:id="@+id/staff_nav"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            inmost:leftVisiable="true"
+            inmost:text="@string/manage_staff"
+            inmost:drawableLeft="@drawable/ico_back"
+            inmost:bgColor="@color/nav_wpos_bg"
+            inmost:textColor="@color/white"/>
+
+
+        <TextView
+            android:drawablePadding="5dp"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/staff_nav"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/add_staff"
+            android:drawableLeft="@mipmap/icon_add"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:id="@+id/add_staff_btn"/>
+
+        <TextView
+            android:drawablePadding="5dp"
+            android:layout_marginRight="35dp"
+            android:layout_toLeftOf="@id/add_staff_btn"
+            android:layout_alignBottom="@id/add_staff_btn"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/basic_setting"
+            android:drawableLeft="@mipmap/icon_del"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:id="@+id/setting_btn"/>
+    </RelativeLayout>
+
 
     <android.support.v4.view.ViewPager
-        android:layout_below="@id/staff_nav"
-        android:layout_above="@id/add_btn"
+        android:layout_below="@id/staff_nav_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewpager"

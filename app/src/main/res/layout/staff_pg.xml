@@ -3,39 +3,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="220dp"
-    android:paddingRight="220dp"
-    >
+    android:paddingRight="220dp">
     <LinearLayout
+        android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
         android:background="@color/global_75_black"
         android:orientation="horizontal">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <!--left part-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="50dp">
+            <com.android.volley.toolbox.NetworkImageView
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:background="@drawable/icon_user"
+                android:id="@+id/head_img"/>
+            <RelativeLayout
+                android:layout_alignBottom="@id/head_img"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:background="@color/global_75_transparent">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/icon_add"/>
+                </RelativeLayout>
 
-            android:layout_margin="50dp"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:background="@drawable/icon_user"
-            android:id="@+id/head_img"/>
+            <TextView
+                android:layout_marginTop="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/head_img"
+                android:text="韩梅梅"
+                android:textSize="28dp"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/button_wpos_red_round_rect"
+                android:layout_width="180dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:textSize="30dp"
+                android:id="@+id/submit_btn"
+                android:textColor="@color/white"
+                android:text="确认修改"/>
+        </RelativeLayout>
+
+        <!--分割线-->
         <View
             android:layout_width="1px"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
             android:layout_height="match_parent"
             android:background="@color/white"/>
 
+        <!--right part-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center_vertical">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="50dp"
                 android:gravity="center_vertical">
                 <TextView
                 android:layout_marginLeft="50dp"
@@ -151,16 +194,56 @@
                     android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
 
-            <TextView
-                android:background="@drawable/button_wpos_red_round_rect"
-                android:layout_margin="70dp"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="center"
-                android:textSize="30dp"
-                android:id="@+id/submit_btn"
-                android:textColor="@color/white"
-                android:text="确认修改"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_marginLeft="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28dp"
+                    android:textColor="@color/white"
+                    android:text="打折权限"/>
+                <CheckBox
+                    android:button="@null"
+                    android:layout_marginLeft="30dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/white"
+                    android:singleLine="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_wpos_radio"
+                    android:id="@+id/discount_auth_check"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_marginLeft="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28dp"
+                    android:textColor="@color/white"
+                    android:text="管理权限"/>
+                <CheckBox
+                    android:button="@null"
+                    android:layout_marginLeft="30dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/white"
+                    android:singleLine="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_wpos_radio"
+                    android:id="@+id/manage_auth_check"/>
+            </LinearLayout>
+
 
         </LinearLayout>
 
@@ -176,5 +259,5 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:id="@+id/del_account"
-        android:src="@mipmap/icon_del"/>
+        android:src="@mipmap/big_icon_del"/>
 </RelativeLayout>

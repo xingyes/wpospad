@@ -34,4 +34,11 @@
 
     <string name="bat_del_sure">是否确认删除所选商品？</string>
 
+    <string name="verify_stat_not_finish">目前尚未完成实名认证    <font color="red">查看认证进度></font></string>
+    <string name="r_u_change_account">是否确认要切换账户</string>
+    <string name="add_staff">添加店员</string>
+
+
+
+
 </resources>

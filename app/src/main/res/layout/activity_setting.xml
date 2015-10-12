@@ -27,7 +27,7 @@
         <RadioButton
             android:id="@+id/store_rb"
             android:gravity="center"
-            android:background="@drawable/button_gray_round"
+            android:background="@drawable/tab_red_left"
             android:button="@drawable/none"
             android:layout_width="match_parent"
             android:layout_height="90dp"
@@ -36,7 +36,7 @@
         <RadioButton
             android:id="@+id/device_rb"
             android:gravity="center"
-            android:background="@drawable/button_gray_round"
+            android:background="@drawable/tab_red_left"
             android:button="@drawable/none"
             android:layout_width="match_parent"
             android:layout_height="90dp"
@@ -45,7 +45,7 @@
         <RadioButton
             android:id="@+id/passwd_rb"
             android:gravity="center"
-            android:background="@drawable/button_gray_round"
+            android:background="@drawable/tab_red_left"
             android:button="@drawable/none"
             android:layout_width="match_parent"
             android:layout_height="90dp"
@@ -54,7 +54,7 @@
         <RadioButton
             android:id="@+id/other_rb"
             android:gravity="center"
-            android:background="@drawable/button_gray_round"
+            android:background="@drawable/tab_red_left"
             android:button="@drawable/none"
             android:layout_width="match_parent"
             android:layout_height="90dp"
