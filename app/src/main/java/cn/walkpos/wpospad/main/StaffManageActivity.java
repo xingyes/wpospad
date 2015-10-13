@@ -51,6 +51,8 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         setContentView(R.layout.activity_staff_manage);
         loadNavBar(R.id.staff_nav);
         this.findViewById(R.id.add_staff_btn).setOnClickListener(this);
+        this.findViewById(R.id.setting_btn).setOnClickListener(this);
+
 
         staffVpger = (ViewPager)findViewById(R.id.viewpager);
         staffVpger.setClipChildren(false);

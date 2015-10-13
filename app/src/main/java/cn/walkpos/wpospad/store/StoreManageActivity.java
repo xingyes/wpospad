@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -307,7 +308,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         {
             mInstockDialog = new InStockDialog(this,this);
         }
-        mInstockDialog.setProperty("进货",proArray.get(mInstockProIdx).title,"","");
+        mInstockDialog.setProperty("进货",proArray.get(mInstockProIdx).title,"进货数量","","", InputType.TYPE_CLASS_NUMBER);
         mInstockDialog.show();
 
     }
@@ -318,7 +319,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
      * @param num
      */
     @Override
-    public void onDialogClick(int nButtonId, long num) {
+    public void onDialogClick(int nButtonId, String num) {
         if(nButtonId == DialogInterface.BUTTON_POSITIVE)
             UiUtils.makeToast(this,"进货" + proArray.get(mInstockProIdx).title + ":"+num );
     }

@@ -57,14 +57,15 @@
                     android:singleLine="true"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/instock_num"
+                    android:id="@+id/input_edit"
                     android:gravity="left|center_vertical"
                     android:background="@drawable/button_white_10round_shape"
-                    android:inputType="number"/>
+                    />
                 <TextView
+                    android:id="@+id/input_pre"
                     android:layout_marginRight="30dp"
                     android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@id/instock_num"
+                    android:layout_toLeftOf="@id/input_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="进货数量"

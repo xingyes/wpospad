@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -41,14 +42,16 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
     protected TextView      mMessage;
     protected TextView      mPositive;
     protected TextView      mNegative;
+    protected TextView      mInputPre;
 
     private String          strCaption;
     private String          strMessage;
     private String          strPositive;
     private String          strNegative;
+    private String          strInputPre;
 
 
-    private EditText    mNumEt;
+    private EditText    mInputEt;
 
     public interface WithEditNumClickListener
     {
@@ -56,11 +59,11 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
          * onDialogClick
          * @param nButtonId
          */
-        public abstract void onDialogClick(int nButtonId, long num);
+        public abstract void onDialogClick(int nButtonId, String inputStr);
     }
 
     private WithEditNumClickListener   mListener;
-
+    private int    mInputType;
     @Override
     protected void onCreate(Bundle aSavedInstanceState) {
         super.onCreate(aSavedInstanceState);
@@ -71,10 +74,14 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
         mCaption.setText(strCaption);
         mMessage = (TextView)this.findViewById(R.id.dialog_message);
         mMessage.setText(strMessage);
-        mNumEt = (EditText)this.findViewById(R.id.instock_num);
+        mInputEt = (EditText)this.findViewById(R.id.input_edit);
         mPositive = (TextView)this.findViewById(R.id.dialog_btn_positive);
         mNegative = (TextView)this.findViewById(R.id.dialog_btn_negative);
+        mInputPre = (TextView)this.findViewById(R.id.input_pre);
+        mInputPre.setText(strInputPre);
 
+        mMessage.setVisibility(TextUtils.isEmpty(strMessage) ? View.GONE : View.VISIBLE);
+        mInputEt.setInputType(mInputType);
         if(!TextUtils.isEmpty(strPositive))
             mPositive.setText(strPositive);
         if(!TextUtils.isEmpty(strNegative))
@@ -89,35 +96,47 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    public void setProperty(final String caption, final String info,final String position, final String negative)
+    public void setProperty(final String caption, final String info,final String editpre,final String position, final String negative,
+                            int aInputType)
     {
         strCaption = caption;
         strMessage = info;
         strPositive = position;
         strNegative = negative;
+        strInputPre = editpre;
+        mInputType = aInputType;
 
         if(null!=mCaption)
             mCaption.setText(strCaption);
-        if(null!=mMessage)
+        if(null!=mMessage) {
+            mMessage.setVisibility(TextUtils.isEmpty(strMessage) ? View.GONE : View.VISIBLE);
             mMessage.setText(strMessage);
+        }
         if(!TextUtils.isEmpty(strPositive) && null!=mPositive)
             mPositive.setText(strPositive);
         if(!TextUtils.isEmpty(strNegative) && null!=mNegative)
             mNegative.setText(strNegative);
-
-        if(null!=mNumEt)
-            mNumEt.setText("");
-
+        if(null!=mInputPre)
+            mInputPre.setText(strInputPre);
+        if(null!=mInputEt)
+        {
+            mInputEt.setInputType(mInputType);
+            mInputEt.setText("");
+        }
     }
 
 
+    public void setProperty(final String caption, final String info,final String editpre,final String position, final String negative)
+    {
+        setProperty(caption,info,editpre,position,negative,InputType.TYPE_CLASS_TEXT);
+    }
 
     @Override
     public boolean onKeyDown (int keyCode, KeyEvent event)
     {
         if((null != mListener) && (keyCode == KeyEvent.KEYCODE_BACK))
         {
-            mListener.onDialogClick(DialogInterface.BUTTON_NEGATIVE,-1);
+            mListener.onDialogClick(DialogInterface.BUTTON_NEGATIVE,"");
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -128,14 +147,11 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
 
         if ( null != mListener )
         {
-            long num = 0;
-            final String strinput = mNumEt.getText().toString();
-            if(!TextUtils.isEmpty(strinput) && TextUtils.isDigitsOnly(strinput))
-                num = Long.valueOf(strinput);
+            final String strinput = mInputEt.getText().toString();
             if(v== mPositive)
-                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,num);
+                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,strinput);
             else
-                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,num);
+                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,strinput);
         }
 
         // Dismiss the dialog.

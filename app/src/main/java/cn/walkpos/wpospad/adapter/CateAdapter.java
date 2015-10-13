@@ -31,6 +31,7 @@ public class CateAdapter extends RecyclerView.Adapter<CateAdapter.CateViewHolder
     {
         pickidx = pic;
     }
+    public int getPickidx(){return pickidx;}
     public CateAdapter(BaseActivity activity,ItemClickListener listener, boolean flag)
     {
         mActivity = activity;
@@ -94,6 +95,7 @@ public class CateAdapter extends RecyclerView.Adapter<CateAdapter.CateViewHolder
 
         @Override
         public void onClick(View v) {
+            pickidx = getPosition();
             if(null!=mListener)
                 mListener.onItemClick(v,getPosition());
         }
@@ -101,6 +103,7 @@ public class CateAdapter extends RecyclerView.Adapter<CateAdapter.CateViewHolder
 
         @Override
         public boolean onLongClick(View v) {
+            pickidx = getPosition();
             if(null!=mListener)
                 mListener.onItemLongClick(v, getPosition());
             return true;
