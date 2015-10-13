@@ -7,6 +7,7 @@
     android:background="@drawable/global_transparent_shadow_click_state"
     android:padding="10dp">
     <TextView
+        android:textColor="@drawable/red_white_textcolor_selector"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_width="160dp"

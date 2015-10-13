@@ -6,7 +6,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -31,6 +33,7 @@ import cn.walkpos.wpospad.ui.InStockDialog;
 public class StoreManageActivity extends BaseActivity implements DrawerLayout.DrawerListener,
         ProInfoAdapter.InstockListener,InStockDialog.WithEditNumClickListener {
 
+    private EditText       searchInputEt;
 
     private RecyclerView   proListV;
     private ProInfoAdapter proAdapter;
@@ -69,9 +72,11 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         findViewById(R.id.add_pro_btn).setOnClickListener(this);
         //管理分类
         findViewById(R.id.category_btn).setOnClickListener(this);
+        //search
+        findViewById(R.id.search_btn).setOnClickListener(this);
 
         loadNavBar(R.id.pro_manage_nav);
-
+        searchInputEt = (EditText)this.findViewById(R.id.search_input);
 
         cateDrawerBtn = (TextView)this.findViewById(R.id.cate_drawer_btn);
         cateDrawer = (DrawerLayout)this.findViewById(R.id.cate_list_drawer);
@@ -95,16 +100,27 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         cateListV.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             private int lastIdx = -1;
             @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+            public boolean onGroupClick(ExpandableListView parent, final View v, final int groupPosition, long id) {
                 if (lastIdx >= 0)
                     parent.collapseGroup(lastIdx);
-                parent.smoothScrollToPosition(groupPosition);
+
+
+                if(lastIdx == groupPosition)
+                {
+                    parent.collapseGroup(lastIdx);
+                    lastIdx = -1;
+                    return true;
+                }
                 lastIdx = groupPosition;
                 CateItemModule gp = cateGroupArray.get(groupPosition);
                 if (gp != null && gp.subCateArray.size() > 0)
+                {
                     parent.expandGroup(lastIdx, true);
+                    cateListV.setSelectedGroup(groupPosition);
+                }
                 else
                     UiUtils.makeToast(StoreManageActivity.this, cateGroupArray.get(groupPosition).name);
+
                 return true;
             }
         });
@@ -199,10 +215,26 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
         proAdapter.notifyDataSetChanged();
     }
+
+
+    /**
+     *
+     */
+    private void searchPro()
+    {
+        String key = searchInputEt.getText().toString();
+        if(TextUtils.isEmpty(key))
+            UiUtils.makeToast(StoreManageActivity.this,"搜索词为空");
+        else
+            UiUtils.makeToast(StoreManageActivity.this,"搜索:" + key);
+    }
     @Override
     public void onClick(View v)
     {
         switch (v.getId()) {
+            case R.id.search_btn:
+                searchPro();
+                break;
             case R.id.cate_drawer_btn:
                 if(cateDrawer.isDrawerVisible(cateListV))
                     cateDrawer.closeDrawer(cateListV);

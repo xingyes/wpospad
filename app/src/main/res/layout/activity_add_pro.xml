@@ -28,7 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/manage_category"
-            android:drawableLeft="@mipmap/icon_del"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@mipmap/icon_cate"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:id="@+id/category_btn"/>
@@ -75,7 +76,7 @@
                     android:layout_height="60dp"
                     android:id="@+id/cate_info"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"/>
+                    android:background="@drawable/button_gray_round_frame_shape"/>
                 <TextView
                     android:layout_marginLeft="125dp"
                     android:layout_width="wrap_content"
@@ -96,7 +97,7 @@
                     android:id="@+id/scan_code_info"
                     android:text="33050120001010203x"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
                 <ImageView
                     android:id="@+id/scan_code_btn"
@@ -104,7 +105,7 @@
                     android:padding="5dp"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@mipmap/icon_del"/>
+                    android:src="@mipmap/icon_scan"/>
             </LinearLayout>
             <!--商品名 进价-->
             <LinearLayout
@@ -132,7 +133,7 @@
                     android:layout_height="60dp"
                     android:id="@+id/pro_name"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
                 <TextView
                     android:layout_marginLeft="125dp"
@@ -154,7 +155,7 @@
                     android:layout_height="60dp"
                     android:id="@+id/pro_in_price"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
             <!--简称 ＋ 销售价格-->
@@ -185,7 +186,7 @@
                     android:maxLength="6"
                     android:id="@+id/pro_name_short"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"
                     android:hint="不超过6个字"/>
                 <TextView
@@ -208,7 +209,7 @@
                     android:layout_height="60dp"
                     android:id="@+id/pro_out_price"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
             <!--进货数量 折扣设置-->
@@ -239,7 +240,7 @@
                     android:text="100"
                     android:id="@+id/pro_init_stock"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
                 <TextView
                     android:layout_marginLeft="125dp"
@@ -262,7 +263,7 @@
                     android:id="@+id/pro_discount"
                     android:gravity="left|center_vertical"
                     android:hint="默认无折扣"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
             <!--库存预警-->
@@ -292,7 +293,7 @@
                     android:layout_height="60dp"
                     android:id="@+id/stock_hint_num"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"
                     android:hint="默认少于100进行提示"/>
             </LinearLayout>
@@ -315,7 +316,7 @@
             android:listSelector="@null"
             android:background="@color/global_gray"
             android:id="@+id/cate_expand_list"
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="match_parent" />
         </android.support.v4.widget.DrawerLayout>
 </RelativeLayout>

@@ -19,9 +19,16 @@ import cn.walkpos.wpospad.module.CateItemModule;
 public class CateExpandableAdapter extends BaseExpandableListAdapter
 {
 
+    private int           gpPickIdx = 0;
+    private int           subPickIdx = -1;
     private BaseActivity  mActivity;
     private ArrayList<CateItemModule> cateGroupArray;
 
+    public void setPickIdx(int gp,int sub)
+    {
+        gpPickIdx = gp;
+        subPickIdx = sub;
+    }
     public CateExpandableAdapter(BaseActivity activity, ArrayList<CateItemModule> aArray)
     {
         mActivity = activity;
@@ -40,6 +47,14 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
         }
         else
             return 0;
+
+    }
+
+
+    @Override
+    public void onGroupExpanded(int groupPosition) {
+        gpPickIdx = groupPosition;
+        super.onGroupExpanded(groupPosition);
     }
 
     @Override
@@ -84,6 +99,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
 
         if ( null == convertView ) {
             convertView = mActivity.getLayoutInflater().inflate(R.layout.item_cate_expandlist, null);
+            convertView.setBackgroundResource(R.color.btn_wpos_gray_dark);
             gpHolder = new CateGPHolder();
             gpHolder.namev= (TextView) convertView.findViewById(R.id.name);
             gpHolder.arrowv = (ImageView)convertView.findViewById(R.id.arrow);
@@ -97,6 +113,11 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
 
         CateItemModule gpMod = cateGroupArray.get(groupPosition);
         gpHolder.namev.setText(gpMod.name);
+        if(groupPosition == gpPickIdx) {
+            gpHolder.namev.setTextColor(mActivity.getResources().getColor(R.color.btn_wpos_red));
+        }
+        else
+            gpHolder.namev.setTextColor(mActivity.getResources().getColor(R.color.white));
         if(gpMod.subCateArray.size()<=0)
             gpHolder.arrowv.setVisibility(View.GONE);
         else
@@ -120,6 +141,13 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
         {
             itHolder = (CateItHolder) convertView.getTag();
         }
+
+        if(childPosition == subPickIdx) {
+            itHolder.namev.setTextColor(mActivity.getResources().getColor(R.color.btn_wpos_red));
+        }
+        else
+            itHolder.namev.setTextColor(mActivity.getResources().getColor(R.color.white));
+
 
         CateItemModule gpMod = cateGroupArray.get(groupPosition);
         CateItemModule  itMod = gpMod.subCateArray.get(childPosition);

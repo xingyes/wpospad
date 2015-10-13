@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@mipmap/login_bg">
+    android:background="@mipmap/store_bg"
+    >
 
+    <!--导航栏-->
     <RelativeLayout
         android:id="@+id/pro_manage_nav_layout"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-
         <com.xingy.lib.ui.NavigationBar
         android:id="@+id/pro_manage_nav"
         android:layout_width="fill_parent"
@@ -21,16 +21,19 @@
         inmost:bgColor="@color/nav_wpos_bg"
         inmost:textColor="@color/white"/>
         <EditText
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:id="@+id/search_input"
             android:layout_alignBottom="@id/pro_manage_nav"
             android:layout_marginLeft="100dp"
             android:layout_marginRight="10dp"
-            android:layout_width="300dp"
+            android:layout_width="400dp"
             android:layout_height="match_parent"
-            android:drawableLeft="@mipmap/icon_del"
+            android:drawableLeft="@mipmap/icon_search"
             android:background="@drawable/button_white_10round_shape"
+            android:textColorHint="@color/global_text_info_color"
+            android:textColor="@color/black"
             android:hint="搜索编号/名称/简称"/>
-
         <TextView
             android:layout_alignBottom="@id/pro_manage_nav"
             android:gravity="center"
@@ -38,11 +41,11 @@
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:text="搜索"
+            android:background="@drawable/global_transparent_shadow_click_state"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/search_input"
             android:id="@+id/search_btn"/>
-
         <TextView
             android:layout_marginRight="30dp"
             android:layout_alignParentRight="true"
@@ -52,11 +55,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/add_product"
-            android:drawableLeft="@mipmap/icon_del"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@mipmap/icon_add"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:id="@+id/add_pro_btn"/>
-
         <TextView
             android:layout_marginRight="30dp"
             android:layout_toLeftOf="@id/add_pro_btn"
@@ -66,7 +69,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/manage_category"
-            android:drawableLeft="@mipmap/icon_del"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@mipmap/icon_cate"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:id="@+id/category_btn"/>
@@ -77,22 +81,25 @@
         android:id="@+id/second_btns_layout"
         android:layout_below="@id/pro_manage_nav_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="70dp"
+        android:background="@color/transparent">
         <RadioGroup
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/sort_rg"
             android:orientation="horizontal"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_margin="10dp">
+            android:background="@color/btn_wpos_gray_dark">
             <RadioButton
                 android:id="@+id/by_stock_opt"
                 android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:textSize="24dp"
                 android:text="库存"
-                android:textColor="@color/white"
-                android:button="@drawable/none"
+                android:textColor="@drawable/red_gray_textcolor_selector"
+                android:button="@null"
                 android:background="@drawable/button_gray_frame_round"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
@@ -102,28 +109,47 @@
                 android:paddingRight="30dp"
                 android:textSize="24dp"
                 android:text="折扣"
-                android:textColor="@color/white"
-                android:button="@drawable/none"
+                android:textColor="@drawable/red_gray_textcolor_selector"
+                android:button="@null"
                 android:background="@drawable/button_gray_frame_round"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         </RadioGroup>
+
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:background="@color/btn_wpos_gray_dark"
+            android:textColor="@color/white"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:paddingLeft="30dp"
+            android:textSize="24dp"
+            android:gravity="center_vertical"
+            android:text="全部分类 >"
+            android:id="@+id/cate_drawer_btn"/>
+
+        <com.xingy.lib.ui.CheckBox
+            android:padding="10dp"
+            android:layout_marginRight="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:id="@+id/stock_hint_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            inmost:checkboxImageOff="@drawable/choose_radio_off"
+            inmost:checkboxImageOn="@drawable/choose_radio_on"
+            inmost:text="@string/stock_hint"
+            inmost:contentColor="@color/white"
+            inmost:contentSize="24dp"/>
         </RelativeLayout>
 
     <!--分类drawer ＋ 主体-->
-    <TextView
-        android:background="@color/red"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:paddingLeft="10dp"
-        android:textSize="24dp"
-        android:gravity="center_vertical"
-        android:text="全部分类"
-        android:layout_below="@id/pro_manage_nav_layout"
-        android:id="@+id/cate_drawer_btn"/>
+
     <android.support.v4.widget.DrawerLayout
+
         android:id="@+id/cate_list_drawer"
-        android:layout_below="@id/cate_drawer_btn"
+        android:layout_below="@id/second_btns_layout"
         android:layout_width="match_parent"
         android:background="@color/transparent"
         android:layout_height="match_parent">
@@ -135,9 +161,9 @@
             android:layout_height="match_parent">
             <!--title 层-->
             <RelativeLayout
-                android:background="@color/global_gray"
+                android:background="@color/btn_wpos_gray_light"
                 android:layout_width="match_parent"
-                android:layout_height="70dp">
+                android:layout_height="60dp">
                 <!--默认title-->
                 <LinearLayout
                     android:layout_centerHorizontal="true"
@@ -145,11 +171,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:padding="10dp">
                     <TextView
                     android:layout_width="160dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -158,7 +184,7 @@
                     <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="160dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -167,7 +193,7 @@
                     <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="200dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -176,7 +202,7 @@
                     <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="160dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -185,7 +211,7 @@
                     <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="100dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -194,7 +220,7 @@
                     <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="100dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -202,7 +228,7 @@
                     android:text="销售价格"/>
                     <TextView
                     android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -211,7 +237,7 @@
                     <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -219,7 +245,7 @@
                     android:text="折扣"/>
                     <TextView
                     android:layout_width="120dp"
-                    android:layout_height="80dp"
+                    android:layout_height="match_parent"
                     android:id="@+id/batch_start_btn"
                     android:singleLine="true"
                     android:ellipsize="end"
@@ -267,7 +293,7 @@
                 android:textColor="@color/red"/>
             </RelativeLayout>
         <android.support.v7.widget.RecyclerView
-            android:background="@color/global_gray_light"
+            android:background="@color/btn_wpos_gray_light_60"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/pro_list"/>
@@ -275,11 +301,12 @@
 
         <ExpandableListView
             android:groupIndicator="@null"
+            android:choiceMode="singleChoice"
             android:layout_gravity="left"
             android:listSelector="@null"
             android:background="@color/global_gray"
                 android:id="@+id/cate_expand_list"
-                android:layout_width="300dp"
+                android:layout_width="250dp"
                 android:layout_height="match_parent" />
         </android.support.v4.widget.DrawerLayout>
 

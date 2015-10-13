@@ -164,7 +164,7 @@
             android:layout_marginRight="15dp"
             android:layout_below="@id/pic_6_layout"
             android:layout_toLeftOf="@id/center_pot"
-            android:background="@drawable/button_gray_frame_round"
+            android:background="@drawable/button_gray_round_frame_shape"
             android:layout_marginTop="142dp"
             android:layout_width="300dp"
             android:layout_height="60dp"

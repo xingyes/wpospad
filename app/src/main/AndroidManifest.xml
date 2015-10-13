@@ -67,6 +67,9 @@
 
         <activity android:name=".store.StoreManageActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name=".scan.ScanActivity"
+            android:screenOrientation="landscape"/>
+
 
     </application>
 

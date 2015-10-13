@@ -5,6 +5,8 @@
     <color name="btn_wpos_red_dark">#d94416</color>
     <color name="btn_wpos_gray">#878383</color>
     <color name="btn_wpos_gray_dark">#3d3f43</color>
+    <color name="btn_wpos_gray_light">#dddddd</color>
+    <color name="btn_wpos_gray_light_60">#66dddddd</color>
     <color name="nav_wpos_bg">#333333</color>
 
     <color name="global_wpos_gray_bg">#dddddd</color>

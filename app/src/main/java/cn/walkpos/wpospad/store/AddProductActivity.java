@@ -1,5 +1,6 @@
 package cn.walkpos.wpospad.store;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
@@ -17,11 +18,12 @@ import java.util.Random;
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateExpandableAdapter;
 import cn.walkpos.wpospad.module.CateItemModule;
+import cn.walkpos.wpospad.scan.ScanActivity;
 
 
 public class AddProductActivity extends BaseActivity implements DrawerLayout.DrawerListener{
 
-
+    public static final int REQ_SCAN_CODE = 101;
     private DrawerLayout   cateDrawer;
     private ExpandableListView  cateListV;
     private ArrayList<CateItemModule> cateGroupArray;
@@ -89,11 +91,19 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (lastIdx >= 0)
                     parent.collapseGroup(lastIdx);
-                parent.smoothScrollToPosition(groupPosition);
+                if(lastIdx == groupPosition)
+                {
+                    parent.collapseGroup(lastIdx);
+                    lastIdx = -1;
+                    return true;
+                }
                 lastIdx = groupPosition;
                 CateItemModule gp = cateGroupArray.get(groupPosition);
                 if (gp != null && gp.subCateArray.size() > 0)
+                {
                     parent.expandGroup(lastIdx, true);
+                    cateListV.setSelectedGroup(groupPosition);
+                }
                 else {
                     cateNameV.setText(cateGroupArray.get(groupPosition).name);
                     cateDrawer.closeDrawers();
@@ -185,7 +195,8 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
                     cateDrawer.openDrawer(cateListV);
                 break;
             case R.id.scan_code_btn:
-                UiUtils.makeToast(this,"开始扫码界面");
+                Intent ait = new Intent(AddProductActivity.this, ScanActivity.class);
+                startActivityForResult(ait,REQ_SCAN_CODE);
                 break;
             case R.id.submit_btn:
                 addProduct();

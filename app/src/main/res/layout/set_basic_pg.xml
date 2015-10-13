@@ -29,7 +29,7 @@
             android:id="@+id/store_name"
             android:text="我的小店"
             android:gravity="left|center_vertical"
-            android:background="@drawable/button_gray_frame_round"
+            android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>
     </LinearLayout>
 
@@ -48,7 +48,7 @@
         <RelativeLayout
             android:layout_width="500dp"
             android:layout_height="60dp"
-            android:background="@drawable/button_gray_frame_round"
+            android:background="@drawable/button_gray_round_frame_shape"
             android:layout_marginLeft="20dp"
             >
             <ImageView
@@ -102,7 +102,7 @@
             android:id="@+id/store_phone"
             android:text="1292020291"
             android:gravity="left|center_vertical"
-            android:background="@drawable/button_gray_frame_round"
+            android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>
         <com.xingy.lib.ui.CheckBox
             android:layout_marginLeft="30dp"
@@ -144,7 +144,7 @@
             android:id="@+id/store_web"
             android:text="http://111.222.333.ccc/erererjkj"
             android:gravity="left|center_vertical"
-            android:background="@drawable/button_gray_frame_round"
+            android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>
         <com.xingy.lib.ui.CheckBox
             android:layout_marginLeft="30dp"
@@ -187,7 +187,7 @@
             android:id="@+id/store_slogn"
             android:text="我的小店最nb"
             android:gravity="left|center_vertical|top"
-            android:background="@drawable/button_gray_frame_round"
+            android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>
     </LinearLayout>
 

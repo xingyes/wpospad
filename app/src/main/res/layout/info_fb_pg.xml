@@ -20,7 +20,7 @@
         android:id="@+id/fb_content"
         android:text="我的小店最nb"
         android:gravity="left|center_vertical|top"
-        android:background="@drawable/button_gray_frame_round"
+        android:background="@drawable/button_gray_round_frame_shape"
         android:textColorHint="@color/global_text_info_color"/>
 
     <TextView

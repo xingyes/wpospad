@@ -127,7 +127,7 @@
                 android:id="@+id/law_owner_name"
                 android:text="我喔喔我"
                 android:gravity="left|center_vertical"
-                android:background="@drawable/button_gray_frame_round"
+                android:background="@drawable/button_gray_round_frame_shape"
                 android:textColorHint="@color/global_text_info_color"/>
             <TextView
                 android:layout_marginLeft="125dp"
@@ -149,7 +149,7 @@
                 android:id="@+id/law_owner_idcard"
                 android:text="33050120001010203x"
                 android:gravity="left|center_vertical"
-                android:background="@drawable/button_gray_frame_round"
+                android:background="@drawable/button_gray_round_frame_shape"
                 android:textColorHint="@color/global_text_info_color"/>
         </LinearLayout>
 
@@ -180,7 +180,7 @@
                 android:id="@+id/bank_account"
                 android:text="622020300303012345"
                 android:gravity="left|center_vertical"
-                android:background="@drawable/button_gray_frame_round"
+                android:background="@drawable/button_gray_round_frame_shape"
                 android:textColorHint="@color/global_text_info_color"/>
             <TextView
                 android:layout_marginLeft="125dp"
@@ -192,7 +192,7 @@
             <RelativeLayout
                 android:layout_width="300dp"
                 android:layout_height="60dp"
-                android:background="@drawable/button_gray_frame_round"
+                android:background="@drawable/button_gray_round_frame_shape"
                 android:layout_marginLeft="20dp"
                 >
                 <ImageView
@@ -239,7 +239,7 @@
             <RelativeLayout
                 android:layout_width="300dp"
                 android:layout_height="60dp"
-                android:background="@drawable/button_gray_frame_round"
+                android:background="@drawable/button_gray_round_frame_shape"
                 android:layout_marginLeft="20dp"
                 >
                 <ImageView

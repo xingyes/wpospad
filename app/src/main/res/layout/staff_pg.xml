@@ -101,7 +101,7 @@
                 android:id="@+id/code"
                 android:text="我喔喔我"
                 android:gravity="left|center_vertical"
-                android:background="@drawable/button_gray_frame_round"
+                android:background="@drawable/button_gray_round_frame_shape"
                 android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
 
@@ -131,7 +131,7 @@
                     android:id="@+id/name"
                     android:text="我喔喔我"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
             <LinearLayout
@@ -160,7 +160,7 @@
                     android:id="@+id/phone"
                     android:text="我喔喔我"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
 
@@ -190,7 +190,7 @@
                     android:id="@+id/passwd"
                     android:text="我喔喔我"
                     android:gravity="left|center_vertical"
-                    android:background="@drawable/button_gray_frame_round"
+                    android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
 
