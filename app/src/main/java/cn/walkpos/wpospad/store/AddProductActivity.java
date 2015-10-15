@@ -18,7 +18,7 @@ import java.util.Random;
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateExpandableAdapter;
 import cn.walkpos.wpospad.module.CateItemModule;
-import cn.walkpos.wpospad.scan.ScanActivity;
+import cn.walkpos.wpospad.zxing.client.CaptureActivity;
 
 
 public class AddProductActivity extends BaseActivity implements DrawerLayout.DrawerListener{
@@ -195,7 +195,7 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
                     cateDrawer.openDrawer(cateListV);
                 break;
             case R.id.scan_code_btn:
-                Intent ait = new Intent(AddProductActivity.this, ScanActivity.class);
+                Intent ait = new Intent(AddProductActivity.this, CaptureActivity.class);
                 startActivityForResult(ait,REQ_SCAN_CODE);
                 break;
             case R.id.pro_submit_btn:

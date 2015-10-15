@@ -67,7 +67,7 @@
 
         <activity android:name=".store.StoreManageActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".scan.ScanActivity"
+        <activity android:name=".zxing.client.CaptureActivity"
             android:screenOrientation="landscape"/>
 
 

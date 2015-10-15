@@ -7,6 +7,8 @@ dependencies {
     compile files('libs/disklrucache-2.0.1.jar')
     compile 'com.android.support:recyclerview-v7:21.+'
     compile files('libs/weibosdkcore.jar')
+    compile files('libs/camerautils.jar')
+    compile files('libs/core.jar')
 }
 
 android {
