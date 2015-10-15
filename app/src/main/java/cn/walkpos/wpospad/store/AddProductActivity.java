@@ -65,7 +65,7 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
         discountEt = (EditText)this.findViewById(R.id.pro_discount);
         stockHintNumEt = (EditText)this.findViewById(R.id.stock_hint_num);
 
-        this.findViewById(R.id.submit_btn).setOnClickListener(this);
+        this.findViewById(R.id.pro_submit_btn).setOnClickListener(this);
 
         cateDrawer = (DrawerLayout)this.findViewById(R.id.cate_list_drawer);
         cateDrawer.closeDrawers();
@@ -198,7 +198,7 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
                 Intent ait = new Intent(AddProductActivity.this, ScanActivity.class);
                 startActivityForResult(ait,REQ_SCAN_CODE);
                 break;
-            case R.id.submit_btn:
+            case R.id.pro_submit_btn:
                 addProduct();
                 break;
             case R.id.category_btn:

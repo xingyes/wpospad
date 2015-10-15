@@ -19,7 +19,7 @@ public class VerifyPicActivity extends BaseActivity {
         setContentView(R.layout.activity_verify_pic);
 
         findViewById(R.id.use_wx).setOnClickListener(this);
-        findViewById(R.id.submit_btn).setOnClickListener(this);
+        findViewById(R.id.pic_upload_btn).setOnClickListener(this);
 
     }
 
@@ -40,7 +40,7 @@ public class VerifyPicActivity extends BaseActivity {
             case R.id.use_wx:
                 UiUtils.makeToast(this, "call wx");
                 break;
-            case R.id.submit_btn:
+            case R.id.pic_upload_btn:
                 UiUtils.startActivity(this,MainActivity.class,true);
                 break;
             default:

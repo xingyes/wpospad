@@ -26,6 +26,7 @@ import cn.walkpos.wpospad.store.StoreManageActivity;
 public class MainActivity extends BaseActivity {
 
     private PowerManager.WakeLock wakeLock;
+    public static final String imgtesturl = "http://g.hiphotos.baidu.com/baike/w%3D268/sign=ed2f3c98b1119313c743f8b65d390c10/4ec2d5628535e5dd597d578575c6a7efce1b6213.jpg";
 
     private View         userLayout;
     private CircleImageView   userIconV;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity {
     {
 
         userIconV.setUseShader(true);
-        userIconV.setImageUrl("http://g.hiphotos.baidu.com/baike/w%3D268/sign=ed2f3c98b1119313c743f8b65d390c10/4ec2d5628535e5dd597d578575c6a7efce1b6213.jpg",mImgLoader);
+        userIconV.setImageUrl(imgtesturl,mImgLoader);
 
         userInfoV.setText("小二\n18516162727");
 

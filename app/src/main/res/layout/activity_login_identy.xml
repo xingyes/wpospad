@@ -84,7 +84,7 @@
             android:gravity="center"
             android:layout_gravity="right"
             android:textSize="30dp"
-            android:id="@+id/submit_btn"
+            android:id="@+id/identy_submit_btn"
             android:textColor="@color/white"
             android:text="@string/btn_ok"/>
 

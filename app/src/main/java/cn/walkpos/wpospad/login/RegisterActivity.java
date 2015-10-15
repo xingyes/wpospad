@@ -1,37 +1,22 @@
 package cn.walkpos.wpospad.login;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.xingy.lib.ILogin;
 import com.xingy.lib.model.Account;
-import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
-import com.xingy.util.Config;
-import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
-import com.xingy.util.ajax.OnSuccessListener;
-import com.xingy.util.ajax.Response;
-
-import org.json.JSONObject;
-
-import java.util.Date;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.main.MainActivity;
 
 
 public class RegisterActivity extends BaseActivity{
@@ -132,7 +117,7 @@ public class RegisterActivity extends BaseActivity{
         mRequestVerifyBtn = (TextView) this.findViewById(R.id.request_verify_code);
         mRequestVerifyBtn.setOnClickListener(this);
 
-        mSubmitBtn = (TextView)findViewById(R.id.submit_btn);
+        mSubmitBtn = (TextView)findViewById(R.id.passwd_submit_btn);
         mSubmitBtn.setOnClickListener(this);
 
         findViewById(R.id.agree_layout).setVisibility(View.GONE);
@@ -167,7 +152,7 @@ public class RegisterActivity extends BaseActivity{
             case R.id.agreement_info:
                 UiUtils.makeToast(this,"Show agreement");
                 break;
-            case R.id.submit_btn:
+            case R.id.passwd_submit_btn:
                 if(registerType == TYPE_REGISTER_NEW) {
                     UiUtils.makeToast(this, "Register succ");
                     UiUtils.startActivity(RegisterActivity.this, VerifyMidActivity.class, true);

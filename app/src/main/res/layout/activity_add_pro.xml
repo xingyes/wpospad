@@ -305,7 +305,7 @@
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
                 android:textSize="30dp"
-                android:id="@+id/submit_btn"
+                android:id="@+id/pro_submit_btn"
                 android:textColor="@color/white"
                 android:text="确认添加"/>
         </LinearLayout>

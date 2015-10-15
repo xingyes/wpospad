@@ -30,7 +30,6 @@ import com.xingy.util.activity.BaseActivity;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -66,7 +65,7 @@ public class VerifyDetailActivity extends BaseActivity implements BluetoothAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_detail);
         loadNavBar(R.id.verify_detail_nav);
-        findViewById(R.id.submit_btn).setOnClickListener(this);
+        findViewById(R.id.verify_next_btn).setOnClickListener(this);
         findViewById(R.id.bind_pos_btn).setOnClickListener(this);
         coverView = findViewById(R.id.tail_cover);
         coverView.setVisibility(View.VISIBLE);
@@ -205,7 +204,7 @@ public class VerifyDetailActivity extends BaseActivity implements BluetoothAdapt
     public void onClick(View v) {
         Bundle bundle = null;
         switch (v.getId()) {
-            case R.id.submit_btn:
+            case R.id.verify_next_btn:
                 UiUtils.startActivity(VerifyDetailActivity.this, VerifyPicActivity.class, bundle, true);
                 break;
             case R.id.bind_pos_btn:

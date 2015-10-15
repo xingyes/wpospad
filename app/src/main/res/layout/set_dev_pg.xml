@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_wpos_radio"
-            android:id="@+id/double_screen_rb"
+            android:id="@+id/client_screen_rb"
             android:layout_marginLeft="20dp"/>
     </LinearLayout>
 
@@ -147,12 +147,13 @@
             android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:id="@+id/store_phone"
+            android:id="@+id/mpos_stat"
             android:text="@string/yes_bind"
             android:gravity="center"
             android:background="@drawable/button_red_frame_round"/>
 
         <TextView
+            android:id="@+id/check_mposs_btn"
             android:layout_marginLeft="110dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -169,7 +170,7 @@
         android:layout_height="90dp"
         android:gravity="center"
         android:textSize="30dp"
-        android:id="@+id/bind_btn"
+        android:id="@+id/mpos_bind_btn"
         android:textColor="@color/white"
         android:text="@string/bind_dev"/>
 

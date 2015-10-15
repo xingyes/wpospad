@@ -29,7 +29,7 @@ public class LoginIdentyActivity extends BaseActivity {
         IDcardEdt = (EditText)this.findViewById(R.id.id_card);
 
 
-        submitBtn = (TextView)this.findViewById(R.id.submit_btn);
+        submitBtn = (TextView)this.findViewById(R.id.identy_submit_btn);
         submitBtn.setOnClickListener(this);
 
     }
@@ -41,7 +41,7 @@ public class LoginIdentyActivity extends BaseActivity {
     public void onClick(View v)
     {
         switch (v.getId()) {
-            case R.id.submit_btn:
+            case R.id.identy_submit_btn:
                 UiUtils.makeToast(this, "Succ");
                 UiUtils.startActivity(this,MainActivity.class,true);
                 break;

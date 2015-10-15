@@ -278,7 +278,7 @@
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:textSize="30dp"
-            android:id="@+id/submit_btn"
+            android:id="@+id/verify_next_btn"
             android:textColor="@color/white"
             android:text="@string/btn_next"/>
 

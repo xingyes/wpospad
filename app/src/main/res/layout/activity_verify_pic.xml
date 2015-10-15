@@ -186,7 +186,7 @@
             android:gravity="center"
             android:layout_gravity="right"
             android:textSize="24dp"
-            android:id="@+id/submit_btn"
+            android:id="@+id/pic_upload_btn"
             android:textColor="@color/white"
             android:text="@string/btn_ok"/>
         </RelativeLayout>

@@ -31,7 +31,7 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:textSize="30dp"
-        android:id="@+id/submit_btn"
+        android:id="@+id/feedback_submit_btn"
         android:textColor="@color/white"
         android:text="@string/submit"/>
 

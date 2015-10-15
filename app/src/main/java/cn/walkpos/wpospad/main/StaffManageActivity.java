@@ -1,17 +1,14 @@
 package cn.walkpos.wpospad.main;
 
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -19,14 +16,10 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.nineoldandroids.view.ViewHelper;
-import com.xingy.lib.ui.AutoHeightImageView;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.activity.BaseActivity;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
@@ -202,7 +195,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
             vholder.nameV = (EditText) page.findViewById(R.id.name);
             vholder.phoneV = (EditText) page.findViewById(R.id.phone);
             vholder.passwdV = (EditText) page.findViewById(R.id.passwd);
-            vholder.submitV = (TextView) page.findViewById(R.id.submit_btn);
+            vholder.submitV = (TextView) page.findViewById(R.id.staff_modify_btn);
             vholder.delV = (ImageView)page.findViewById(R.id.del_account);
             vholder.delV.setOnClickListener(delListener);
 

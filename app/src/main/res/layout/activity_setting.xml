@@ -5,19 +5,38 @@
     android:background="@mipmap/setting_bg">
 
 
-    <com.xingy.lib.ui.NavigationBar
+    <RelativeLayout
+        android:id="@+id/setting_nav_layout"
         android:layout_alignParentTop="true"
-        android:id="@+id/setting_nav"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        inmost:leftVisiable="true"
-        inmost:text="@string/basic_setting"
-        inmost:drawableLeft="@drawable/ico_back"
-        inmost:bgColor="@color/nav_wpos_bg"
-        inmost:textColor="@color/white"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xingy.lib.ui.NavigationBar
+            android:id="@+id/setting_nav"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            inmost:leftVisiable="true"
+            inmost:text="@string/basic_setting"
+            inmost:drawableLeft="@drawable/ico_back"
+            inmost:bgColor="@color/nav_wpos_bg"
+            inmost:textColor="@color/white"/>
+        <TextView
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/setting_nav"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/add_product"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@mipmap/icon_add"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:id="@+id/manage_staff_btn"/>
+        </RelativeLayout>
 
     <RadioGroup
-        android:layout_below="@id/setting_nav"
+        android:layout_below="@id/setting_nav_layout"
         android:layout_marginTop="100dp"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -27,6 +46,7 @@
         <RadioButton
             android:id="@+id/store_rb"
             android:gravity="center"
+            android:textColor="@drawable/white_gray_textcolor_selector"
             android:background="@drawable/tab_red_left"
             android:button="@drawable/none"
             android:layout_width="match_parent"
@@ -36,6 +56,7 @@
         <RadioButton
             android:id="@+id/device_rb"
             android:gravity="center"
+            android:textColor="@drawable/white_gray_textcolor_selector"
             android:background="@drawable/tab_red_left"
             android:button="@drawable/none"
             android:layout_width="match_parent"
@@ -45,6 +66,7 @@
         <RadioButton
             android:id="@+id/passwd_rb"
             android:gravity="center"
+            android:textColor="@drawable/white_gray_textcolor_selector"
             android:background="@drawable/tab_red_left"
             android:button="@drawable/none"
             android:layout_width="match_parent"
@@ -54,11 +76,13 @@
         <RadioButton
             android:id="@+id/other_rb"
             android:gravity="center"
+            android:textColor="@drawable/white_gray_textcolor_selector"
             android:background="@drawable/tab_red_left"
             android:button="@drawable/none"
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:text="其他信息"
+            android:checked="true"
             android:textSize="28dp"/>
 
     </RadioGroup>
@@ -67,7 +91,7 @@
         android:orientation="vertical"
         android:id="@+id/container_layout"
         android:layout_marginTop="60dp"
-        android:layout_below="@id/setting_nav"
+        android:layout_below="@id/setting_nav_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"

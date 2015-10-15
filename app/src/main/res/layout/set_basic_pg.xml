@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -46,6 +46,7 @@
             android:textColor="@color/white"
             android:text="店铺类型"/>
         <RelativeLayout
+            android:id="@+id/type_select_layout"
             android:layout_width="500dp"
             android:layout_height="60dp"
             android:background="@drawable/button_gray_round_frame_shape"
@@ -60,6 +61,7 @@
                 android:layout_alignParentRight="true"
                 android:src="@mipmap/icon_arrow_down"/>
             <EditText
+                android:editable="false"
                 android:layout_toLeftOf="@id/store_type_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -71,7 +73,7 @@
                 android:textColor="@color/white"
                 android:singleLine="true"
                 android:id="@+id/store_type"
-                android:text="33050120001010203x"
+                android:text="小店"
                 android:gravity="left|center_vertical"
                 android:textColorHint="@color/global_text_info_color"/>
         </RelativeLayout>
@@ -81,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -100,7 +102,7 @@
             android:layout_width="500dp"
             android:layout_height="60dp"
             android:id="@+id/store_phone"
-            android:text="1292020291"
+            android:inputType="number"
             android:gravity="left|center_vertical"
             android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>
@@ -121,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -138,11 +140,10 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:textColor="@color/white"
-            android:minLines="3"
+            android:minLines="2"
             android:layout_width="500dp"
             android:layout_height="wrap_content"
             android:id="@+id/store_web"
-            android:text="http://111.222.333.ccc/erererjkj"
             android:gravity="left|center_vertical"
             android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>
@@ -164,7 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical">
         <TextView
             android:layout_width="wrap_content"
@@ -181,7 +182,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:textColor="@color/white"
-            android:minLines="4"
+            android:minLines="3"
             android:layout_width="500dp"
             android:layout_height="wrap_content"
             android:id="@+id/store_slogn"
@@ -189,8 +190,29 @@
             android:gravity="left|center_vertical|top"
             android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>
+        <com.xingy.lib.ui.CheckBox
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/slogn_on_invoice"
+            android:layout_gravity="center_vertical"
+            inmost:checkboxImageOff="@drawable/choose_radio_off"
+            inmost:checkboxImageOn="@drawable/choose_radio_on"
+            inmost:text="@string/print_on_invoice"
+            inmost:contentColor="@color/white"
+            inmost:contentSize="24dp"/>
     </LinearLayout>
 
-
+    <TextView
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_wpos_red_round_rect"
+        android:layout_width="450dp"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:id="@+id/store_set_submit"
+        android:textColor="@color/white"
+        android:text="@string/submit"/>
 
 </LinearLayout>
