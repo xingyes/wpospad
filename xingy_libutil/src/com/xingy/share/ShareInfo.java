@@ -102,9 +102,26 @@ public class ShareInfo implements Serializable, Cloneable {
 	public void setShareLogo(Bitmap shareLogo) {
 		if (shareLogo != null) {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			shareLogo.compress(Bitmap.CompressFormat.PNG, 0, baos);
+			shareLogo.compress(Bitmap.CompressFormat.PNG, 100, baos);
 			this.shareLogo = baos.toByteArray();
 		}
 	}
+
+
+    public void setShareLogoDefault(Bitmap bitmap,int limit) {
+        if (bitmap != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            shareLogo = baos.toByteArray();
+
+            int rate = 100 - 5;
+            while (shareLogo.length > limit && rate > 0) {
+                baos.reset();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, rate, baos);
+                rate -= 5;
+                shareLogo = baos.toByteArray();
+            }
+        }
+    }
 
 }

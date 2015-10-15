@@ -27,18 +27,32 @@ import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.login.RegisterActivity;
-import cn.walkpos.wpospad.thirdapi.QQUtil;
-import cn.walkpos.wpospad.thirdapi.WeixinUtil;
 import cn.walkpos.wpospad.util.ShareUtil;
 
 
-public class SettingActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+public class SettingActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,
+        ShareUtil.CallbackListener{
 
 
     private RadioGroup  setRg;
     private RelativeLayout container;
     private RelativeLayout.LayoutParams rl;
     private ImageLoader    mImageLoader;
+
+    @Override
+    public void onComplete(Object obj) {
+
+    }
+
+    @Override
+    public void onError(String msg) {
+
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
 
     private class StoreSetHolder{
         public View  rootv;
@@ -148,6 +162,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         mImageLoader = new ImageLoader(mQueue, WPosApplication.globalMDCache);
 
         container = (RelativeLayout)this.findViewById(R.id.container_layout);
+        this.findViewById(R.id.manage_staff_btn).setOnClickListener(this);
         rl = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         rl.addRule(RelativeLayout.CENTER_HORIZONTAL);
         setRg = (RadioGroup)this.findViewById(R.id.opt_radio_group);
@@ -426,6 +441,9 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         shareInfo.iconUrl = MainActivity.imgtesturl;
         shareInfo.url = "http://www.baidu.com";
         switch (v.getId()) {
+            case R.id.manage_staff_btn:
+                UiUtils.startActivity(this,StaffManageActivity.class,true);
+                break;
 //            店铺pg
             case R.id.type_select_layout:
                 UiUtils.makeToast(this,"选择店铺类型");
@@ -466,16 +484,16 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
                 break;
             //分享子页面
             case R.id.share_weixin:
-                WeixinUtil.doWXShare(this, shareInfo, true, mImageLoader);
+                ShareUtil.sendShare(this,shareInfo,ShareUtil.F_WEIXIN,this,mImageLoader);
                 break;
             case R.id.share_weibo:
-                ShareUtil.shareToWeibo(this,shareInfo);
+                ShareUtil.sendShare(this,shareInfo,ShareUtil.F_WEIBO,this,mImageLoader);
                 break;
             case R.id.share_timeline:
-                WeixinUtil.doWXShare(this, shareInfo, true, mImageLoader);
+                ShareUtil.sendShare(this,shareInfo,ShareUtil.F_TIMELINE,this,mImageLoader);
                 break;
             case R.id.share_qzone:
-                QQUtil.shareToQzone(this,shareInfo);
+                ShareUtil.sendShare(this,shareInfo,ShareUtil.F_QZONE,this,mImageLoader);
                 break;
             default:
                 super.onClick(v);

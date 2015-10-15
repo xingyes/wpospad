@@ -83,6 +83,7 @@
     <orderEntry type="library" exported="" name="libammsdk" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="weibosdkcore" level="project" />
     <orderEntry type="library" exported="" name="open_sdk_r5043_lite" level="project" />
     <orderEntry type="library" exported="" name="disklrucache-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="AMap_3DMap_V2.2.1" level="project" />
