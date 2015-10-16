@@ -18,7 +18,7 @@ import java.util.Random;
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateExpandableAdapter;
 import cn.walkpos.wpospad.module.CateItemModule;
-import cn.walkpos.wpospad.zxing.client.CaptureActivity;
+import cn.walkpos.wpospad.zxing.android.CaptureActivity;
 
 
 public class AddProductActivity extends BaseActivity implements DrawerLayout.DrawerListener{

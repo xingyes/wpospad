@@ -154,9 +154,9 @@ public class NavigationBar extends RelativeLayout implements OnClickListener {
 		// Inflate.
 		if( null == context )
 			return ;
-		
-		setBackgroundColor(0xFFF6F6F6);
-		mRootView = inflate(context, R.layout.navigationbar_layout, null);
+
+        setBackgroundColor(0x00000000);
+        mRootView = inflate(context, R.layout.navigationbar_layout, null);
 		mRootView.setBackgroundColor(mBgColor);
 		mRootView.setId(ID_NAV_LAYOUT);
 		addView(mRootView, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

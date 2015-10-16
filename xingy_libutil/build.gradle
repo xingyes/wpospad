@@ -9,6 +9,7 @@ dependencies {
     compile files('libs/weibosdkcore.jar')
     compile files('libs/camerautils.jar')
     compile files('libs/core.jar')
+    compile files('libs/zxing_core.jar')
 }
 
 android {

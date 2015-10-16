@@ -485,15 +485,19 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
             //分享子页面
             case R.id.share_weixin:
                 ShareUtil.sendShare(this,shareInfo,ShareUtil.F_WEIXIN,this,mImageLoader);
+                UiUtils.makeToast(this,"Share to Weixin");
                 break;
             case R.id.share_weibo:
                 ShareUtil.sendShare(this,shareInfo,ShareUtil.F_WEIBO,this,mImageLoader);
+                UiUtils.makeToast(this,"Share to weibo");
                 break;
             case R.id.share_timeline:
                 ShareUtil.sendShare(this,shareInfo,ShareUtil.F_TIMELINE,this,mImageLoader);
+                UiUtils.makeToast(this,"Share to timeline");
                 break;
             case R.id.share_qzone:
                 ShareUtil.sendShare(this,shareInfo,ShareUtil.F_QZONE,this,mImageLoader);
+                UiUtils.makeToast(this,"Share to qzone");
                 break;
             default:
                 super.onClick(v);

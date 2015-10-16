@@ -54,17 +54,16 @@ public class QQUtil {
 	 * @return
 	 */
 	public static boolean check() {
-//		try {
-//			WPosApplication.app.getPackageManager()
-//					.getApplicationInfo("com.tencent.mobileqq",
-//							PackageManager.GET_UNINSTALLED_PACKAGES);
-//			return true;
-//		} catch (PackageManager.NameNotFoundException e) {
-//            UiUtils.makeToast(WPosApplication.app, "No QQ installed");
-//			return false;
-//		}
-        return true;
-	}
+		try {
+			WPosApplication.app.getPackageManager()
+					.getApplicationInfo("com.tencent.mobileqq",
+							PackageManager.GET_UNINSTALLED_PACKAGES);
+			return true;
+		} catch (PackageManager.NameNotFoundException e) {
+            UiUtils.makeToast(WPosApplication.app, "No QQ installed");
+			return false;
+		}
+    }
 
 	/**
 	 * 分享到QQ好友

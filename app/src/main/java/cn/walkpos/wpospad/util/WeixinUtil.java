@@ -114,10 +114,10 @@ public class WeixinUtil {
 	 * @return
 	 */
 	public static boolean check() {
-//		if (!WeixinUtil.isWXInstalled() || !WeixinUtil.isWXSupportShare()) {
-//            UiUtils.makeToast(WPosApplication.app, com.xingy.R.string.install_newest_weixin);
-//			return false;
-//        }
+		if (!WeixinUtil.isWXInstalled() || !WeixinUtil.isWXSupportShare()) {
+            UiUtils.makeToast(WPosApplication.app, com.xingy.R.string.install_newest_weixin);
+			return false;
+        }
         return true;
 	}
 

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/transparent" >
+
+        <SurfaceView
+            android:id="@+id/preview_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center" />
+
+        <cn.walkpos.wpospad.zxing.android.ViewfinderView
+            android:id="@+id/viewfinder_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:id="@+id/scan_nav_layout"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.xingy.lib.ui.NavigationBar
+                android:id="@+id/scan_nav"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                inmost:leftVisiable="true"
+                inmost:drawableLeft="@drawable/ico_back"
+                inmost:bgColor="@color/nav_wpos_bg"
+                inmost:text="@string/scan_title"
+                inmost:textColor="@color/white"/>
+            <TextView
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp"
+                android:layout_alignBottom="@id/scan_nav"
+                android:gravity="center"
+                android:textSize="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="相册寻找"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@mipmap/find_picture"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                android:id="@+id/from_album"/>
+        </RelativeLayout>
+
+
+        <com.xingy.lib.ui.MyVerticalSeekBar
+            android:layout_marginRight="100dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/scan_zoom_seekbar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/scan_nav_layout"
+            android:layout_marginTop="118dp"
+            android:background="@drawable/scan_zoom_seekbar_bg"
+            android:maxHeight="3dp"
+            android:minHeight="20dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:paddingTop="3dp"
+            android:progress="40"
+            android:indeterminate="false"
+            android:visibility="invisible"
+            android:progressDrawable="@drawable/scan_zoom_seekbar_style"
+            android:thumb="@drawable/scan_zoom_seekbar_thumb"/>
+
+        <Button
+            android:id="@+id/scan_zoom_btn_plus"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignLeft="@+id/scan_zoom_seekbar"
+            android:layout_alignTop="@+id/scan_zoom_seekbar"
+            android:background="@color/transparent"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="+"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/scan_zoom_btn_minus"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/scan_zoom_seekbar"
+            android:layout_alignLeft="@+id/scan_zoom_seekbar"
+            android:background="@color/transparent"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="_"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+
+</FrameLayout>

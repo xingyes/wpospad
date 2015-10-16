@@ -88,10 +88,10 @@ public class WeiboUtil {
 	 * @return
 	 */
 	public static boolean check() {
-//		if (!WeiboUtil.isWBInstalled() || !WeiboUtil.isWBSupportShare()) {
-//			UiUtils.makeToast(WPosApplication.app, "Can't Share Weibo");
-//			return false;
-//		}
+		if (!WeiboUtil.isWBInstalled() || !WeiboUtil.isWBSupportShare()) {
+			UiUtils.makeToast(WPosApplication.app, "Can't Share Weibo");
+			return false;
+		}
 		return true;
 	}
 

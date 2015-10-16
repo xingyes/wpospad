@@ -5,7 +5,7 @@
     android:paddingLeft="@dimen/margin_size_10xp"
     android:paddingRight="@dimen/margin_size_10xp"
     android:paddingTop="@dimen/margin_size_5xp"
-    android:background="@color/red">
+    android:background="@color/transparent">
 
     <RelativeLayout
         android:id="@+id/navbar_back"
@@ -15,9 +15,7 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/nav_leftOffset"
-        android:paddingRight="@dimen/nav_rightOffset"
-        >
-
+        android:paddingRight="@dimen/nav_rightOffset">
         <ImageView
             android:layout_alignParentLeft="true"
             android:id="@+id/navigationbar_drawable_left"
@@ -37,7 +35,6 @@
             android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
             android:visibility="gone"/>
-
     </RelativeLayout>
 
     <TextView
