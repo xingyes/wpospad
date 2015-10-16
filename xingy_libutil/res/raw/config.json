@@ -1,35 +1,6 @@
 {"errno":0,"data":{
-"URL_HOME_FLOOR":{"url":"http:\/\/api.imbraa.com\/topic\/list.json","method":"GET"},
-"URL_HOME_FLOOR_O2O":{"url":"http:\/\/www.o2bra.com.cn\/api\/feeds/newest","method":"GET"},
-"URL_GET_COLLECT":{"url":"http:\/\/api.imbraa.com\/event\/list.json","method":"GET"},
-"URL_GET_BLOG":{"url":"http:\/\/api.imbraa.com\/blog\/list.json","method":"GET"},
-"URL_GET_LOOK":{"url":"http:\/\/www.o2bra.com.cn\/api\/lookbooks\/","method":"GET"},
-"URL_SEARCH":{"url":"http:\/\/api.imbraa.com\/search\/act.json","method":"GET"},
-"URL_BASIC_PARAMS":{"url":"http:\/\/api.imbraa.com\/basic\/data.json","method":"GET"},
-"URL_SEARCH_PARAMS":{"url":"http:\/\/www.o2bra.com.cn\/api\/products\/searchCondition","method":"GET"},
-"URL_PRODUCT_DETAIL":{"url":"http:\/\/api.imbraa.com\/product\/detail.json","method":"GET"},
-"URL_BRAND_INFO":{"url":"http:\/\/www.o2bra.com.cn\/api\/brands\/","method":"GET"},
-"URL_CREATE_ORDER":{"url":"http:\/\/api.imbraa.com\/order\/act.json","method":"POST"},
-"URL_VERIFY_LOGIN":{"url":"http:\/\/passport.imbraa.com\/user\/signup.json","method":"POST"},
-"URL_CHECK_TOKEN":{"url":"http:\/\/passport.imbraa.com\/user\/check_token.json","method":"GET"},
-"URL_IMAGE_STREAM_UPLOAD":{"url":"http:\/\/api.imbraa.com\/user\/upload.json","method":"STREAM"},
-"URL_CHANGE_NICKNAME":{"url":"http:\/\/passport.imbraa.com\/user\/modify_info.json","method":"POST"},
-"URL_CHANGE_PHONE":{"url":"http:\/\/passport.imbraa.com\/user\/modify_mobile.json","method":"POST"},
+"URL_API_ALL":{"url":"http://116.247.87.237:10080/index.php/openapi/mobileapi_route/api","method":"GET"}
 
-"URL_ORDER_LIST":{"url":"http:\/\/api.imbraa.com\/order\/list.json","method":"GET"},
-"URL_ORDER_DETAIL":{"url":"http:\/\/api.imbraa.com\/order\/detail.json","method":"GET"},
-"URL_PAY_ORDER":{"url":"http:\/\/api.imbraa.com\/order\/prepay.json","method":"POST"},
-
-"URL_GET_ADDRESSLIST":{"url":"http:\/\/api.imbraa.com\/user\/addr_list.json","method":"GET"},
-"URL_EDIT_ADDRESS":{"url":"http:\/\/api.imbraa.com\/user\/modify_addr.json","method":"POST"},
-"URL_DEL_ADDRESS":{"url":"http:\/\/api.imbraa.com\/user\/del_addr.json","method":"POST"},
-"URL_ADD_ADDRESS":{"url":"http:\/\/api.imbraa.com\/user\/new_addr.json","method":"POST"},
-
-"URL_GET_COUPON":{"url":"http:\/\/api.imbraa.com\/coupon\/exchange.json","method":"POST"},
-"URL_COUPON_LIST":{"url":"http:\/\/api.imbraa.com\/coupon\/list.json","method":"GET"},
-
-"URL_MODIFY_FAV":{"url":"http:\/\/api.imbraa.com\/user\/fav_cntl.json","method":"POST"},
-"URL_FAV_LIST":{"url":"http:\/\/api.imbraa.com\/user\/fav_list.json","method":"GET"}
 
 },"enable":true,"message":"","version":"1","autoResume":1}
 

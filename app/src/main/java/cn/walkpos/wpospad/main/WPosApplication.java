@@ -5,14 +5,16 @@ import com.android.volley.utils.MemDiskImageCache;
 import com.xingy.util.MyApplication;
 import com.xingy.util.ajax.Ajax;
 
+import cn.walkpos.wpospad.login.WposAccount;
+
 public class WPosApplication extends MyApplication {
 
     public static MemDiskImageCache globalMDCache;
     private Ajax mAjax;
+    public static WposAccount account;
     public void onCreate()
     {
         globalMDCache = new MemDiskImageCache(MyApplication.app);
-
         super.onCreate();
         initParams();
 

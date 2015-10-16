@@ -37,5 +37,6 @@
     <!--android:divider="@color/white"-->
     <!--android:visibility="gone"/>-->
 
+<include layout="@layout/global_loading"/>
 
 </RelativeLayout>

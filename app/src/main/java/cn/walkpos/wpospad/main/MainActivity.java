@@ -102,20 +102,16 @@ public class MainActivity extends BaseActivity {
     {
 
         userIconV.setUseShader(true);
-        userIconV.setImageUrl(imgtesturl,mImgLoader);
+        userIconV.setImageUrl(WPosApplication.account.logo,mImgLoader);
+        userInfoV.setText(WPosApplication.account.name + "\n" + WPosApplication.account.mobile);
 
-        userInfoV.setText("小二\n18516162727");
-
-        Account act = ILogin.getActiveAccount();
-        if(act!=null)
+        if(!WPosApplication.account.status)
         {
             userLayout.setVisibility(View.VISIBLE);
             verifyHintV.setVisibility(View.GONE);
         }
         else
         {
-
-
             userLayout.setVisibility(View.GONE);
             verifyHintV.setVisibility(View.VISIBLE);
         }

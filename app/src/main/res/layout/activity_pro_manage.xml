@@ -251,7 +251,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
-                    android:text="批量操作"
+                    android:text="删除操作"
                     android:background="@color/red"/>
             </LinearLayout>
                 <!--批量操作按钮-->

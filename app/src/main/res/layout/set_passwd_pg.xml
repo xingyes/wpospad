@@ -18,7 +18,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/phone_num"
             android:gravity="left|bottom"
-            android:inputType="textPassword"
             android:background="@drawable/none"
             android:textColor="@color/white"
             android:hint="@string/phone_num"
