@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.xingy.lib.ui.AppDialog;
+import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 
@@ -48,6 +49,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
     //排序sortRadioGroup
     private RadioGroup     sortRg;
+    private CheckBox       stockHintCheck;
     private LinearLayout   norTitleLayout;
     private TextView       batStartBtn;
     private TextView       batCancelBtn;
@@ -132,6 +134,8 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
         proArray = new ArrayList<ProModule>();
         proAdapter = new ProInfoAdapter(this,proArray,this);
+        proAdapter.setHintCheck(stockHintCheck.isChecked());
+
         proListV.setAdapter(proAdapter);
 
         loadCateData();
@@ -146,6 +150,17 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
      */
     private void initTitleLayout()
     {
+        stockHintCheck = (CheckBox)findViewById(R.id.stock_hint_check);
+        stockHintCheck.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChange(Boolean isChecked) {
+                if(null!=proAdapter) {
+                    proAdapter.setHintCheck(isChecked);
+                    proAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        stockHintCheck.setChecked(true);
         sortRg = (RadioGroup)this.findViewById(R.id.sort_rg);
         sortRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             private int lastid;
@@ -210,6 +225,8 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             item.title = "商品" + i;
             item.pricein = i;
             item.priceout = i+1;
+            item.stock = i;
+            item.minstock = 10;
             proArray.add(item);
         }
 

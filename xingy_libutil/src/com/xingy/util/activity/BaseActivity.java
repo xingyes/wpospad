@@ -1,17 +1,21 @@
 package com.xingy.util.activity;
 
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 import com.xingy.R;
 import com.xingy.lib.ui.AppDialog;
@@ -489,33 +493,35 @@ public abstract class BaseActivity extends FragmentActivity implements OnErrorLi
 	@Override
 	public void onBackPressed()
 	{
-//		ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
-//		int x = am.getRunningTasks(1).get(0).numActivities;
-//		if(x==1)
-//		{
-//			long cur = System.currentTimeMillis();
-//			if(backTimemark < 0)
-//			{
-//				backTimemark = cur;
-//				if(null == backHandler)
-//				{
-//					backHandler = new Handler(){
-//						public void handleMessage(Message msg)
-//						{
-//							if(msg.what == MSG_RESET_BACKTIME)
-//								backTimemark = -1;
-//							else
-//								super.handleMessage(msg);
-//						}
-//					};
-//				}
-//				backHandler.sendEmptyMessageDelayed(MSG_RESET_BACKTIME, 1000);
-//				Toast.makeText(this, R.string.back_ag_to_exit, Toast.LENGTH_SHORT).show();
-//			}
-//			else if(cur - backTimemark < 1000)
-//				finish();
-//		}
-//		else
+		ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+		int x = am.getRunningTasks(1).get(0).numActivities;
+		if(x==1)
+		{
+			long cur = System.currentTimeMillis();
+			if(backTimemark < 0)
+			{
+				backTimemark = cur;
+				if(null == backHandler)
+				{
+					backHandler = new Handler(){
+						public void handleMessage(Message msg)
+						{
+							if(msg.what == MSG_RESET_BACKTIME)
+								backTimemark = -1;
+							else
+								super.handleMessage(msg);
+						}
+					};
+				}
+				backHandler.sendEmptyMessageDelayed(MSG_RESET_BACKTIME, 1000);
+				Toast.makeText(this, R.string.back_ag_to_exit, Toast.LENGTH_SHORT).show();
+			}
+			else if(cur - backTimemark < 1000) {
+                finish();
+                MyApplication.exit();
+            }
+		}
+		else
 			finish();
 	}
 

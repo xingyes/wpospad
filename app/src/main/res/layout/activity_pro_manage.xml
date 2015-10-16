@@ -251,6 +251,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
+                    android:textColor="@color/white"
                     android:text="删除操作"
                     android:background="@color/red"/>
             </LinearLayout>

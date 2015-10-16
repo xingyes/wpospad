@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.xingy.lib.AppStorage;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.MyApplication;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
@@ -40,13 +41,14 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
     private EditText accountEt;
     private EditText passwdEt;
 
-    private String            accountArrayStr;
     private ArrayList<String> accountArray;
     private AccountAdapter    accountAdapter;
     private TextView loginBtn;
     private WposAccount account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        MyApplication.start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -92,6 +94,15 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
             @Override
             public void onDelItem(int pos) {
                 accountArray.remove(pos);
+                String accountArrayStr = "";
+                for(String name : accountArray)
+                {
+                    if(TextUtils.isEmpty(accountArrayStr))
+                        accountArrayStr = name;
+                    else
+                        accountArrayStr += "," + name;
+                }
+                AppStorage.setData(ACCOUNT_ARRAY, accountArrayStr, true);
                 refreshAccountList();
             }
         });
@@ -129,7 +140,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
     {
         accountArray = new ArrayList<String>();
 
-        accountArrayStr = AppStorage.getData(ACCOUNT_ARRAY,"");
+        String accountArrayStr = AppStorage.getData(ACCOUNT_ARRAY);
         if(!TextUtils.isEmpty(accountArrayStr))
         {
             String items[] = accountArrayStr.split(",");
@@ -190,11 +201,13 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
                 bundle = new Bundle();
                 bundle.putInt(RegisterActivity.REGISTER_TYPE, RegisterActivity.TYPE_REGISTER_NEW);
                 UiUtils.startActivity(LoginActivity.this,RegisterActivity.class,bundle,true);
+                finish();
                 break;
             case R.id.forget_passwd:
                 bundle = new Bundle();
                 bundle.putInt(RegisterActivity.REGISTER_TYPE, RegisterActivity.TYPE_RESET_FORGET);
                 UiUtils.startActivity(LoginActivity.this,RegisterActivity.class,bundle,true);
+
                 break;
             case R.id.del_account:
                 accountEt.setText("");
@@ -232,14 +245,21 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
             WPosApplication.account = new WposAccount();
 
             WPosApplication.account.parse(data);
-            if(TextUtils.isEmpty(accountArrayStr))
-                accountArrayStr = WPosApplication.account.name;
-            else
-                accountArrayStr +="," +WPosApplication.account.name;
-            AppStorage.setData(ACCOUNT_ARRAY, accountArrayStr, true);
-            accountArray.add(0, WPosApplication.account.name);
 
-            refreshAccountList();
+            if(!accountArray.contains(WPosApplication.account.name))
+            {
+                accountArray.add(0, WPosApplication.account.name);
+                String accountArrayStr = "";
+                for(String name : accountArray)
+                {
+                    if(TextUtils.isEmpty(accountArrayStr))
+                        accountArrayStr = name;
+                    else
+                        accountArrayStr += "," + name;
+                }
+                AppStorage.setData(ACCOUNT_ARRAY, accountArrayStr, true);
+                refreshAccountList();
+            }
             if(TextUtils.isEmpty(WPosApplication.account.card_number))
             {
                 UiUtils.startActivity(this,LoginIdentyActivity.class,true);

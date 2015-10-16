@@ -127,6 +127,7 @@
     </LinearLayout>
 
     <ListView
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="17dp"
         android:layout_below="@id/account_layout"
         android:layout_width="452dp"

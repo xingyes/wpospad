@@ -435,5 +435,5 @@ public class AppStorage {
 	private WeakReference<Context>       mReference;
 	private Hashtable<String, ScopeInfo> mTable;
 	private static String LOG_TAG = AppStorage.class.getName();
-	private static final String CACHE_FILE = "icson_local_storage.cache";
+	private static final String CACHE_FILE = "wpos_local_storage.cache";
 }

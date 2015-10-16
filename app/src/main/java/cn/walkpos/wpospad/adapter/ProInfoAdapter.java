@@ -23,6 +23,7 @@ import cn.walkpos.wpospad.module.ProModule;
  */
 public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHolder>
 {
+    private boolean    bStockHint = false;
     private HashSet<String> chooseProIdSet;
     private ArrayList<ProModule> prolist;
     private BaseActivity  mActivity;
@@ -42,7 +43,10 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
     {
         chooseProIdSet.clear();
     }
-
+    public void setHintCheck(boolean check)
+    {
+        bStockHint = check;
+    }
     public HashSet<String> getChooseProSet()
     {
         return chooseProIdSet;
@@ -75,20 +79,23 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
         holder.priceinV.setText("" + pro.pricein);
         holder.priceoutV.setText("" + pro.pricein);
 
-        holder.stockV.setTag(position);
+        holder.instockV.setTag(position);
         holder.chooseV.setTag(pro.code);
         holder.chooseV.setChecked(chooseProIdSet.contains(pro.code));
         if(batOptMod)
         {
-            holder.stockV.setVisibility(View.GONE);
+            holder.instockV.setVisibility(View.GONE);
             holder.chooseV.setVisibility(View.VISIBLE);
         }
         else{
-            holder.stockV.setVisibility(View.VISIBLE);
+            holder.instockV.setVisibility(View.VISIBLE);
             holder.chooseV.setVisibility(View.GONE);
         }
 
-
+        holder.stockV.setText(""+pro.stock);
+        holder.stockV.setTextColor((bStockHint && pro.minstock>0 && pro.stock < pro.minstock) ?
+                    mActivity.getResources().getColor(R.color.btn_wpos_red) :
+                    mActivity.getResources().getColor(R.color.global_text_gray));
 
     }
 
@@ -112,17 +119,19 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
         public TextView   priceoutV;
         public TextView   stockV;
         public TextView   discountV;
-        private android.widget.CheckBox  chooseV;
+        public TextView   instockV;
+        public android.widget.CheckBox  chooseV;
 
         public contHolder(View itemView) {
             super(itemView);
             titleV = (TextView)itemView.findViewById(R.id.title);
             priceinV = (TextView)itemView.findViewById(R.id.price_in);
             priceoutV = (TextView)itemView.findViewById(R.id.price_out);
+            stockV = (TextView)itemView.findViewById(R.id.stock);
+
 
             chooseV = (android.widget.CheckBox)itemView.findViewById(R.id.choose);
-            stockV = (TextView)itemView.findViewById(R.id.instock);
-
+            instockV = (TextView)itemView.findViewById(R.id.instock);
             chooseV.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -136,7 +145,7 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
                     }
                 }
             });
-            stockV.setOnClickListener(new View.OnClickListener() {
+            instockV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Object obj = v.getTag();

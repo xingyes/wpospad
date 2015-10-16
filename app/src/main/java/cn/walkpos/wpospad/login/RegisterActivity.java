@@ -24,6 +24,8 @@ import com.xingy.util.ajax.Response;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.util.WPosConfig;
@@ -213,8 +215,6 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
         if (null == mAjax)
             return;
 
-        if(null == accountArrayStr)
-            accountArrayStr = AppStorage.getData(LoginActivity.ACCOUNT_ARRAY,"");
 
         showLoadingLayer();
 
@@ -343,16 +343,41 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
         if(response.getId() == WPosConfig.REQ_REGISTER)
         {
             UiUtils.makeToast(this, jsonObject.optString("res", "注册成功"));
-            if(TextUtils.isEmpty(accountArrayStr))
-                accountArrayStr = mPhoneStr;
-            else
-                accountArrayStr +="," + mPhoneStr;
             WPosApplication.account = new WposAccount();
             WPosApplication.account.mobile  = mPhoneStr;
-            AppStorage.setData(LoginActivity.ACCOUNT_ARRAY, accountArrayStr, true);
+
+            ArrayList<String> accountArray = new ArrayList<String>();
+            accountArrayStr = AppStorage.getData(LoginActivity.ACCOUNT_ARRAY);
+            if(!TextUtils.isEmpty(accountArrayStr))
+            {
+                String items[] = accountArrayStr.split(",");
+                if(null!=items && items.length>0)
+                {
+                    for(String name: items)
+                        accountArray.add(name);
+                }
+            }
+
+            if(accountArray.size()<=0) {
+                accountArrayStr = mPhoneStr;
+                AppStorage.setData(LoginActivity.ACCOUNT_ARRAY, accountArrayStr, true);
+            }
+            else if(!accountArray.contains(mPhoneStr))
+            {
+                accountArrayStr +="," + mPhoneStr;
+                AppStorage.setData(LoginActivity.ACCOUNT_ARRAY, accountArrayStr, true);
+            }
 
             UiUtils.startActivity(RegisterActivity.this, VerifyMidActivity.class, true);
             finish();
         }
+    }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        UiUtils.startActivity(this,LoginActivity.class,true);
+        super.onBackPressed();
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.xingy.lib.AppStorage;
 import com.xingy.lib.ILogin;
 import com.xingy.lib.model.Account;
 import com.xingy.lib.ui.AppDialog;
@@ -188,4 +189,6 @@ public class MainActivity extends BaseActivity {
         }
 
     }
+
+
 }
