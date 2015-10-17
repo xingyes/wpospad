@@ -35,16 +35,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:src="@mipmap/icon_add"/>
+                    android:src="@mipmap/icon_edit"/>
                 </RelativeLayout>
 
             <TextView
+                android:id="@+id/login_name"
                 android:layout_marginTop="50dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/head_img"
-                android:text="韩梅梅"
                 android:textSize="28dp"
                 android:textColor="@color/white"/>
 

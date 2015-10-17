@@ -10,6 +10,7 @@ public class WposAccount {
     public String store_id;
     public boolean status;
     public String name;
+    public String passwd;
     public String bn;   //店员编号
     public String logo;
     public String mobile;
@@ -35,6 +36,7 @@ public class WposAccount {
         bdiscount= false;
         bsuper = false;
         token= "";
+        passwd="";
 
         bSuperAdmin = false;
     }
@@ -60,6 +62,8 @@ public class WposAccount {
 
         bdiscount = json.optBoolean("discount");
         bsuper = json.optBoolean("super");
+
+        passwd = json.optString("passwd");
 
     }
 }

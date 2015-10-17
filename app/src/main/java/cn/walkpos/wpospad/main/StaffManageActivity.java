@@ -3,6 +3,7 @@ package cn.walkpos.wpospad.main;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +19,30 @@ import com.android.volley.toolbox.Volley;
 import com.nineoldandroids.view.ViewHelper;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
+import com.xingy.util.ServiceConfig;
 import com.xingy.util.activity.BaseActivity;
+import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.module.StaffModule;
+import cn.walkpos.wpospad.login.WposAccount;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 
-public class StaffManageActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class StaffManageActivity extends BaseActivity implements ViewPager.OnPageChangeListener,OnSuccessListener<JSONObject>{
 
 
+    private Ajax          mAjax;
     private ViewPager     staffVpger;
     private StaffVPgAdapter  staffAdapter;
-    private ArrayList<StaffModule> staffArray;
+    private ArrayList<WposAccount> staffArray;
+    private WposAccount      newStaff;
     private ImageLoader      mImgLoader;
     private View.OnTouchListener  editListener;
     private View.OnClickListener  delListener;
@@ -55,11 +66,12 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         staffVpger.setOnPageChangeListener(this);
         staffAdapter = new StaffVPgAdapter();
         staffVpger.setAdapter(staffAdapter);
-        staffArray = new ArrayList<StaffModule>();
+        staffArray = new ArrayList<WposAccount>();
         staffVpger.setCurrentItem(0);
 
         RequestQueue mQueue = Volley.newRequestQueue(this);
         mImgLoader = new ImageLoader(mQueue, WPosApplication.globalMDCache);
+
         loadStaff();
 
 //        editListener = new View.OnTouchListener() {
@@ -80,19 +92,16 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
                 Object obj = v.getTag();
                 if (null != obj && obj instanceof Integer) {
                     int pos = (Integer)obj;
-                    if(pos>=0)
-                    {
-                        StaffModule staf = staffArray.remove(pos);
-                        UiUtils.makeToast(StaffManageActivity.this,"remove:" + pos + "," + staf.name);
+                    WposAccount staff = staffArray.remove(pos);
+                    if(TextUtils.isEmpty(staff.bn)) {
+                        newStaff = null;
+                        UiUtils.makeToast(StaffManageActivity.this, "放弃新增店员");
                         staffVpger.removeAllViews();
                         staffVpger.setAdapter(staffAdapter);
                     }
                     else
                     {
-                        staffAdapter.setAdding(false);
-                        UiUtils.makeToast(StaffManageActivity.this,"back from adding modle");
-                        staffVpger.removeAllViews();
-                        staffVpger.setAdapter(staffAdapter);
+                        delStaff(staff);
                     }
                 }
             }
@@ -100,30 +109,87 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
 
     }
 
+
+    /**
+     *
+     */
     private void loadStaff()
     {
-        for(int i=0 ; i< 4; i++)
-        {
-            StaffModule staff = new StaffModule();
-            staff.name = "店员" + i;
-            staff.imgurl = "http://avatar.csdn.net/B/6/9/1_diy534.jpg";
-            staffArray.add(staff);
-        }
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
 
-        staffAdapter.notifyDataSetChanged();
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_LOAD_STAFFARRAY);
+        mAjax.setData("method", "store.users");
+        mAjax.setData("store_bn", MainActivity.StockBn);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
     }
 
+
+    private void modifyOrAddStaff(int pos)
+    {
+        WposAccount staff = staffArray.get(pos);
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(TextUtils.isEmpty(staff.bn) ? WPosConfig.REQ_ADD_STAFF : WPosConfig.REQ_MODIFY_STAFF);
+        mAjax.setData("method", (TextUtils.isEmpty(staff.bn) ? "passport.register" : "passport.register"));
+
+        mAjax.setData("store_bn", MainActivity.StockBn);
+        mAjax.setData("login_name", "test");
+        mAjax.setData("card", staff.card_number);
+        mAjax.setData("card", "330501199910100001");
+
+        mAjax.setData("bn", staff.bn);
+        mAjax.setData("name", staff.name);
+        mAjax.setData("password", staff.passwd);
+        mAjax.setData("mobile", staff.mobile);
+        mAjax.setData("discount",staff.bdiscount ? "true" : "false");
+        mAjax.setData("super",staff.bsuper ? "true" : "false");
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
+
+    private void delStaff(WposAccount toDelStaff)
+    {
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_DEL_STAFF);
+        mAjax.setData("method", "store.users");
+        mAjax.setData("store_bn", MainActivity.StockBn);
+        mAjax.setData("bn", toDelStaff.bn);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
 
     @Override
     public void onClick(View v)
     {
         if(v.getId() == R.id.add_staff_btn) {
-            if (staffAdapter.getAdding()) {
-                staffVpger.setCurrentItem(0);
-            } else {
-                staffAdapter.setAdding(true);
+            if(null == newStaff)
+            {
+                newStaff = new WposAccount();
+                staffArray.add(0,newStaff);
                 staffVpger.setAdapter(staffAdapter);
             }
+            else
+                staffVpger.setCurrentItem(0);
         }
         else if(v.getId() == R.id.setting_btn)
         {
@@ -150,19 +216,55 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
 
     }
 
+    @Override
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
+        int errno = jsonObject.optInt("response_code",-1);
+        if(errno!=0)
+        {
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this,msg);
+            return;
+        }
+
+        JSONObject data = jsonObject.optJSONObject("data");
+        if (null == data) {
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this, msg);
+            return;
+        }
+
+        if(response.getId() == WPosConfig.REQ_LOAD_STAFFARRAY) {
+            JSONArray array = data.optJSONArray("list");
+            if(null!=array && array.length()>0) {
+                staffArray.clear();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject item = array.optJSONObject(i);
+                    WposAccount staff = new WposAccount();
+                    staff.parse(item);
+
+                    staffArray.add(staff);
+                }
+                if (staffArray.size() > 0)
+                    staffAdapter.notifyDataSetChanged();
+            }
+        }else if(response.getId() == WPosConfig.REQ_ADD_STAFF)
+        {
+            loadStaff();
+            newStaff = null;
+        }
+        else if(response.getId() == WPosConfig.REQ_DEL_STAFF)
+        {
+            String msg = jsonObject.optString("res", "删除店员成功");
+            UiUtils.makeToast(this,msg);
+            loadStaff();
+        }
+    }
+
 
     public class StaffVPgAdapter extends PagerAdapter {
 
-        private boolean bAdding = false;
-
-        public boolean getAdding()
-        {
-            return bAdding;
-        }
-        public void setAdding(boolean flag)
-        {
-            bAdding = flag;
-        }
         // 界面列表
 //        LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
 
@@ -171,7 +273,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
          */
         @Override
         public int getCount() {
-            return (staffArray==null ? 0 : (bAdding ? staffArray.size() +1 : staffArray.size()));
+            return (staffArray==null ? 0 : staffArray.size());
         }
 
         @Override
@@ -192,7 +294,9 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
             page = LayoutInflater.from(getBaseContext()).inflate(R.layout.staff_pg, null);
             vholder.imgV = (NetworkImageView) page.findViewById(R.id.head_img);
             vholder.codeV = (EditText) page.findViewById(R.id.code);
+            vholder.loginnameV = (EditText) page.findViewById(R.id.login_name);
             vholder.nameV = (EditText) page.findViewById(R.id.name);
+
             vholder.phoneV = (EditText) page.findViewById(R.id.phone);
             vholder.passwdV = (EditText) page.findViewById(R.id.passwd);
             vholder.submitV = (TextView) page.findViewById(R.id.staff_modify_btn);
@@ -200,31 +304,26 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
             vholder.delV.setOnClickListener(delListener);
 
             vholder.delV.setTag(-1);
-            StaffModule staff = null;
-            if(bAdding)
-            {
-                if(position > 0) {
-                    staff = staffArray.get(position - 1);
-                    vholder.delV.setTag(position - 1);
-                }
-            }
-            else {
-                vholder.delV.setTag(position);
-                staff = staffArray.get(position);
-            }
+            WposAccount staff = null;
 
-            if(null!=staff) {
-                vholder.imgV.setImageUrl(staff.imgurl, mImgLoader);
-                vholder.codeV.setText(staff.code);
+            vholder.delV.setTag(position);
+            staff = staffArray.get(position);
+
+            if(!TextUtils.isEmpty(staff.bn)) {
+                vholder.imgV.setImageUrl(staff.logo, mImgLoader);
+                vholder.codeV.setText(staff.bn);
                 vholder.nameV.setText(staff.name);
-                vholder.phoneV.setText(staff.phone);
+                vholder.loginnameV.setText(staff.name);
+                vholder.phoneV.setText(staff.mobile);
                 vholder.passwdV.setText(staff.passwd);
+                vholder.submitV.setText("确认修改");
             }else
             {
                 vholder.codeV.setText("");
                 vholder.nameV.setText("");
                 vholder.phoneV.setText("");
                 vholder.passwdV.setText("");
+                vholder.submitV.setText("确认添加");
             }
 
             page.setOnTouchListener(editListener);
@@ -233,9 +332,8 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
                     public void onClick(View v) {
                         Object obj = v.getTag();
                         if(null!=obj && obj instanceof  Integer)
-                        {
-                            UiUtils.makeToast(StaffManageActivity.this,"提交修改:" + (Integer)obj);
-                        }
+                            modifyOrAddStaff((Integer)obj);
+
                     }
                 });
 //            vholder.submitV.setEnabled(editing);
@@ -274,6 +372,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         ImageView delV;
         NetworkImageView imgV;
         EditText         codeV;
+        TextView         loginnameV;
         EditText         nameV;
         EditText         phoneV;
         EditText         passwdV;

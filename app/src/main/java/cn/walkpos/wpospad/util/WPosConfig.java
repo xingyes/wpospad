@@ -17,6 +17,11 @@ public class WPosConfig extends Config {
     public static final int   REQ_BRANCH_INFO = 301;
     public static final int   REQ_MODIFY_BRANCH_INFO = 302;
 
+    //staff员工
+    public static final int   REQ_LOAD_STAFFARRAY = 401;
+    public static final int   REQ_ADD_STAFF = 402;
+    public static final int   REQ_MODIFY_STAFF = 403;
+    public static final int   REQ_DEL_STAFF = 404;
 
 
     //////////Server api configuration.
