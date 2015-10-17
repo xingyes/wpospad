@@ -294,7 +294,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
             page = LayoutInflater.from(getBaseContext()).inflate(R.layout.staff_pg, null);
             vholder.imgV = (NetworkImageView) page.findViewById(R.id.head_img);
             vholder.codeV = (EditText) page.findViewById(R.id.code);
-            vholder.loginnameV = (EditText) page.findViewById(R.id.login_name);
+            vholder.loginnameV = (TextView) page.findViewById(R.id.login_name);
             vholder.nameV = (EditText) page.findViewById(R.id.name);
 
             vholder.phoneV = (EditText) page.findViewById(R.id.phone);
