@@ -54,17 +54,22 @@
             android:text="@string/verify_stat_not_finish"/>
 
         <TextView
+            android:maxLength="10"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             android:layout_marginRight="30dp"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:id="@+id/store_name"
-            android:textSize="30dp"
+            android:textSize="28dp"
             android:gravity="center"
             android:background="@mipmap/white_round_frame"
             android:textColor="@color/white"
-            android:text="小二小店"/>
+            android:text="小二小店1111111"/>
 
     </RelativeLayout>
 
@@ -151,4 +156,6 @@
                 android:background="@drawable/button_wpos_red_white_round_rect"/>
         </LinearLayout>
     </LinearLayout>
+
+    <include layout="@layout/global_loading"/>
 </RelativeLayout>

@@ -17,15 +17,30 @@ import com.xingy.lib.model.Account;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.preference.Preference;
+import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
+import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONObject;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.login.LoginActivity;
+import cn.walkpos.wpospad.module.BranchInfoModule;
 import cn.walkpos.wpospad.store.StoreManageActivity;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements OnSuccessListener<JSONObject>{
 
+    public static String    StockBn;
+    private BranchInfoModule   mBrancInfo;
+    public static final String BRANCH_INFO = "branch_info";
+    public static final String BRANCH_INFO_MODIFIED = "BRANCH_INFO_MODIFIED";
+    private Ajax            mAjax;
     private PowerManager.WakeLock wakeLock;
     public static final String imgtesturl = "http://g.hiphotos.baidu.com/baike/w%3D268/sign=ed2f3c98b1119313c743f8b65d390c10/4ec2d5628535e5dd597d578575c6a7efce1b6213.jpg";
 
@@ -55,6 +70,7 @@ public class MainActivity extends BaseActivity {
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
         wakeLock.acquire();
 
+        StockBn = Preference.getInstance().getBranchNum();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -94,11 +110,26 @@ public class MainActivity extends BaseActivity {
         moneyBtn.setOnClickListener(this);
         settingBtn.setOnClickListener(this);
 
+        AppStorage.setData(BRANCH_INFO_MODIFIED,"true",true);
         initUserInfo();
-
 
     }
 
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        String branchinfoModified = AppStorage.getData(BRANCH_INFO_MODIFIED);
+        if(!TextUtils.isEmpty(branchinfoModified) && branchinfoModified.equals("true"))
+        {
+            loadBranchInfo();
+        }
+        AppStorage.setData(BRANCH_INFO_MODIFIED,"true",false);
+    }
+    /**
+     *
+     */
     private void initUserInfo()
     {
 
@@ -116,7 +147,42 @@ public class MainActivity extends BaseActivity {
             userLayout.setVisibility(View.GONE);
             verifyHintV.setVisibility(View.VISIBLE);
         }
+
+
+        if(WPosApplication.account.bSuperAdmin) {
+            verifyHintV.setVisibility(View.GONE);
+            userLayout.setVisibility(View.VISIBLE);
+            staffBtn.setEnabled(true);
+            statisticsBtn.setEnabled(true);
+            moneyBtn.setEnabled(true);
+        }
+
     }
+
+
+    private void loadBranchInfo()
+    {
+        if(TextUtils.isEmpty(MainActivity.StockBn))
+            return;
+
+        if(null!=mAjax)
+            mAjax.abort();
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_BRANCH_INFO);
+        mAjax.setData("method", "store.basicinfo");
+        mAjax.setData("store_bn", MainActivity.StockBn);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -133,15 +199,10 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onClick(View v)
     {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
             case R.id.store_name:
-                if(verifyHintV.getVisibility() == View.VISIBLE) {
-                    verifyHintV.setVisibility(View.GONE);
-                    userLayout.setVisibility(View.VISIBLE);
-                    staffBtn.setEnabled(true);
-                    statisticsBtn.setEnabled(true);
-                    moneyBtn.setEnabled(true);
-                }
+                loadBranchInfo();
                 break;
             case R.id.verify_statinfo:
                 UiUtils.makeToast(this, "去查看进度");
@@ -181,13 +242,45 @@ public class MainActivity extends BaseActivity {
                 UiUtils.makeToast(this,"金额提现管理界面");
                 break;
             case R.id.setting_btn:
-                UiUtils.startActivity(this,SettingActivity.class,true);
+                bundle.putSerializable(MainActivity.BRANCH_INFO,mBrancInfo);
+                UiUtils.startActivity(this,SettingActivity.class,bundle,true);
                 break;
             default:
                 super.onClick(v);
                 break;
         }
 
+    }
+
+
+    @Override
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
+        int errno = jsonObject.optInt("response_code",-1);
+        if(errno!=0)
+        {
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this,msg);
+            return;
+        }
+
+        if(response.getId() == WPosConfig.REQ_BRANCH_INFO)
+        {
+            JSONObject data = jsonObject.optJSONObject("data");
+            if(null==data)
+            {
+                String msg = jsonObject.optString("res", getString(R.string.network_error));
+                UiUtils.makeToast(this,msg);
+                return;
+            }
+            mBrancInfo = new BranchInfoModule();
+            mBrancInfo.parse(data);
+            if(TextUtils.isEmpty(mBrancInfo.store_bn))
+                mBrancInfo.clear();
+            else
+                storeNameV.setText(mBrancInfo.store_name);
+        }
     }
 
 

@@ -11,6 +11,11 @@ public class WPosConfig extends Config {
     public static final int REQ_LOGIN_IDENTITY = 101;
     //register
     public static final int   REQ_REGISTER = 201;
+    public static final int   REQ_RESET_PASSWD = 202;
+
+    //storeinfo
+    public static final int   REQ_BRANCH_INFO = 301;
+    public static final int   REQ_MODIFY_BRANCH_INFO = 302;
 
 
 

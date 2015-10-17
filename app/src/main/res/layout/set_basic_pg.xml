@@ -27,7 +27,6 @@
             android:layout_width="500dp"
             android:layout_height="60dp"
             android:id="@+id/store_name"
-            android:text="我的小店"
             android:gravity="left|center_vertical"
             android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>
@@ -73,7 +72,6 @@
                 android:textColor="@color/white"
                 android:singleLine="true"
                 android:id="@+id/store_type"
-                android:text="小店"
                 android:gravity="left|center_vertical"
                 android:textColorHint="@color/global_text_info_color"/>
         </RelativeLayout>
@@ -186,7 +184,6 @@
             android:layout_width="500dp"
             android:layout_height="wrap_content"
             android:id="@+id/store_slogn"
-            android:text="我的小店最nb"
             android:gravity="left|center_vertical|top"
             android:background="@drawable/button_gray_round_frame_shape"
             android:textColorHint="@color/global_text_info_color"/>

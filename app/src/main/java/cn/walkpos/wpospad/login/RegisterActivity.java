@@ -90,6 +90,8 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
         }
 
     };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +108,19 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
         setContentView(R.layout.activity_register);
         // 初始化布局元素
         initViews();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        mPhonev.setText("");
+        mPass1v.setText("");
+        mPass2v.setText("");
+        mPhonev.append("18521359287");
+        mPass1v.append("654321mm");
+        mPass2v.append("654321mm");
+
     }
 
     private void initViews() {
@@ -133,7 +148,6 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
             findViewById(R.id.agree_layout).setVisibility(View.VISIBLE);
             findViewById(R.id.agreement_info).setOnClickListener(this);
         }
-
     }
 
 
@@ -152,7 +166,6 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
                     bSending = true;
 
                     mHandler.sendEmptyMessageDelayed(MSG_INTERVAL, 1000);
-
                 }
                 break;
             case R.id.agreement_info:
@@ -164,8 +177,7 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
                 }
                 else
                 {
-                    UiUtils.makeToast(this, "Reset password succ");
-                    UiUtils.startActivity(RegisterActivity.this, LoginActivity.class, true);
+                    changePasswd();
                 }
                 break;
             default:
@@ -176,14 +188,15 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
     }
 
 
+    /**
+     *  new account
+     */
     private void registerAccount() {
-
         if(!agreeCheckBtn.isChecked())
         {
             UiUtils.makeToast(this, "请阅读并同意服务协议");
             return;
         }
-
         mPhoneStr = mPhonev.getText().toString();
         if(!ToolUtil.isPhoneNum(mPhoneStr))
         {
@@ -228,9 +241,56 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
         mAjax.send();
-
     }
 
+    private void changePasswd() {
+        mPhoneStr = mPhonev.getText().toString();
+        if(!ToolUtil.isPhoneNum(mPhoneStr))
+        {
+            UiUtils.makeToast(this, R.string.please_input_correct_phone_num);
+            return;
+        }
+        String passwd = mPass1v.getText().toString();
+        if(ToolUtil.isEmpty(passwd))
+        {
+            UiUtils.makeToast(this, "密码不能为空");
+            return;
+        }
+        String passwd2 = mPass2v.getText().toString();
+        if(ToolUtil.isEmpty(passwd2) || !passwd.equals(passwd2))
+        {
+            UiUtils.makeToast(this, "两次密码输入不一致");
+            return;
+        }
+        String verifycode = mInputVerifyCode.getText().toString();
+        if(ToolUtil.isEmpty(verifycode))
+        {
+            UiUtils.makeToast(this, R.string.please_input_verifycode);
+            return;
+        }
+
+        if(null!=mAjax)
+            mAjax.abort();
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+
+        showLoadingLayer();
+
+//        mobile=18521359287&newpassword=654321mm&psw_confirm=654321mm
+        mAjax.setId(WPosConfig.REQ_RESET_PASSWD);
+        mAjax.setData("method", "passport.reset");
+        mAjax.setData("mobile", mPhoneStr);
+        mAjax.setData("newpassword",passwd);
+        mAjax.setData("psw_confirm",passwd2);
+        mAjax.setData("msgcode", verifycode);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
+    }
 
     private boolean requestVerifyCode() {
         String phoneNum = mPhonev.getText().toString();
@@ -257,60 +317,6 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
         }
         return false;
     }
-
-//    @Override
-//    public void onSuccess(JSONObject v, Response response) {
-//        closeLoadingLayer();
-//        final int ret = v.optInt("err");
-//        if(ret != 0 )
-//        {
-//            String msg =  v.optString("data");
-//            UiUtils.makeToast(this, ToolUtil.isEmpty(msg) ? this.getString(R.string.parser_error_msg): msg);
-//            return;
-//        }
-//
-//        if(response.getId() == REQ_CHANGE_PHONE)
-//        {
-//            UiUtils.makeToast(this,R.string.submit_succ);
-//            act.phone = phoneStr;
-//            ILogin.setActiveAccount(act);
-//            ILogin.saveIdentity(act);
-//            setResult(RESULT_OK);
-//            finish();
-//        }
-//        else if(response.getId() == REQ_REGISTER)
-//        {
-//            JSONObject data = v.optJSONObject("dt");
-//            if(null == data)
-//            {
-//                UiUtils.makeToast(this, this.getString(R.string.parser_error_msg));
-//                return;
-//            }
-//            UiUtils.makeToast(VerifyLoginActivity.this,R.string.login_succ);
-//            Account account = new Account();
-//            account.uid = data.optString("uid");
-//            account.nickName = data.optString("nickname");
-//            account.token = data.optString("token");
-//            account.iconUrl = data.optString("himg");
-//            account.phone = data.optString("phone");
-//            account.rowCreateTime = new Date().getTime();
-//
-//            ILogin.setActiveAccount(account);
-//            ILogin.saveIdentity(account);
-//            finish();
-//        }
-//    }
-
-//	@Override
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if (keyCode == KeyEvent.KEYCODE_BACK)
-//		{
-//			finish();
-//			return true;
-//		}
-//		else
-//			return super.onKeyDown(keyCode, event);
-//	}
 
 
 
@@ -345,6 +351,8 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
             UiUtils.makeToast(this, jsonObject.optString("res", "注册成功"));
             WPosApplication.account = new WposAccount();
             WPosApplication.account.mobile  = mPhoneStr;
+            JSONObject data = jsonObject.optJSONObject("data");
+            WPosApplication.account.token = data.optString("token");
 
             ArrayList<String> accountArray = new ArrayList<String>();
             accountArrayStr = AppStorage.getData(LoginActivity.ACCOUNT_ARRAY);
@@ -371,6 +379,20 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
             UiUtils.startActivity(RegisterActivity.this, VerifyMidActivity.class, true);
             finish();
         }
+        else if(WPosConfig.REQ_RESET_PASSWD == response.getId())
+        {
+            JSONObject data = jsonObject.optJSONObject("data");
+            if(null!=data && data.optBoolean("status"))
+            {
+                UiUtils.makeToast(this,jsonObject.optString("res","密码更新成功"));
+                finish();
+            }
+            else
+            {
+                UiUtils.makeToast(this,jsonObject.optString("res","密码更新失败请重试"));
+            }
+        }
+
     }
 
 

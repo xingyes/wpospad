@@ -18,6 +18,8 @@ public class WposAccount {
     public boolean bsuper;
     public String token;
 
+    public boolean bSuperAdmin; //管理员
+
     public WposAccount(){clear();}
 
     public void clear()
@@ -33,6 +35,8 @@ public class WposAccount {
         bdiscount= false;
         bsuper = false;
         token= "";
+
+        bSuperAdmin = false;
     }
 
 
@@ -40,6 +44,9 @@ public class WposAccount {
     {
         if(json==null)
             return;
+        bSuperAdmin = json.optBoolean("super");
+        token = json.optString("token");
+
         user_id = json.optString("user_id");
         store_id = json.optString("store_id");
         name = json.optString("name");
@@ -50,7 +57,6 @@ public class WposAccount {
         card_number = json.optString("card_number");
 
         status = json.optBoolean("status");
-        token = json.optString("token");
 
         bdiscount = json.optBoolean("discount");
         bsuper = json.optBoolean("super");

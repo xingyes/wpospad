@@ -15,6 +15,7 @@ import com.xingy.lib.AppStorage;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.MyApplication;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -45,6 +46,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
     private AccountAdapter    accountAdapter;
     private TextView loginBtn;
     private WposAccount account;
+    private String     mPhonestr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -114,14 +116,8 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
                 accountEt.setText("");
                 accountEt.append(accountArray.get(position));
                 accountListV.setVisibility(View.GONE);
-
-
             }
         });
-
-
-
-
     }
 
 
@@ -130,6 +126,12 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
     {
         super.onResume();
         refreshAccountList();
+
+        accountEt.setText("");
+        passwdEt.setText("");
+        UiUtils.makeToast(this,"demo:1qazxsw2");
+        accountEt.append("18016036868");
+        passwdEt.append("123456m");
     }
 
 
@@ -163,8 +165,8 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
 
     private void loginAccount()
     {
-        String namestr = accountEt.getText().toString();
-        if(TextUtils.isEmpty(namestr))
+        mPhonestr = accountEt.getText().toString();
+        if(TextUtils.isEmpty(mPhonestr))
         {
             UiUtils.makeToast(this,"用户名不能为空");
             return;
@@ -182,14 +184,14 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
         showLoadingLayer();
 
         mAjax.setId(WPosConfig.REQ_LOGIN);
-        mAjax.setData("method","passport.login");
-        mAjax.setData("login_name",namestr);
+        mAjax.setData("method", "passport.login");
+        mAjax.setData("login_name",mPhonestr);
         mAjax.setData("password",passstr);
+        mAjax.setData("mpos_serial","");
+        mAjax.setData("imei", ToolUtil.getDeviceUid(this));
+
         mAjax.setOnSuccessListener(this);
         mAjax.send();
-
-
-
     }
 
     @Override
@@ -245,8 +247,10 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
             WPosApplication.account = new WposAccount();
 
             WPosApplication.account.parse(data);
-
-            if(!accountArray.contains(WPosApplication.account.name))
+            if(WPosApplication.account.bSuperAdmin)
+                WPosApplication.account.name = mPhonestr;
+            if(!WPosApplication.account.bSuperAdmin &&
+                    !accountArray.contains(WPosApplication.account.name))
             {
                 accountArray.add(0, WPosApplication.account.name);
                 String accountArrayStr = "";
@@ -260,7 +264,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
                 AppStorage.setData(ACCOUNT_ARRAY, accountArrayStr, true);
                 refreshAccountList();
             }
-            if(TextUtils.isEmpty(WPosApplication.account.card_number))
+            if(WPosApplication.account.bSuperAdmin)
             {
                 UiUtils.startActivity(this,LoginIdentyActivity.class,true);
             }

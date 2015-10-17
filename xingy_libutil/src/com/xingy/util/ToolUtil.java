@@ -600,23 +600,7 @@ public class ToolUtil {
 	}
 	
 	
-	/*
-	 * uid  uin qq ??锟界郴
-	 * 
-	 *  qq       ??锟斤拷??绫伙拷?? 		=>  uin
-	 * 		  娌★拷????锟斤拷??锟�?QQ??锟斤拷??			qq
-	 * 			???QQ??锟斤拷??				0
-	 * 
-	 */
-	public static String getUinForReport() {
-		String struin = "0";
-		String qq = String.valueOf(Preference.getInstance().getQQAccount());
-		if(TextUtils.isEmpty(qq)) {
-			return struin;
-		}
-		else
-			return qq;
-	}
+
 
     public static int getApkVersionCode(String absolutePath) {
 

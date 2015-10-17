@@ -1,5 +1,6 @@
 package cn.walkpos.wpospad.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,24 +17,35 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.xingy.lib.AppStorage;
 import com.xingy.lib.IVersion;
 import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.preference.Preference;
 import com.xingy.share.ShareInfo;
+import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
+import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.login.RegisterActivity;
+import cn.walkpos.wpospad.module.BranchInfoModule;
 import cn.walkpos.wpospad.util.ShareUtil;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 
 public class SettingActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,
-        ShareUtil.CallbackListener{
+        ShareUtil.CallbackListener,OnSuccessListener<JSONObject>{
 
-
+    private Ajax         mAjax;
+    private BranchInfoModule   mBranchInfo;
     private RadioGroup  setRg;
     private RelativeLayout container;
     private RelativeLayout.LayoutParams rl;
@@ -41,17 +53,34 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
 
     @Override
     public void onComplete(Object obj) {
-
     }
 
     @Override
     public void onError(String msg) {
-
     }
 
     @Override
     public void onCancel() {
+    }
 
+    @Override
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
+        int errno = jsonObject.optInt("response_code",-1);
+        if(errno!=0)
+        {
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this,msg);
+            return;
+        }
+
+        if(response.getId() == WPosConfig.REQ_MODIFY_BRANCH_INFO)
+        {
+            String msg = jsonObject.optString("res", "修改成功");
+            UiUtils.makeToast(this,msg);
+            AppStorage.setData(MainActivity.BRANCH_INFO_MODIFIED,"true",true);
+        }
     }
 
     private class StoreSetHolder{
@@ -154,6 +183,19 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Intent ait = getIntent();
+        if(null==ait)
+        {
+            finish();
+            return;
+        }
+
+        mBranchInfo = (BranchInfoModule)ait.getSerializableExtra(MainActivity.BRANCH_INFO);
+        if(null == mBranchInfo) {
+            mBranchInfo = new BranchInfoModule();
+            mBranchInfo.store_bn = Preference.getInstance().getBranchNum();
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         loadNavBar(R.id.setting_nav);
@@ -219,17 +261,22 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         storeHolder = new StoreSetHolder();
         storeHolder.rootv = getLayoutInflater().inflate(R.layout.set_basic_pg,null);
         storeHolder.namev =(EditText)storeHolder.rootv.findViewById(R.id.store_name);
+        storeHolder.namev.append(mBranchInfo.store_name);
 
         storeHolder.typev =(EditText)storeHolder.rootv.findViewById(R.id.store_type);
         storeHolder.rootv.findViewById(R.id.type_select_layout).setOnClickListener(this);
 
         storeHolder.phonev =(EditText)storeHolder.rootv.findViewById(R.id.store_phone);
+        storeHolder.phonev.append(mBranchInfo.tel);
         storeHolder.phonePrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.phone_on_invoice);
 
         storeHolder.urlv =(EditText)storeHolder.rootv.findViewById(R.id.store_web);
+        storeHolder.urlv.append(mBranchInfo.web_url);
         storeHolder.urlPrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.web_on_invoice);
 
         storeHolder.slognv =(EditText)storeHolder.rootv.findViewById(R.id.store_slogn);
+        storeHolder.slognv.append(mBranchInfo.brief);
+
         storeHolder.slognPrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.slogn_on_invoice);
 
         storeHolder.rootv.findViewById(R.id.store_set_submit).setOnClickListener(this);
@@ -262,9 +309,30 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         if(TextUtils.isEmpty(slognstr))
             slognstr = "";
 
-        UiUtils.makeToast(this,"提交店铺修改:" + namestr + "," + typestr + "," + phonestr  +
-            "\nurl:"+webstr + ",slogon:" + slognstr + "\n电话打印:" + storeHolder.phonePrintCheck.isChecked() + ",网址打印:" +
-        storeHolder.urlPrintCheck.isChecked() +",宣传打印："+ storeHolder.slognPrintCheck.isChecked());
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+
+        showLoadingLayer();
+        mAjax.setId(WPosConfig.REQ_MODIFY_BRANCH_INFO);
+        mAjax.setData("method", "store.edit");
+        mAjax.setData("store_bn", MainActivity.StockBn);
+        mAjax.setData("store_name", namestr);
+        mAjax.setData("logo", "");
+        mAjax.setData("addr", "");
+        mAjax.setData("tel",phonestr);
+        mAjax.setData("web_url",webstr);
+        mAjax.setData("brief",slognstr);
+        mAjax.setData("print","true");
+
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
+        AppStorage.setData(MainActivity.BRANCH_INFO_MODIFIED, "true", true);
+
     }
  //end of 店铺
 
