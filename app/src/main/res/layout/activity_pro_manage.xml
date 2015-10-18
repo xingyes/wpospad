@@ -312,6 +312,6 @@
         </android.support.v4.widget.DrawerLayout>
 
 
-
+    <include layout="@layout/global_loading"/>
 
 </RelativeLayout>

@@ -10,19 +10,33 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
+import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateExpandableAdapter;
+import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
+import cn.walkpos.wpospad.module.GoodsModule;
+import cn.walkpos.wpospad.util.WPosConfig;
 import cn.walkpos.wpospad.zxing.android.CaptureActivity;
 
 
-public class AddProductActivity extends BaseActivity implements DrawerLayout.DrawerListener{
+public class AddProductActivity extends BaseActivity implements DrawerLayout.DrawerListener,
+        OnSuccessListener<JSONObject>{
 
+    public static final String GOODS_MODEL = "goods_model";
+    private GoodsModule   editGoods;
     public static final int REQ_SCAN_CODE = 101;
     private DrawerLayout   cateDrawer;
     private ExpandableListView  cateListV;
@@ -38,12 +52,24 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
     private EditText       initStockEt;
     private EditText       discountEt;
     private EditText       stockHintNumEt;
+    private Ajax           mAjax;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         if(null == cateGroupArray)
             cateGroupArray = new ArrayList<CateItemModule>();
+
+        Intent ait = getIntent();
+        if(ait == null)
+        {
+            finish();
+            return;
+        }
+        if(ait.hasExtra(GOODS_MODEL))
+            editGoods = (GoodsModule)ait.getSerializableExtra(GOODS_MODEL);
+        else
+            editGoods = null;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pro);
@@ -113,6 +139,29 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
         });
 
         loadCateData();
+
+        if(null!=editGoods)
+        {
+            cateNameV.setText("");
+            codeEt.setText("");
+            nameEt.setText("");
+            inPriceEt.setText("");
+            nameShortEt.setText("");
+            outPriceEt.setText("");
+            initStockEt.setText("");
+            discountEt.setText("");
+            stockHintNumEt.setText("");
+
+            cateNameV.append(editGoods.cateid);
+            codeEt.append(editGoods.goods_id);
+            nameEt.append(editGoods.name);
+            inPriceEt.append(editGoods.pricein);
+            nameShortEt.append(editGoods.name);
+            outPriceEt.append(editGoods.priceout);
+            initStockEt.append(""+editGoods.stock);
+            discountEt.append(""+editGoods.discount);
+            stockHintNumEt.append(""+editGoods.minstock);
+        }
     }
 
     private void loadCateData()
@@ -180,10 +229,35 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
         if(TextUtils.isEmpty(stockhintNumstr))
             stockhintNumstr = "100";
 
-        UiUtils.makeToast(this,"Submit succ");
-        finish();
 
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if(mAjax == null)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_ADD_GOODS);
+        mAjax.setData("method", "goods.add");
+        mAjax.setData("token", WPosApplication.GToken);
+//        mAjax.setData("token", "9e3a41bebf41ef55d492c2451a8b82f6");
+//        mAjax.setData("store", WPosApplication.StockBn);
+        mAjax.setData("store_bn", "S55FFA78EC7F56");
+
+        mAjax.setData("cat_id",cateNameV.getText().toString());
+        mAjax.setData("barcode",codestr);
+        mAjax.setData("name",namestr);
+        mAjax.setData("cost",inpricestr);
+//        mAjax.setData("name",namestr);  简称
+        mAjax.setData("price",outpricestr);
+        mAjax.setData("store",stockhintNumstr);
+        mAjax.setData("discount",discountstr);
+        mAjax.setData("down_warn",stockhintNumstr);
+        mAjax.setData("imei", ToolUtil.getDeviceUid(this));
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.send();
     }
+
     @Override
     public void onClick(View v)
     {
@@ -236,5 +310,24 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
     @Override
     public void onDrawerStateChanged(int newState) {
 
+    }
+
+    @Override
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
+        int errno = jsonObject.optInt("response_code",-1);
+        if(errno!=0)
+        {
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this,msg);
+            return;
+        }
+
+        if(response.getId() == WPosConfig.REQ_ADD_GOODS) {
+            String msg = jsonObject.optString("res", "添加商品成功");
+            UiUtils.makeToast(this, msg);
+            finish();
+        }
     }
 }

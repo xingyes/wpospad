@@ -17,7 +17,14 @@ import android.widget.TextView;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ServiceConfig;
 import com.xingy.util.activity.BaseActivity;
+import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,19 +33,27 @@ import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateExpandableAdapter;
 import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.adapter.ProInfoAdapter;
+import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
-import cn.walkpos.wpospad.module.ProModule;
+import cn.walkpos.wpospad.module.GoodsModule;
 import cn.walkpos.wpospad.ui.InStockDialog;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 
 public class StoreManageActivity extends BaseActivity implements DrawerLayout.DrawerListener,
-        ProInfoAdapter.InstockListener,InStockDialog.WithEditNumClickListener {
+        ProInfoAdapter.ItemClickListener,InStockDialog.WithEditNumClickListener,OnSuccessListener<JSONObject> {
 
+    private Ajax           mAjax;
+    private int            pageno = 0;
+    private boolean        reqFinish = false;
+    private static final int pagesize = 10;
     private EditText       searchInputEt;
 
     private RecyclerView   proListV;
+    private LinearLayoutManager proLinearManager;
     private ProInfoAdapter proAdapter;
-    private ArrayList<ProModule> proArray;
+    private ArrayList<GoodsModule> proArray;
+
 
 //    分类选择
     private TextView       cateDrawerBtn;
@@ -85,6 +100,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         cateDrawer.closeDrawers();
         cateDrawerBtn.setOnClickListener(this);
 
+        initTitleLayout();
 
         cateListV = (ExpandableListView)this.findViewById(R.id.cate_expand_list);
         cateAdapter = new CateExpandableAdapter(this,cateGroupArray);
@@ -94,7 +110,9 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 CateItemModule gp = cateGroupArray.get(groupPosition);
                 CateItemModule it = gp.subCateArray.get(childPosition);
-                UiUtils.makeToast(StoreManageActivity.this, gp.name + "," + it.name);
+                reqFinish = false;
+                pageno = 1;
+                UiUtils.makeToast(StoreManageActivity.this, "重新请求: " + gp.name + "," + it.name);
                 return false;
             }
         });
@@ -128,11 +146,26 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         });
 
         proListV = (RecyclerView)this.findViewById(R.id.pro_list);
-        proListV.setLayoutManager(new LinearLayoutManager(this));
+        proLinearManager = new LinearLayoutManager(this);
+        proListV.setLayoutManager(proLinearManager);
         proListV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
+        proListV.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                if(newState == RecyclerView.SCROLL_STATE_IDLE)
+                {
+                    int tail = proLinearManager.findLastVisibleItemPosition();
+                    if(tail >= (proArray.size()-1) && !reqFinish)
+                        loadProData(pageno+1);
 
-        proArray = new ArrayList<ProModule>();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
+
+        proArray = new ArrayList<GoodsModule>();
         proAdapter = new ProInfoAdapter(this,proArray,this);
         proAdapter.setHintCheck(stockHintCheck.isChecked());
 
@@ -140,8 +173,8 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
         loadCateData();
 
-        initTitleLayout();
-        loadProData();
+
+        loadProData(pageno);
 
     }
 
@@ -170,6 +203,8 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                     return;
 
                 lastid = checkedId;
+                reqFinish = false;
+                pageno = 1;
                 UiUtils.makeToast(StoreManageActivity.this,"改变排列顺序，重新请求数据");
             }
         });
@@ -216,21 +251,31 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
         cateAdapter.notifyDataSetChanged();
     }
-    private void loadProData()
-    {
-        for(int i=0; i < 30; i++)
-        {
-            ProModule item = new ProModule();
-            item.code = ""+i;
-            item.title = "商品" + i;
-            item.pricein = i;
-            item.priceout = i+1;
-            item.stock = i;
-            item.minstock = 10;
-            proArray.add(item);
-        }
 
-        proAdapter.notifyDataSetChanged();
+    /**
+     *
+     */
+    private void loadProData(int pagno)
+    {
+
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_GOODSLIST);
+        mAjax.setData("method", "goods.list");
+//        mAjax.setData("store", WPosApplication.StockBn);
+        mAjax.setData("store_bn", "S55FFA78EC7F56");
+        mAjax.setData("token", WPosApplication.GToken);
+        mAjax.setData("current",pagno);
+        mAjax.setData("page",pagesize);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
     }
 
 
@@ -242,9 +287,13 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         String key = searchInputEt.getText().toString();
         if(TextUtils.isEmpty(key))
             UiUtils.makeToast(StoreManageActivity.this,"搜索词为空");
-        else
-            UiUtils.makeToast(StoreManageActivity.this,"搜索:" + key);
+        else {
+            reqFinish = false;
+            pageno = 1;
+            UiUtils.makeToast(StoreManageActivity.this, "搜索:" + key);
+        }
     }
+
     @Override
     public void onClick(View v)
     {
@@ -357,10 +406,27 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         {
             mInstockDialog = new InStockDialog(this,this);
         }
-        mInstockDialog.setProperty("进货",proArray.get(mInstockProIdx).title,"进货数量","","", InputType.TYPE_CLASS_NUMBER);
+        mInstockDialog.setProperty("进货",proArray.get(mInstockProIdx).name,"进货数量","","", InputType.TYPE_CLASS_NUMBER);
         mInstockDialog.show();
+    }
+
+    @Override
+    public void onRecyclerItemClick(View v,int pos)
+    {
+        if(pos >= (proArray.size()-1))
+            return;
+        GoodsModule goods = proArray.get(pos);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AddProductActivity.GOODS_MODEL,goods);
+        UiUtils.startActivity(StoreManageActivity.this,AddProductActivity.class,bundle,true);
 
     }
+
+    @Override
+    public void onRecyclerItemLongClick(View v,int pos){
+
+    }
+
 
     /**
      * 进货dialog onclick 确认或者取消
@@ -370,6 +436,64 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
     @Override
     public void onDialogClick(int nButtonId, String num) {
         if(nButtonId == DialogInterface.BUTTON_POSITIVE)
-            UiUtils.makeToast(this,"进货" + proArray.get(mInstockProIdx).title + ":"+num );
+            UiUtils.makeToast(this,"进货" + proArray.get(mInstockProIdx).name + ":"+num );
+    }
+
+    @Override
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
+        int errno = jsonObject.optInt("response_code",-1);
+        if(errno!=0)
+        {
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this,msg);
+            return;
+        }
+
+        if(response.getId() == WPosConfig.REQ_GOODSLIST) {
+            JSONObject data = jsonObject.optJSONObject("data");
+            if (null == data) {
+                String msg = jsonObject.optString("res", getString(R.string.network_error));
+                UiUtils.makeToast(this, msg);
+                return;
+            }
+
+            JSONArray array = data.optJSONArray("list");
+            if(null!=array && array.length()>0)
+            {
+                for(int i = 0; i < array.length(); i++) {
+                    GoodsModule goods = new GoodsModule();
+                    goods.parse(array.optJSONObject(i));
+                    proArray.add(goods);
+                    goods = new GoodsModule();
+                    goods.parse(array.optJSONObject(i));
+                    proArray.add(goods);
+                    goods = new GoodsModule();
+                    goods.parse(array.optJSONObject(i));
+                    proArray.add(goods);
+                    goods = new GoodsModule();
+                    goods.parse(array.optJSONObject(i));
+                    proArray.add(goods);
+                    goods = new GoodsModule();
+                    goods.parse(array.optJSONObject(i));
+                    proArray.add(goods);
+                    goods = new GoodsModule();
+                    goods.parse(array.optJSONObject(i));
+                    proArray.add(goods);
+                    goods = new GoodsModule();
+                    goods.parse(array.optJSONObject(i));
+                    proArray.add(goods);
+
+                }
+                pageno++;
+                reqFinish = false;
+                proAdapter.notifyDataSetChanged();
+            }
+            else
+                reqFinish = true;
+
+
+        }
     }
 }

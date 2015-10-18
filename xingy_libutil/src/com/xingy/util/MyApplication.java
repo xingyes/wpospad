@@ -14,6 +14,7 @@ import com.xingy.util.db.DbFactory;
 import java.util.ArrayList;
 
 public class MyApplication extends Application {
+    public static final String  KEY_TOKEN = "key_token";
 	public static String    GToken = "";
 	private static final String LOG_TAG =  MyApplication.class.getName();
 	public static AppStorage mStorage = null;

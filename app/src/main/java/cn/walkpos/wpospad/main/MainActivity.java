@@ -32,7 +32,6 @@ import cn.walkpos.wpospad.util.WPosConfig;
 
 public class MainActivity extends BaseActivity implements OnSuccessListener<JSONObject>{
 
-    public static String    StockBn;
     private BranchInfoModule   mBrancInfo;
     public static final String BRANCH_INFO = "branch_info";
     public static final String BRANCH_INFO_MODIFIED = "BRANCH_INFO_MODIFIED";
@@ -66,7 +65,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
         wakeLock.acquire();
 
-        StockBn = Preference.getInstance().getBranchNum();
+        WPosApplication.StockBn = Preference.getInstance().getBranchNum();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -117,11 +116,10 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     {
         super.onResume();
         String branchinfoModified = AppStorage.getData(BRANCH_INFO_MODIFIED);
-        if(!TextUtils.isEmpty(branchinfoModified) && branchinfoModified.equals("true"))
-        {
+        if(!TextUtils.isEmpty(branchinfoModified) && branchinfoModified.equals("true")) {
             loadBranchInfo();
+            AppStorage.setData(BRANCH_INFO_MODIFIED, "false", false);
         }
-        AppStorage.setData(BRANCH_INFO_MODIFIED,"false",false);
     }
     /**
      *
@@ -158,7 +156,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
     private void loadBranchInfo()
     {
-        if(TextUtils.isEmpty(MainActivity.StockBn))
+        if(TextUtils.isEmpty(WPosApplication.StockBn))
             return;
 
         if(null!=mAjax)
@@ -172,7 +170,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
         mAjax.setId(WPosConfig.REQ_BRANCH_INFO);
         mAjax.setData("method", "store.basicinfo");
-        mAjax.setData("store_bn", MainActivity.StockBn);
+        mAjax.setData("store_bn", WPosApplication.StockBn);
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);

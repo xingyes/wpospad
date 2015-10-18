@@ -20,6 +20,7 @@ import com.nineoldandroids.view.ViewHelper;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -123,7 +124,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
 
         mAjax.setId(WPosConfig.REQ_LOAD_STAFFARRAY);
         mAjax.setData("method", "store.users");
-        mAjax.setData("store_bn", MainActivity.StockBn);
+        mAjax.setData("store_bn", WPosApplication.StockBn);
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -142,7 +143,8 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         mAjax.setId(TextUtils.isEmpty(staff.bn) ? WPosConfig.REQ_ADD_STAFF : WPosConfig.REQ_MODIFY_STAFF);
         mAjax.setData("method", (TextUtils.isEmpty(staff.bn) ? "passport.register" : "passport.register"));
 
-        mAjax.setData("store_bn", MainActivity.StockBn);
+        mAjax.setData("imei", ToolUtil.getDeviceUid(this));
+        mAjax.setData("store_bn", WPosApplication.StockBn);
         mAjax.setData("login_name", "test");
         mAjax.setData("card", staff.card_number);
         mAjax.setData("card", "330501199910100001");
@@ -169,7 +171,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
 
         mAjax.setId(WPosConfig.REQ_DEL_STAFF);
         mAjax.setData("method", "store.users");
-        mAjax.setData("store_bn", MainActivity.StockBn);
+        mAjax.setData("store_bn", WPosApplication.StockBn);
         mAjax.setData("bn", toDelStaff.bn);
 
         mAjax.setOnSuccessListener(this);

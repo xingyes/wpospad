@@ -23,6 +23,10 @@ public class WPosConfig extends Config {
     public static final int   REQ_MODIFY_STAFF = 403;
     public static final int   REQ_DEL_STAFF = 404;
 
+    public static final int   REQ_GOODSLIST = 501;
+    public static final int   REQ_ADD_GOODS = 502;
+    public static final int   REQ_DEL_GOODS = 503;
+    public static final int   REQ_MODIFY_GOODS = 504;
 
     //////////Server api configuration.
     //login

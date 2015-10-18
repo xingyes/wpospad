@@ -1,22 +1,18 @@
 package cn.walkpos.wpospad.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.xingy.lib.model.ProvinceModel;
-import com.xingy.lib.ui.CheckBox;
 import com.xingy.util.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.module.ProModule;
+import cn.walkpos.wpospad.module.GoodsModule;
 
 /**
  * Created by xingyao on 15-8-27.
@@ -25,18 +21,22 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
 {
     private boolean    bStockHint = false;
     private HashSet<String> chooseProIdSet;
-    private ArrayList<ProModule> prolist;
+    private ArrayList<GoodsModule> prolist;
     private BaseActivity  mActivity;
     private boolean       batOptMod = false;
-    public interface InstockListener{
+
+    public interface ItemClickListener{
+        public void onRecyclerItemClick(View v,int pos);
+        public void onRecyclerItemLongClick(View v,int pos);
         public void onInStock(int pos);
     }
-    private InstockListener stockListener;
+    private ItemClickListener clickListener;
+
     public void chooseAll()
     {
-        for(ProModule pmod : prolist)
+        for(GoodsModule pmod : prolist)
         {
-            chooseProIdSet.add(pmod.code);
+            chooseProIdSet.add(pmod.goods_id);
         }
     }
     public void chooseNone()
@@ -55,13 +55,13 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
     {
         batOptMod = optmod;
     }
-    public ProInfoAdapter(BaseActivity activity,ArrayList<ProModule> alist,InstockListener listener)
+    public ProInfoAdapter(BaseActivity activity,ArrayList<GoodsModule> alist,ItemClickListener listener)
     {
         mActivity = activity;
         prolist = alist;
         if(null == chooseProIdSet)
             chooseProIdSet = new HashSet<String>();
-        stockListener = listener;
+        clickListener = listener;
     }
 
     @Override
@@ -72,16 +72,21 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
 
     @Override
     public void onBindViewHolder(ProInfoAdapter.contHolder holder, int position) {
-        ProModule pro = prolist.get(position);
+        GoodsModule pro = prolist.get(position);
 
+        holder.codeV.setText(pro.goods_id);
+        holder.titleV.setText(pro.name);
+        holder.titleSV.setText(pro.name);
 
-        holder.titleV.setText(pro.title);
-        holder.priceinV.setText("" + pro.pricein);
-        holder.priceoutV.setText("" + pro.pricein);
+        holder.stockV.setText(String.valueOf(pro.stock));
 
+        holder.priceinV.setText(pro.pricein);
+        holder.priceoutV.setText(pro.priceout);
+
+        holder.discountV.setText(String.valueOf(pro.discount));
         holder.instockV.setTag(position);
-        holder.chooseV.setTag(pro.code);
-        holder.chooseV.setChecked(chooseProIdSet.contains(pro.code));
+        holder.chooseV.setTag(pro.goods_id);
+        holder.chooseV.setChecked(chooseProIdSet.contains(pro.goods_id));
         if(batOptMod)
         {
             holder.instockV.setVisibility(View.GONE);
@@ -108,7 +113,7 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
 
 
 
-    public class contHolder extends RecyclerView.ViewHolder
+    public class contHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener
     {
 
         public TextView   categoryV;
@@ -124,11 +129,17 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
 
         public contHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+
+            categoryV = (TextView)itemView.findViewById(R.id.category);
+            codeV = (TextView)itemView.findViewById(R.id.code);
             titleV = (TextView)itemView.findViewById(R.id.title);
+            titleSV = (TextView)itemView.findViewById(R.id.title_short);
             priceinV = (TextView)itemView.findViewById(R.id.price_in);
             priceoutV = (TextView)itemView.findViewById(R.id.price_out);
             stockV = (TextView)itemView.findViewById(R.id.stock);
-
+            discountV = (TextView)itemView.findViewById(R.id.discount);
 
             chooseV = (android.widget.CheckBox)itemView.findViewById(R.id.choose);
             instockV = (TextView)itemView.findViewById(R.id.instock);
@@ -150,11 +161,26 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
                 public void onClick(View v) {
                     Object obj = v.getTag();
                     if(null!=obj && obj instanceof Integer ) {
-                        if (null != stockListener)
-                            stockListener.onInStock((Integer)obj);
+                        if (null != clickListener)
+                            clickListener.onInStock((Integer)obj);
                     }
                 }
             });
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            if(null!=clickListener)
+                clickListener.onRecyclerItemClick(v,getPosition());
+        }
+
+
+        @Override
+        public boolean onLongClick(View v) {
+            if(null!=clickListener)
+                clickListener.onRecyclerItemLongClick(v, getPosition());
+            return true;
         }
     }
 

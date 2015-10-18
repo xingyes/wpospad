@@ -247,6 +247,8 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
             WPosApplication.account = new WposAccount();
 
             WPosApplication.account.parse(data);
+            WPosApplication.GToken = WPosApplication.account.token;
+            AppStorage.setData(WPosApplication.KEY_TOKEN,WPosApplication.account.token,true);
             if(WPosApplication.account.bSuperAdmin)
                 WPosApplication.account.name = mPhonestr;
             if(!WPosApplication.account.bSuperAdmin &&

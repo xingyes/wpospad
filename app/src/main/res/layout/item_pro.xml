@@ -30,8 +30,7 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:gravity="center"
-        android:textSize="18dp"
-        android:text="条码编号"/>
+        android:textSize="18dp"/>
     <TextView
         android:textColor="@color/global_text_gray"
         android:layout_marginLeft="5dp"

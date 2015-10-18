@@ -317,7 +317,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         showLoadingLayer();
         mAjax.setId(WPosConfig.REQ_MODIFY_BRANCH_INFO);
         mAjax.setData("method", "store.edit");
-        mAjax.setData("store_bn", MainActivity.StockBn);
+        mAjax.setData("store_bn", WPosApplication.StockBn);
         mAjax.setData("store_name", namestr);
         mAjax.setData("logo", "");
         mAjax.setData("addr", "");
