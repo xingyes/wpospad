@@ -88,7 +88,6 @@
                 android:textColor="@color/white"
                 android:text="编号"/>
                 <EditText
-                android:editable="false"
                 android:layout_marginLeft="20dp"
                 android:layout_centerVertical="true"
                 android:textSize="24dp"
@@ -99,7 +98,6 @@
                 android:layout_width="280dp"
                 android:layout_height="60dp"
                 android:id="@+id/code"
-                android:text="我喔喔我"
                 android:gravity="left|center_vertical"
                 android:background="@drawable/button_gray_round_frame_shape"
                 android:textColorHint="@color/global_text_info_color"/>

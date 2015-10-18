@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         {
             loadBranchInfo();
         }
-        AppStorage.setData(BRANCH_INFO_MODIFIED,"true",false);
+        AppStorage.setData(BRANCH_INFO_MODIFIED,"false",false);
     }
     /**
      *

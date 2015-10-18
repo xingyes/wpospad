@@ -131,9 +131,8 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
     }
 
 
-    private void modifyOrAddStaff(int pos)
+    private void modifyOrAddStaff(WposAccount staff)
     {
-        WposAccount staff = staffArray.get(pos);
         mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
         if (null == mAjax)
             return;
@@ -290,7 +289,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
 
             View v;
             View page = null;
-            StaffViewHolder vholder = new StaffViewHolder();
+            final StaffViewHolder vholder = new StaffViewHolder();
             page = LayoutInflater.from(getBaseContext()).inflate(R.layout.staff_pg, null);
             vholder.imgV = (NetworkImageView) page.findViewById(R.id.head_img);
             vholder.codeV = (EditText) page.findViewById(R.id.code);
@@ -301,6 +300,8 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
             vholder.passwdV = (EditText) page.findViewById(R.id.passwd);
             vholder.submitV = (TextView) page.findViewById(R.id.staff_modify_btn);
             vholder.delV = (ImageView)page.findViewById(R.id.del_account);
+            vholder.manageAuthV = (CheckBox)page.findViewById(R.id.manage_auth_check);
+            vholder.discountAuthV = (CheckBox)page.findViewById(R.id.discount_auth_check);
             vholder.delV.setOnClickListener(delListener);
 
             vholder.delV.setTag(-1);
@@ -331,8 +332,17 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
                     @Override
                     public void onClick(View v) {
                         Object obj = v.getTag();
-                        if(null!=obj && obj instanceof  Integer)
-                            modifyOrAddStaff((Integer)obj);
+                        if(null!=obj && obj instanceof  Integer) {
+                            WposAccount  act = new WposAccount();
+                            act.name = vholder.nameV.getText().toString();
+                            act.card_number = "330501199910100001";
+                            act.bn = vholder.codeV.getText().toString();
+                            act.passwd = vholder.passwdV.getText().toString();
+                            act.mobile = vholder.phoneV.getText().toString();
+                            act.bdiscount = vholder.discountAuthV.isChecked();
+                            act.bsuper = vholder.manageAuthV.isChecked();
+                            modifyOrAddStaff(act);
+                        }
 
                     }
                 });
