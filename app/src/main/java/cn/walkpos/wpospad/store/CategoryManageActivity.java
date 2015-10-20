@@ -3,12 +3,22 @@ package cn.walkpos.wpospad.store;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.RadioDialog;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ServiceConfig;
 import com.xingy.util.activity.BaseActivity;
+import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,14 +26,18 @@ import java.util.Random;
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateAdapter;
 import cn.walkpos.wpospad.adapter.DividerItemDecoration;
+import cn.walkpos.wpospad.login.WposAccount;
 import cn.walkpos.wpospad.main.SettingActivity;
+import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.ui.InStockDialog;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 
-public class CategoryManageActivity extends BaseActivity implements InStockDialog.WithEditNumClickListener{
+public class CategoryManageActivity extends BaseActivity implements InStockDialog.WithEditNumClickListener,
+        OnSuccessListener<JSONObject>{
 
-
+    private Ajax           mAjax;
     private RecyclerView   cateRootListV;
     private RecyclerView   subcateListV;
     private ArrayList<CateItemModule> cateGroupArray;
@@ -47,7 +61,6 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
         if(null==cateGroupArray)
             cateGroupArray = new ArrayList<CateItemModule>();
 
-        loadCateData();
 
         loadNavBar(R.id.manage_cate_nav);
         this.findViewById(R.id.add_cate_1).setOnClickListener(this);
@@ -103,9 +116,7 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
 
             }
         },false);
-        cateRootAdapter.setDateset(cateGroupArray);
-        cateRootAdapter.setPickIdx(0);
-        cateRootListV.setAdapter(cateRootAdapter);
+
 
         subcateAdapter = new CateAdapter(this,new CateAdapter.ItemClickListener() {
             @Override
@@ -139,8 +150,7 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
 
             }
         },false);
-        subcateAdapter.setPickIdx(0);
-        subcateListV.setAdapter(subcateAdapter);
+
 
         if(null ==cateSetDialog)
         {
@@ -148,28 +158,41 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
         }
         cateSetDialog.setProperty("设置分类","","分类名","","");
 
+        loadCateData(false);
+
     }
 
 
-
-    private void loadCateData()
-    {
-        cateGroupArray.clear();
-        for(int i=0; i < 12; i++)
-        {
-            CateItemModule gp = new CateItemModule();
-            gp.name = "一级分类" +i;
-            Random rd = new Random();
-            int x = rd.nextInt(7);
-            for(int j=0; j < x; j++) {
-                CateItemModule it = new CateItemModule();
-                it.name = "子分类" + j;
-                gp.subCateArray.add(it);
+    /**
+     *
+     */
+    private void loadCateData(boolean fromNet) {
+        IPageCache cache = new IPageCache();
+        final String catestr = cache.get(CateItemModule.CACHEKEY_CATEGORY);
+        if (!fromNet && !TextUtils.isEmpty(catestr)) {
+            try {
+                JSONArray array = new JSONArray(catestr);
+                refreshCateData(array);
+                return;
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            cateGroupArray.add(gp);
-        }
+        } else {
+            mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+            if (null == mAjax)
+                return;
 
+            showLoadingLayer();
+
+            mAjax.setId(WPosConfig.REQ_LOAD_CATEGORY);
+            mAjax.setData("method", "goods.cat");
+            mAjax.setData("store_bn", WPosApplication.StockBn);
+            mAjax.setOnSuccessListener(this);
+            mAjax.setOnErrorListener(this);
+            mAjax.send();
+        }
     }
+
 
     @Override
     public void onClick(View v)
@@ -229,35 +252,63 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
 
     private void delCateItem(int rootCateIdx, int subidx)
     {
+
         CateItemModule rootcate = cateGroupArray.get(rootCateIdx);
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_DEL_CATEGORY);
+        mAjax.setData("method", "cat.delete");
+        mAjax.setData("token", WPosApplication.GToken);
+        mAjax.setData("store_bn", WPosApplication.StockBn);
         if(subidx<0)
         {
-            cateGroupArray.remove(rootCateIdx);
-            cateRootAdapter.setPickIdx(0);
-            cateRootAdapter.notifyDataSetChanged();
+            mAjax.setData("cat_id",rootcate.cat_id);
         }
         else
         {
-            rootcate.subCateArray.remove(subidx);
-            subcateAdapter.setPickIdx(0);
-            subcateAdapter.notifyDataSetChanged();
+            CateItemModule sub = rootcate.subCateArray.get(subidx);
+            mAjax.setData("cat_id",sub.cat_id);
+            mAjax.setData("parent_id",rootcate.cat_id);
         }
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
     }
 
     private void modifyCateItem(int rootCateIdx, int subidx, final String cateName)
     {
         CateItemModule rootcate = cateGroupArray.get(rootCateIdx);
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_MODIFY_CATEGORY);
+        mAjax.setData("method", "cat.update");
+        mAjax.setData("token", WPosApplication.GToken);
+        mAjax.setData("store_bn", WPosApplication.StockBn);
+        mAjax.setData("cat_name", cateName);
         if(subidx<0)
         {
-            rootcate.name = cateName;
-            cateRootAdapter.notifyDataSetChanged();
+            mAjax.setData("cat_id",rootcate.cat_id);
+            mAjax.setData("parent_id","0");
         }
         else
         {
-            CateItemModule cate = rootcate.subCateArray.get(subidx);
-            cate.name = cateName;
-            subcateAdapter.notifyDataSetChanged();
+            CateItemModule sub = rootcate.subCateArray.get(subidx);
+            mAjax.setData("cat_id",sub.cat_id);
+            mAjax.setData("parent_id",rootcate.cat_id);
         }
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
     }
 
     /**
@@ -265,31 +316,76 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
      * @param rootCateIdx
      * @param cateName
      */
-    private void addCateItem(int rootCateIdx, final String cateName)
-    {
-        if(rootCateIdx>=0) {
+    private void addCateItem(int rootCateIdx, final String cateName) {
+
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_ADD_CATEGORY);
+        mAjax.setData("method", "cat.add");
+        mAjax.setData("token", WPosApplication.GToken);
+        mAjax.setData("store_bn", WPosApplication.StockBn);
+        mAjax.setData("cat_name", cateName);
+        if (rootCateIdx >= 0) {
             CateItemModule rootcate = cateGroupArray.get(rootCateIdx);
-
-            CateItemModule cate = new CateItemModule();
-            cate.name = cateName;
-            rootcate.subCateArray.add(0, cate);
-
-            subcateAdapter.setDateset(rootcate.subCateArray);
-            subcateAdapter.setPickIdx(0);
-            subcateAdapter.notifyDataSetChanged();
+            mAjax.setData("parent_id", rootcate.cat_id);
         }
-        else
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
+
+
+    @Override
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
+        int errno = jsonObject.optInt("response_code",-1);
+        if(errno!=0)
         {
-            CateItemModule  cate = new CateItemModule();
-            cate.name = cateName;
-            cateGroupArray.add(0,cate);
-            cateRootAdapter.setPickIdx(0);
-            cateRootAdapter.notifyDataSetChanged();
-
-            subcateAdapter.setDateset(cate.subCateArray);
-            subcateAdapter.setPickIdx(0);
-            subcateAdapter.notifyDataSetChanged();
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this,msg);
+            return;
         }
 
+        if(response.getId() == WPosConfig.REQ_LOAD_CATEGORY)
+        {
+            JSONArray array = jsonObject.optJSONArray("data");
+            if (null == array) {
+                String msg = jsonObject.optString("res", getString(R.string.network_error));
+                UiUtils.makeToast(this, msg);
+                return;
+            }
+            IPageCache cache = new IPageCache();
+            cache.set(CateItemModule.CACHEKEY_CATEGORY,array.toString(),86400*7);
+            refreshCateData(array);
+        }
+        else if(response.getId() == WPosConfig.REQ_ADD_CATEGORY || response.getId() == WPosConfig.REQ_MODIFY_CATEGORY
+                || response.getId() == WPosConfig.REQ_DEL_CATEGORY) {
+            loadCateData(true);
+        }
+    }
+
+    private void refreshCateData(JSONArray array)
+    {
+
+        for(int i = 0; array!=null && i < array.length(); i++)
+        {
+            CateItemModule cate = new CateItemModule();
+            cate.parse(array.optJSONObject(i));
+            cateGroupArray.add(cate);
+        }
+
+        cateRootAdapter.setDateset(cateGroupArray);
+        cateRootAdapter.setPickIdx(0);
+        curCateItem = cateGroupArray.get(cateRootAdapter.getPickidx());
+        cateRootListV.setAdapter(cateRootAdapter);
+
+        subcateAdapter.setDateset(curCateItem.subCateArray);
+        subcateAdapter.setPickIdx(0);
+        subcateListV.setAdapter(subcateAdapter);
     }
 }

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
@@ -18,6 +19,7 @@ import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -37,6 +39,8 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
 
     public static final String GOODS_MODEL = "goods_model";
     private GoodsModule   editGoods;
+    private boolean       bEditGood = true;
+
     public static final int REQ_SCAN_CODE = 101;
     private DrawerLayout   cateDrawer;
     private ExpandableListView  cateListV;
@@ -53,6 +57,7 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
     private EditText       discountEt;
     private EditText       stockHintNumEt;
     private Ajax           mAjax;
+    private TextView       submitBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +72,16 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             return;
         }
         if(ait.hasExtra(GOODS_MODEL))
+        {
             editGoods = (GoodsModule)ait.getSerializableExtra(GOODS_MODEL);
+            bEditGood = true;
+        }
         else
+        {
             editGoods = null;
+            bEditGood = false;
+        }
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pro);
@@ -91,7 +103,9 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
         discountEt = (EditText)this.findViewById(R.id.pro_discount);
         stockHintNumEt = (EditText)this.findViewById(R.id.stock_hint_num);
 
-        this.findViewById(R.id.pro_submit_btn).setOnClickListener(this);
+        submitBtn = (TextView)this.findViewById(R.id.pro_submit_btn);
+        submitBtn.setOnClickListener(this);
+        submitBtn.setText( bEditGood ? "确认修改":"确认添加");
 
         cateDrawer = (DrawerLayout)this.findViewById(R.id.cate_list_drawer);
         cateDrawer.closeDrawers();
@@ -105,7 +119,8 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 CateItemModule gp = cateGroupArray.get(groupPosition);
                 CateItemModule it = gp.subCateArray.get(childPosition);
-                cateNameV.setText(gp.name + "," + it.name);
+                cateNameV.setText(gp.cat_name + "," + it.cat_name);
+                cateNameV.setTag(it.cat_id);
                 cateDrawer.closeDrawers();
                 return false;
             }
@@ -131,69 +146,88 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
                     cateListV.setSelectedGroup(groupPosition);
                 }
                 else {
-                    cateNameV.setText(cateGroupArray.get(groupPosition).name);
+                    cateNameV.setText(cateGroupArray.get(groupPosition).cat_name);
+                    cateNameV.setTag(cateGroupArray.get(groupPosition).cat_id);
                     cateDrawer.closeDrawers();
                 }
                 return true;
             }
         });
 
-        loadCateData();
+        loadCateData(false);
 
-        if(null!=editGoods)
-        {
-            cateNameV.setText("");
-            codeEt.setText("");
-            nameEt.setText("");
-            inPriceEt.setText("");
-            nameShortEt.setText("");
-            outPriceEt.setText("");
-            initStockEt.setText("");
-            discountEt.setText("");
-            stockHintNumEt.setText("");
+        refreshProdata();
+    }
 
-            cateNameV.append(editGoods.cateid);
-            codeEt.append(editGoods.goods_id);
-            nameEt.append(editGoods.name);
-            inPriceEt.append(editGoods.pricein);
-            nameShortEt.append(editGoods.name);
-            outPriceEt.append(editGoods.priceout);
-            initStockEt.append(""+editGoods.stock);
-            discountEt.append(""+editGoods.discount);
-            stockHintNumEt.append(""+editGoods.minstock);
+    /**
+     *
+     * @param fromNet
+     */
+    private void loadCateData(boolean fromNet) {
+        IPageCache cache = new IPageCache();
+        final String catestr = cache.get(CateItemModule.CACHEKEY_CATEGORY);
+        if (!fromNet && !TextUtils.isEmpty(catestr)) {
+            try {
+                JSONArray array = new JSONArray(catestr);
+                refreshCateData(array);
+                return;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+            if (null == mAjax)
+                return;
+
+            showLoadingLayer();
+
+            mAjax.setId(WPosConfig.REQ_LOAD_CATEGORY);
+            mAjax.setData("method", "goods.cat");
+            mAjax.setData("store_bn", WPosApplication.StockBn);
+            mAjax.setOnSuccessListener(this);
+            mAjax.setOnErrorListener(this);
+            mAjax.send();
         }
     }
 
-    private void loadCateData()
+    /**
+     *
+     * @param array
+     */
+    private void refreshCateData(JSONArray array)
     {
-        cateGroupArray.clear();
-        for(int i=0; i < 12; i++)
+        if(null!=array && array.length()>0)
+            cateGroupArray.clear();
+        for(int i = 0; array!=null && i < array.length(); i++)
         {
-            CateItemModule gp = new CateItemModule();
-            gp.name = "一级分类" +i;
-            Random rd = new Random();
-            int x = rd.nextInt(7);
-            for(int j=0; j < x; j++) {
-                CateItemModule it = new CateItemModule();
-                it.name = "子分类" + j;
-                gp.subCateArray.add(it);
-            }
-            cateGroupArray.add(gp);
+            CateItemModule cate = new CateItemModule();
+            cate.parse(array.optJSONObject(i));
+            cateGroupArray.add(cate);
         }
-
+        cateAdapter.setDataset(cateGroupArray);
         cateAdapter.notifyDataSetChanged();
     }
 
 
-
-    private void addProduct()
+    /**
+     *
+     */
+    private void addOrModifyProduct()
     {
-        String codestr = codeEt.getText().toString();
-        if(TextUtils.isEmpty(codestr))
+        String catestr = cateNameV.getText().toString();
+        if(TextUtils.isEmpty(catestr))
         {
-            UiUtils.makeToast(this,"编码不能为空");
+            UiUtils.makeToast(this,"分类不能为空");
             return;
         }
+        String catid = (String)cateNameV.getTag();
+
+//        String codestr = codeEt.getText().toString();
+//        if(TextUtils.isEmpty(codestr))
+//        {
+//            UiUtils.makeToast(this,"编码不能为空");
+//            return;
+//        }
         String namestr = nameEt.getText().toString();
         if(TextUtils.isEmpty(namestr))
         {
@@ -236,18 +270,19 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
 
         showLoadingLayer();
 
-        mAjax.setId(WPosConfig.REQ_ADD_GOODS);
-        mAjax.setData("method", "goods.add");
+        mAjax.setId((null!=editGoods) ?  WPosConfig.REQ_MODIFY_GOODS : WPosConfig.REQ_ADD_GOODS);
+        mAjax.setData("method", (null!=editGoods) ?  "goods.update" : "goods.add");
+
         mAjax.setData("token", WPosApplication.GToken);
-//        mAjax.setData("token", "9e3a41bebf41ef55d492c2451a8b82f6");
 //        mAjax.setData("store", WPosApplication.StockBn);
         mAjax.setData("store_bn", "S55FFA78EC7F56");
 
-        mAjax.setData("cat_id",cateNameV.getText().toString());
-        mAjax.setData("barcode",codestr);
+        mAjax.setData("cat_id",catid);
+        if(null!=editGoods)
+            mAjax.setData("bn",editGoods.bn); //add 不传
         mAjax.setData("name",namestr);
         mAjax.setData("cost",inpricestr);
-//        mAjax.setData("name",namestr);  简称
+        mAjax.setData("short_name",nameShstr);
         mAjax.setData("price",outpricestr);
         mAjax.setData("store",stockhintNumstr);
         mAjax.setData("discount",discountstr);
@@ -273,7 +308,15 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
                 startActivityForResult(ait,REQ_SCAN_CODE);
                 break;
             case R.id.pro_submit_btn:
-                addProduct();
+                Object obj = v.getTag();
+                if(null == obj)
+                    addOrModifyProduct();
+                else {
+                    editGoods = null;
+                    refreshProdata();
+                    submitBtn.setTag(null);
+                    submitBtn.setText(R.string.submit);
+                }
                 break;
             case R.id.category_btn:
                 UiUtils.startActivity(this, CategoryManageActivity.class, true);
@@ -324,10 +367,48 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             return;
         }
 
-        if(response.getId() == WPosConfig.REQ_ADD_GOODS) {
-            String msg = jsonObject.optString("res", "添加商品成功");
+        if(response.getId() == WPosConfig.REQ_ADD_GOODS || response.getId() == WPosConfig.REQ_MODIFY_GOODS) {
+            String msg = jsonObject.optString("res", "提交成功");
             UiUtils.makeToast(this, msg);
-            finish();
+
+            JSONObject data = jsonObject.optJSONObject("data");
+            editGoods = new GoodsModule();
+            editGoods.parse(data);
+            refreshProdata();
+
+            if(!bEditGood) {
+                submitBtn.setText("继续添加");
+                submitBtn.setTag("1");
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private void refreshProdata()
+    {
+        cateNameV.setText("");
+        codeEt.setText("");
+        nameEt.setText("");
+        inPriceEt.setText("");
+        nameShortEt.setText("");
+        outPriceEt.setText("");
+        initStockEt.setText("");
+        discountEt.setText("");
+        stockHintNumEt.setText("");
+
+        if(null!=editGoods)
+        {
+            cateNameV.append(editGoods.cat_name);
+            codeEt.append(editGoods.bn);
+            nameEt.append(editGoods.name);
+            inPriceEt.append(editGoods.pricein);
+            nameShortEt.append(editGoods.name);
+            outPriceEt.append(editGoods.priceout);
+            initStockEt.append(""+editGoods.stock);
+            discountEt.append(""+editGoods.discount);
+            stockHintNumEt.append(""+editGoods.down_warn);
         }
     }
 }

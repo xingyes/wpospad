@@ -1,6 +1,13 @@
 package cn.walkpos.wpospad.main;
 
+import android.content.ContentUris;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -10,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -21,6 +29,7 @@ import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.DPIUtil;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
+import com.xingy.util.UploadPhotoUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -29,6 +38,8 @@ import com.xingy.util.ajax.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
@@ -75,18 +86,6 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
 
         loadStaff();
 
-//        editListener = new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if(editing && v instanceof EditText && event.getAction() == MotionEvent.ACTION_DOWN)
-//                {
-//                    editing = true;
-//                    staffAdapter.notifyDataSetChanged();
-//                }
-//                return false;
-//            }
-//        };
-
         delListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +106,6 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
                 }
             }
         };
-
     }
 
 
@@ -176,6 +174,111 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
         mAjax.send();
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == UploadPhotoUtil.PHOTO_PICKED_WITH_DATA && null != data)
+        {
+            // 雷军个傻逼
+//            mIsProcessing = true;
+            ToolUtil.showClipIntentWithData(this, data.getData());
+        }
+        else if (requestCode == UploadPhotoUtil.CAMERA_WITH_DATA)
+        {
+//            mIsProcessing = true;
+            showLoadingLayer();
+            Uri imgUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+            String path = UploadPhotoUtil.getImgPath(this, requestCode, resultCode, data);
+            if(ToolUtil.isEmpty(path))
+            {
+                UiUtils.makeToast(this, "照片路径获取失败");
+                return;
+            }
+
+            File file = new File(path);
+            Uri fileUri = Uri.fromFile(file);
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                    fileUri));
+
+            Cursor cursor =null;
+            Uri uri = null;
+            int tryount = 0;
+            try{
+                while(cursor==null || cursor.getCount()<=0 && tryount < 10) {
+                    cursor = getContentResolver().query(imgUri, null,
+                            MediaStore.Images.Media.DISPLAY_NAME + "='"
+                                    + file.getName() + "'",
+                            null, null);
+                    android.util.Log.e("open pic","time:" + tryount + " cursor null?" + (cursor==null));
+                    if(cursor != null && cursor.getCount() > 0) {
+                        android.util.Log.e("open pic","moteToLast");
+                        cursor.moveToLast();
+                        long id = cursor.getLong(0);
+                        uri = ContentUris.withAppendedId(imgUri, id);
+                        break;
+                    }
+                    else {
+                        tryount++;
+                        Thread.sleep(300);
+                    }
+
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }finally {
+                if (null != cursor && !cursor.isClosed())
+                    cursor.close();
+            }
+            ToolUtil.showClipIntentWithData(this,uri);
+        }
+        else if(requestCode == ToolUtil.GO_CROP_ACTIVITY)
+        {
+            closeLoadingLayer();
+
+            //final AutoHeightImageView curImg = (AutoHeightImageView) mPicImages.get(mCurPicIdx);
+            //String localPath = curImg.mCustomInfo.get("localPath");
+
+            final Bitmap bitmap =  (null == data) ? null : (Bitmap)data.getParcelableExtra("data");
+            if (null != bitmap) {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                int pos = staffVpger.getCurrentItem();
+                staffArray.get(pos).logobm = bitmap;
+                staffAdapter.notifyDataSetChanged();
+
+//				File file = new File(localPath);
+//			    FileOutputStream fOut = new FileOutputStream(file);
+//				bitmap.compress(CompressFormat.JPEG, 100, fOut);
+//				fOut.flush();
+//				fOut.close();
+
+//                Ajax ajax = ServiceConfig.getAjax(braConfig.URL_IMAGE_STREAM_UPLOAD);
+//                if( null != ajax ) {
+//                    showLoadingLayer();
+//                    ajax.setData("token",account.token);
+//                    ajax.setFile("uavatar", byteArray, "img.jpg");
+//
+////                    ajax.setFile("uavatar", byteArray);
+//                    ajax.setOnSuccessListener(this);
+////                    ajax.setId(AJAX_UPLOAD_SNAPSHOT);
+//                    ajax.setOnErrorListener(this);
+//                    addAjax(ajax);
+//                    ajax.send();
+//                }
+            }
+
+//            mIsProcessing = false;
+        }
     }
 
     @Override
@@ -263,6 +366,9 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
     }
 
 
+    /**
+     *  StaffViewPager Adapter
+     */
     public class StaffVPgAdapter extends PagerAdapter {
 
         // 界面列表
@@ -292,6 +398,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
             View page = null;
             final StaffViewHolder vholder = new StaffViewHolder();
             page = LayoutInflater.from(getBaseContext()).inflate(R.layout.staff_pg, null);
+            vholder.editImgLayout = (RelativeLayout)page.findViewById(R.id.edit_logo);
             vholder.imgV = (NetworkImageView) page.findViewById(R.id.head_img);
             vholder.codeV = (EditText) page.findViewById(R.id.code);
             vholder.loginnameV = (TextView) page.findViewById(R.id.login_name);
@@ -305,20 +412,34 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
             vholder.discountAuthV = (CheckBox)page.findViewById(R.id.discount_auth_check);
             vholder.delV.setOnClickListener(delListener);
 
-            vholder.delV.setTag(-1);
-            WposAccount staff = null;
-
+            WposAccount staff = staffArray.get(position);
             vholder.delV.setTag(position);
-            staff = staffArray.get(position);
+            vholder.editImgLayout.setTag(position);
+            vholder.editImgLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UploadPhotoUtil.createUploadPhotoDlg(StaffManageActivity.this).show();
 
+                }
+            });
             if(!TextUtils.isEmpty(staff.bn)) {
-                vholder.imgV.setImageUrl(staff.logo, mImgLoader);
+                if(staff.logobm != null)
+                {
+                    vholder.imgV.setImageBitmap(null);
+                    vholder.imgV.setBackgroundDrawable(new BitmapDrawable(staff.logobm));
+                }
+
+                else
+                    vholder.imgV.setImageUrl(staff.logo, mImgLoader);
                 vholder.codeV.setText(staff.bn);
                 vholder.nameV.setText(staff.name);
                 vholder.loginnameV.setText(staff.name);
                 vholder.phoneV.setText(staff.mobile);
                 vholder.passwdV.setText(staff.passwd);
                 vholder.submitV.setText("确认修改");
+
+                vholder.nameV.setFocusable(false);
+                vholder.nameV.setFocusableInTouchMode(false);
             }else
             {
                 vholder.codeV.setText("");
@@ -326,6 +447,9 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
                 vholder.phoneV.setText("");
                 vholder.passwdV.setText("");
                 vholder.submitV.setText("确认添加");
+
+                vholder.nameV.setFocusable(true);
+                vholder.nameV.setFocusableInTouchMode(true);
             }
 
             page.setOnTouchListener(editListener);
@@ -347,7 +471,6 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
 
                     }
                 });
-//            vholder.submitV.setEnabled(editing);
             vholder.submitV.setTag(position);
 
             v = page;
@@ -373,6 +496,12 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
             System.gc();
         }
 
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
+
 //		public void cleanData() {
 //			pics = new int[0];
 //		}
@@ -382,6 +511,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
     {
         ImageView delV;
         NetworkImageView imgV;
+        RelativeLayout   editImgLayout;
         EditText         codeV;
         TextView         loginnameV;
         EditText         nameV;
@@ -418,5 +548,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
                 return;
         }
     };
+
+
 
 }

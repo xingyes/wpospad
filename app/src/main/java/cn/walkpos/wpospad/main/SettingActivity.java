@@ -308,7 +308,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         mAjax.setOnErrorListener(this);
         mAjax.send();
 
-        AppStorage.setData(MainActivity.BRANCH_INFO_MODIFIED, "true", true);
+        AppStorage.setData(MainActivity.APPSTORAGE_BRANCH_INFO_MODIFIED, "true", true);
 
     }
  //end of 店铺
@@ -665,7 +665,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         {
             String msg = jsonObject.optString("res", "修改成功");
             UiUtils.makeToast(this,msg);
-            AppStorage.setData(MainActivity.BRANCH_INFO_MODIFIED,"true",true);
+            AppStorage.setData(MainActivity.APPSTORAGE_BRANCH_INFO_MODIFIED,"true",true);
         }
     }
 }

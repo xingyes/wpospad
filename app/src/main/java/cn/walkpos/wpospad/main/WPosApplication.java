@@ -27,7 +27,7 @@ public class WPosApplication extends MyApplication {
         globalMDCache = new MemDiskImageCache(MyApplication.app);
         super.onCreate();
         initParams();
-        GToken =  AppStorage.getData(WPosApplication.KEY_TOKEN);
+        GToken =  AppStorage.getData(WPosApplication.APPSTORAGE_KEY_TOKEN);
 
 
 //        checkToken();

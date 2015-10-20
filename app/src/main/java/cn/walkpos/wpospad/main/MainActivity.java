@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
     private BranchInfoModule   mBrancInfo;
     public static final String BRANCH_INFO = "branch_info";
-    public static final String BRANCH_INFO_MODIFIED = "BRANCH_INFO_MODIFIED";
+    public static final String APPSTORAGE_BRANCH_INFO_MODIFIED = "BRANCH_INFO_MODIFIED";
     private Ajax            mAjax;
     private PowerManager.WakeLock wakeLock;
     public static final String imgtesturl = "http://g.hiphotos.baidu.com/baike/w%3D268/sign=ed2f3c98b1119313c743f8b65d390c10/4ec2d5628535e5dd597d578575c6a7efce1b6213.jpg";
@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         moneyBtn.setOnClickListener(this);
         settingBtn.setOnClickListener(this);
 
-        AppStorage.setData(BRANCH_INFO_MODIFIED,"true",true);
+        AppStorage.setData(APPSTORAGE_BRANCH_INFO_MODIFIED,"true",true);
         initUserInfo();
 
     }
@@ -115,10 +115,10 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     public void onResume()
     {
         super.onResume();
-        String branchinfoModified = AppStorage.getData(BRANCH_INFO_MODIFIED);
+        String branchinfoModified = AppStorage.getData(APPSTORAGE_BRANCH_INFO_MODIFIED);
         if(!TextUtils.isEmpty(branchinfoModified) && branchinfoModified.equals("true")) {
             loadBranchInfo();
-            AppStorage.setData(BRANCH_INFO_MODIFIED, "false", false);
+            AppStorage.setData(APPSTORAGE_BRANCH_INFO_MODIFIED, "false", false);
         }
     }
     /**

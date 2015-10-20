@@ -34,6 +34,10 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
         mActivity = activity;
         cateGroupArray = aArray;
     }
+    public void setDataset(ArrayList<CateItemModule> aArray)
+    {
+        cateGroupArray = aArray;
+    }
     @Override
     public int getGroupCount() {
         return (null == cateGroupArray ? 0 : cateGroupArray.size());
@@ -112,7 +116,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
         }
 
         CateItemModule gpMod = cateGroupArray.get(groupPosition);
-        gpHolder.namev.setText(gpMod.name);
+        gpHolder.namev.setText(gpMod.cat_name);
         if(groupPosition == gpPickIdx) {
             gpHolder.namev.setTextColor(mActivity.getResources().getColor(R.color.btn_wpos_red));
         }
@@ -151,7 +155,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
 
         CateItemModule gpMod = cateGroupArray.get(groupPosition);
         CateItemModule  itMod = gpMod.subCateArray.get(childPosition);
-        itHolder.namev.setText(itMod.name);
+        itHolder.namev.setText(itMod.cat_name);
         return convertView;
     }
 

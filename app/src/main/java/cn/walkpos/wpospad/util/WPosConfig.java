@@ -28,6 +28,12 @@ public class WPosConfig extends Config {
     public static final int   REQ_DEL_GOODS = 503;
     public static final int   REQ_MODIFY_GOODS = 504;
 
+    //category
+    public static final int   REQ_LOAD_CATEGORY = 601;
+    public static final int   REQ_ADD_CATEGORY = 602;
+    public static final int   REQ_MODIFY_CATEGORY = 603;
+    public static final int   REQ_DEL_CATEGORY = 604;
+
     //////////Server api configuration.
     //login
     public static final String URL_LOGIN_IDENTITY = "URL_LOGIN_IDENTITY";

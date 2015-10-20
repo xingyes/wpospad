@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xingy.lib.AppStorage;
-import com.xingy.lib.model.Account;
 import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
@@ -355,7 +354,7 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
             WPosApplication.account.token = data.optString("token");
 
             ArrayList<String> accountArray = new ArrayList<String>();
-            accountArrayStr = AppStorage.getData(LoginActivity.ACCOUNT_ARRAY);
+            accountArrayStr = AppStorage.getData(LoginActivity.STORAGE_ACCOUNT_ARRAY);
             if(!TextUtils.isEmpty(accountArrayStr))
             {
                 String items[] = accountArrayStr.split(",");
@@ -368,12 +367,12 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
 
             if(accountArray.size()<=0) {
                 accountArrayStr = mPhoneStr;
-                AppStorage.setData(LoginActivity.ACCOUNT_ARRAY, accountArrayStr, true);
+                AppStorage.setData(LoginActivity.STORAGE_ACCOUNT_ARRAY, accountArrayStr, true);
             }
             else if(!accountArray.contains(mPhoneStr))
             {
                 accountArrayStr +="," + mPhoneStr;
-                AppStorage.setData(LoginActivity.ACCOUNT_ARRAY, accountArrayStr, true);
+                AppStorage.setData(LoginActivity.STORAGE_ACCOUNT_ARRAY, accountArrayStr, true);
             }
 
             UiUtils.startActivity(RegisterActivity.this, VerifyMidActivity.class, true);

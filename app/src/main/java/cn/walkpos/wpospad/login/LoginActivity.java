@@ -34,7 +34,7 @@ import cn.walkpos.wpospad.util.WPosConfig;
 
 public class LoginActivity extends BaseActivity implements OnSuccessListener<JSONObject>{
 
-    public static final String  ACCOUNT_ARRAY = "account_array";
+    public static final String STORAGE_ACCOUNT_ARRAY = "account_array";
     private Ajax     mAjax;
     private ListView accountListV;
     private ImageView     showAccountBtn;
@@ -104,7 +104,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
                     else
                         accountArrayStr += "," + name;
                 }
-                AppStorage.setData(ACCOUNT_ARRAY, accountArrayStr, true);
+                AppStorage.setData(STORAGE_ACCOUNT_ARRAY, accountArrayStr, true);
                 refreshAccountList();
             }
         });
@@ -142,7 +142,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
     {
         accountArray = new ArrayList<String>();
 
-        String accountArrayStr = AppStorage.getData(ACCOUNT_ARRAY);
+        String accountArrayStr = AppStorage.getData(STORAGE_ACCOUNT_ARRAY);
         if(!TextUtils.isEmpty(accountArrayStr))
         {
             String items[] = accountArrayStr.split(",");
@@ -248,7 +248,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
 
             WPosApplication.account.parse(data);
             WPosApplication.GToken = WPosApplication.account.token;
-            AppStorage.setData(WPosApplication.KEY_TOKEN,WPosApplication.account.token,true);
+            AppStorage.setData(WPosApplication.APPSTORAGE_KEY_TOKEN,WPosApplication.account.token,true);
             if(WPosApplication.account.bSuperAdmin)
                 WPosApplication.account.name = mPhonestr;
             if(!WPosApplication.account.bSuperAdmin &&
@@ -263,7 +263,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
                     else
                         accountArrayStr += "," + name;
                 }
-                AppStorage.setData(ACCOUNT_ARRAY, accountArrayStr, true);
+                AppStorage.setData(STORAGE_ACCOUNT_ARRAY, accountArrayStr, true);
                 refreshAccountList();
             }
             if(WPosApplication.account.bSuperAdmin)

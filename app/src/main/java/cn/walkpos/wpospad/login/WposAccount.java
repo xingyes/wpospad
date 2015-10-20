@@ -1,5 +1,7 @@
 package cn.walkpos.wpospad.login;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONObject;
 
 /**
@@ -13,6 +15,7 @@ public class WposAccount {
     public String passwd;
     public String bn;   //店员编号
     public String logo;
+    public Bitmap logobm;
     public String mobile;
     public String  card_number;
     public boolean bdiscount;

@@ -112,7 +112,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                 CateItemModule it = gp.subCateArray.get(childPosition);
                 reqFinish = false;
                 pageno = 1;
-                UiUtils.makeToast(StoreManageActivity.this, "重新请求: " + gp.name + "," + it.name);
+                UiUtils.makeToast(StoreManageActivity.this, "重新请求: " + gp.cat_name + "," + it.cat_name);
                 return false;
             }
         });
@@ -139,7 +139,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                     cateListV.setSelectedGroup(groupPosition);
                 }
                 else
-                    UiUtils.makeToast(StoreManageActivity.this, cateGroupArray.get(groupPosition).name);
+                    UiUtils.makeToast(StoreManageActivity.this, cateGroupArray.get(groupPosition).cat_name);
 
                 return true;
             }
@@ -238,12 +238,12 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         for(int i=0; i < 12; i++)
         {
             CateItemModule gp = new CateItemModule();
-            gp.name = "一级分类" +i;
+            gp.cat_name = "一级分类" +i;
             Random rd = new Random();
             int x = rd.nextInt(7);
             for(int j=0; j < x; j++) {
                 CateItemModule it = new CateItemModule();
-                it.name = "子分类" + j;
+                it.cat_name = "子分类" + j;
                 gp.subCateArray.add(it);
             }
             cateGroupArray.add(gp);
@@ -265,7 +265,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         showLoadingLayer();
 
         mAjax.setId(WPosConfig.REQ_GOODSLIST);
-        mAjax.setData("method", "goods.list");
+        mAjax.setData("method", "goods.search");
 //        mAjax.setData("store", WPosApplication.StockBn);
         mAjax.setData("store_bn", "S55FFA78EC7F56");
         mAjax.setData("token", WPosApplication.GToken);

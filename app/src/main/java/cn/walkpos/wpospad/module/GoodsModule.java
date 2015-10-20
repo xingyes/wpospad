@@ -13,13 +13,15 @@ public class GoodsModule extends BaseModel {
     public String   pricein;
     public String   priceout;
     public String name;
-    public String title_s;
+    public String name_s;
     public String img_src;
     public int    stock;
-    public int    minstock;
+    public int    up_warn;
+    public int    down_warn;
     public double  discount;
     public boolean marketable;
-    public String  cateid;
+    public String  cat_id;
+    public String  cat_name;
 
     public GoodsModule()
     {
@@ -30,17 +32,19 @@ public class GoodsModule extends BaseModel {
     {
         goods_id = "";
         bn = "";
-        cateid = "";
-
         pricein = "";
         priceout = "";
         name="";
-        title_s = "";
+        name_s = "";
         img_src = "";
         stock = 0;
-        minstock = 0;
-        marketable = true;
+        up_warn = 0;
+        down_warn = 0;
         discount = 1.0f;
+        marketable = true;
+        cat_id = "";
+        cat_name = "";
+
     }
 
     /**
@@ -58,15 +62,22 @@ public class GoodsModule extends BaseModel {
         if(json==null)
             return;
         goods_id = json.optString("goods_id");
-        cateid = json.optString("cate_id");
         bn = json.optString("bn");
         name = json.optString("name");
+        name_s = json.optString("short_name");
+        cat_id = json.optString("cat_id");
 
         priceout = json.optString("price");
         stock = json.optInt("store");
+        discount = json.optDouble("discount",1.0);
+
+        up_warn = json.optInt("up_warn");
+        down_warn = json.optInt("down_warn");
+
         img_src = json.optString("img_src");
 
         marketable = json.optBoolean("marketable");
-        discount = json.optDouble("discount",1.0);
+        cat_name = json.optString("cat_name");
+
     }
 }

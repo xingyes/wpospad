@@ -24,9 +24,9 @@
             <com.android.volley.toolbox.NetworkImageView
                 android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:background="@drawable/icon_user"
                 android:id="@+id/head_img"/>
             <RelativeLayout
+                android:id="@+id/edit_logo"
                 android:layout_alignBottom="@id/head_img"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
@@ -88,6 +88,7 @@
                 android:textColor="@color/white"
                 android:text="编号"/>
                 <EditText
+                android:editable="false"
                 android:layout_marginLeft="20dp"
                 android:layout_centerVertical="true"
                 android:textSize="24dp"
@@ -100,6 +101,7 @@
                 android:id="@+id/code"
                 android:gravity="left|center_vertical"
                 android:background="@drawable/button_gray_round_frame_shape"
+                android:hint="系统生成"
                 android:textColorHint="@color/global_text_info_color"/>
             </LinearLayout>
 

@@ -65,7 +65,7 @@ public class CateAdapter extends RecyclerView.Adapter<CateAdapter.CateViewHolder
             holder.checkedV.setVisibility(View.INVISIBLE);
         }
 
-        holder.nameV.setText(cate.name);
+        holder.nameV.setText(cate.cat_name);
     }
 
 
