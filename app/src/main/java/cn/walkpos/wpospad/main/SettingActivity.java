@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.xingy.lib.AppStorage;
 import com.xingy.lib.IVersion;
 import com.xingy.lib.ui.CheckBox;
+import com.xingy.lib.ui.RadioDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.preference.Preference;
 import com.xingy.share.ShareInfo;
@@ -51,51 +52,19 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
     private RelativeLayout.LayoutParams rl;
     private ImageLoader    mImageLoader;
 
-    @Override
-    public void onComplete(Object obj) {
-    }
-
-    @Override
-    public void onError(String msg) {
-    }
-
-    @Override
-    public void onCancel() {
-    }
-
-    @Override
-    public void onSuccess(JSONObject jsonObject, Response response) {
-        closeLoadingLayer();
-
-        int errno = jsonObject.optInt("response_code",-1);
-        if(errno!=0)
-        {
-            String msg = jsonObject.optString("res", getString(R.string.network_error));
-            UiUtils.makeToast(this,msg);
-            return;
-        }
-
-        if(response.getId() == WPosConfig.REQ_MODIFY_BRANCH_INFO)
-        {
-            String msg = jsonObject.optString("res", "修改成功");
-            UiUtils.makeToast(this,msg);
-            AppStorage.setData(MainActivity.BRANCH_INFO_MODIFIED,"true",true);
-        }
-    }
-
     private class StoreSetHolder{
         public View  rootv;
         public EditText   namev;
         public EditText   typev;
-        public EditText   phonev;
-        public CheckBox   phonePrintCheck;
-        public EditText   urlv;
-        public CheckBox   urlPrintCheck;
-        public EditText   slognv;
-        public CheckBox   slognPrintCheck;
+        public EditText   telv;
+        public CheckBox   telPrintCheck;
+        public EditText   weburlv;
+        public CheckBox   weburlPrintCheck;
+        public EditText   briefv;
+        public CheckBox   briefPrintCheck;
     };
     private StoreSetHolder   storeHolder;
-
+    private RadioDialog      storeTypeDialog;
     private class DevSetHolder{
         public View  rootv;
         public android.widget.CheckBox  printInvoiceCheck;
@@ -264,20 +233,25 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         storeHolder.namev.append(mBranchInfo.store_name);
 
         storeHolder.typev =(EditText)storeHolder.rootv.findViewById(R.id.store_type);
-        storeHolder.rootv.findViewById(R.id.type_select_layout).setOnClickListener(this);
+        storeHolder.rootv.findViewById(R.id.store_type).setOnClickListener(this);
+        if(mBranchInfo.type_id>=0)
+            storeHolder.typev.append(BranchInfoModule.opt[mBranchInfo.type_id]);
 
-        storeHolder.phonev =(EditText)storeHolder.rootv.findViewById(R.id.store_phone);
-        storeHolder.phonev.append(mBranchInfo.tel);
-        storeHolder.phonePrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.phone_on_invoice);
+        storeHolder.telv =(EditText)storeHolder.rootv.findViewById(R.id.store_phone);
+        storeHolder.telv.append(mBranchInfo.tel);
+        storeHolder.telPrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.phone_on_invoice);
+        storeHolder.telPrintCheck.setChecked(mBranchInfo.tel_print);
 
-        storeHolder.urlv =(EditText)storeHolder.rootv.findViewById(R.id.store_web);
-        storeHolder.urlv.append(mBranchInfo.web_url);
-        storeHolder.urlPrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.web_on_invoice);
+        storeHolder.weburlv =(EditText)storeHolder.rootv.findViewById(R.id.store_web);
+        storeHolder.weburlv.append(mBranchInfo.web_url);
+        storeHolder.weburlPrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.web_on_invoice);
+        storeHolder.weburlPrintCheck.setChecked(mBranchInfo.web_print);
 
-        storeHolder.slognv =(EditText)storeHolder.rootv.findViewById(R.id.store_slogn);
-        storeHolder.slognv.append(mBranchInfo.brief);
+        storeHolder.briefv =(EditText)storeHolder.rootv.findViewById(R.id.store_slogn);
+        storeHolder.briefv.append(mBranchInfo.brief);
 
-        storeHolder.slognPrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.slogn_on_invoice);
+        storeHolder.briefPrintCheck = (CheckBox)storeHolder.rootv.findViewById(R.id.slogn_on_invoice);
+        storeHolder.briefPrintCheck.setChecked(mBranchInfo.brief_print);
 
         storeHolder.rootv.findViewById(R.id.store_set_submit).setOnClickListener(this);
     }
@@ -296,14 +270,14 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
             UiUtils.makeToast(this,"店铺类型为空");
             return;
         }
-        String phonestr = storeHolder.phonev.getText().toString();
+        String phonestr = storeHolder.telv.getText().toString();
         if(TextUtils.isEmpty(phonestr))
         {
             UiUtils.makeToast(this,"店铺电话为空");
             return;
         }
-        String webstr = storeHolder.urlv.getText().toString();
-        String slognstr = storeHolder.slognv.getText().toString();
+        String webstr = storeHolder.weburlv.getText().toString();
+        String slognstr = storeHolder.briefv.getText().toString();
         if(TextUtils.isEmpty(webstr))
             webstr = "";
         if(TextUtils.isEmpty(slognstr))
@@ -316,6 +290,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
 
         showLoadingLayer();
         mAjax.setId(WPosConfig.REQ_MODIFY_BRANCH_INFO);
+        mAjax.setData("type_id",mBranchInfo.type_id);
         mAjax.setData("method", "store.edit");
         mAjax.setData("store_bn", WPosApplication.StockBn);
         mAjax.setData("store_name", namestr);
@@ -324,7 +299,9 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         mAjax.setData("tel",phonestr);
         mAjax.setData("web_url",webstr);
         mAjax.setData("brief",slognstr);
-        mAjax.setData("print","true");
+        mAjax.setData("tel_print",storeHolder.telPrintCheck.isChecked());
+        mAjax.setData("web_print",storeHolder.weburlPrintCheck.isChecked());
+        mAjax.setData("brief_print",storeHolder.briefPrintCheck.isChecked());
 
 
         mAjax.setOnSuccessListener(this);
@@ -513,8 +490,19 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
                 UiUtils.startActivity(this,StaffManageActivity.class,true);
                 break;
 //            店铺pg
-            case R.id.type_select_layout:
-                UiUtils.makeToast(this,"选择店铺类型");
+            case R.id.store_type:
+                if(null == storeTypeDialog) {
+                    String [] opt = {"小店","店铺"};
+                    storeTypeDialog = UiUtils.showListDialog(SettingActivity.this,opt,new RadioDialog.OnRadioSelectListener() {
+                        @Override
+                        public void onRadioItemClick(int which) {
+                            mBranchInfo.type_id = which;
+                            storeHolder.typev.setText("");
+                            storeHolder.typev.append(BranchInfoModule.opt[which]);
+                        }
+                    });
+                }else
+                    storeTypeDialog.show();
                 break;
             case R.id.store_set_submit:
                 submitStoreModify();
@@ -620,9 +608,6 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
 
 
 
-
-
-
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         if(group == otherHolder.otherRg)
@@ -652,4 +637,35 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
     }
 
 
+    @Override
+    public void onComplete(Object obj) {
+    }
+
+    @Override
+    public void onError(String msg) {
+    }
+
+    @Override
+    public void onCancel() {
+    }
+
+    @Override
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
+        int errno = jsonObject.optInt("response_code",-1);
+        if(errno!=0)
+        {
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this,msg);
+            return;
+        }
+
+        if(response.getId() == WPosConfig.REQ_MODIFY_BRANCH_INFO)
+        {
+            String msg = jsonObject.optString("res", "修改成功");
+            UiUtils.makeToast(this,msg);
+            AppStorage.setData(MainActivity.BRANCH_INFO_MODIFIED,"true",true);
+        }
+    }
 }

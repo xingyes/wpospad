@@ -44,27 +44,12 @@
             android:textSize="28dp"
             android:textColor="@color/white"
             android:text="店铺类型"/>
-        <RelativeLayout
-            android:id="@+id/type_select_layout"
-            android:layout_width="500dp"
-            android:layout_height="60dp"
-            android:background="@drawable/button_gray_round_frame_shape"
-            android:layout_marginLeft="20dp"
-            >
-            <ImageView
-                android:layout_marginRight="10dp"
-                android:id="@+id/store_type_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:src="@mipmap/icon_arrow_down"/>
-            <EditText
+        <EditText
+                android:background="@drawable/button_gray_round_frame_shape"
+                android:layout_marginLeft="20dp"
+                android:layout_width="500dp"
+                android:layout_height="60dp"
                 android:editable="false"
-                android:layout_toLeftOf="@id/store_type_more"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/none"
                 android:layout_centerVertical="true"
                 android:textSize="24dp"
                 android:paddingLeft="20dp"
@@ -73,8 +58,10 @@
                 android:singleLine="true"
                 android:id="@+id/store_type"
                 android:gravity="left|center_vertical"
-                android:textColorHint="@color/global_text_info_color"/>
-        </RelativeLayout>
+                android:textColorHint="@color/global_text_info_color"
+                android:hint="请选择开店类型"
+                android:drawableRight="@mipmap/icon_arrow_down"/>
+
     </LinearLayout>
 
     <LinearLayout

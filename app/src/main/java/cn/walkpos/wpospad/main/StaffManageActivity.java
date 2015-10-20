@@ -141,20 +141,19 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         showLoadingLayer();
 
         mAjax.setId(TextUtils.isEmpty(staff.bn) ? WPosConfig.REQ_ADD_STAFF : WPosConfig.REQ_MODIFY_STAFF);
-        mAjax.setData("method", (TextUtils.isEmpty(staff.bn) ? "passport.register" : "passport.register"));
+        mAjax.setData("method", (TextUtils.isEmpty(staff.bn) ? "passport.register" : "user.edit"));
+        if(!TextUtils.isEmpty(staff.bn))
+            mAjax.setData("bn", staff.bn);
 
         mAjax.setData("imei", ToolUtil.getDeviceUid(this));
         mAjax.setData("store_bn", WPosApplication.StockBn);
-        mAjax.setData("login_name", "test");
         mAjax.setData("card", staff.card_number);
-        mAjax.setData("card", "330501199910100001");
 
-        mAjax.setData("bn", staff.bn);
         mAjax.setData("name", staff.name);
         mAjax.setData("password", staff.passwd);
         mAjax.setData("mobile", staff.mobile);
         mAjax.setData("discount",staff.bdiscount ? "true" : "false");
-        mAjax.setData("super",staff.bsuper ? "true" : "false");
+        mAjax.setData("manage",staff.bmanage ? "true" : "false");
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -170,7 +169,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
         showLoadingLayer();
 
         mAjax.setId(WPosConfig.REQ_DEL_STAFF);
-        mAjax.setData("method", "store.users");
+        mAjax.setData("method", "user.delete");
         mAjax.setData("store_bn", WPosApplication.StockBn);
         mAjax.setData("bn", toDelStaff.bn);
 
@@ -342,7 +341,7 @@ public class StaffManageActivity extends BaseActivity implements ViewPager.OnPag
                             act.passwd = vholder.passwdV.getText().toString();
                             act.mobile = vholder.phoneV.getText().toString();
                             act.bdiscount = vholder.discountAuthV.isChecked();
-                            act.bsuper = vholder.manageAuthV.isChecked();
+                            act.bmanage = vholder.manageAuthV.isChecked();
                             modifyOrAddStaff(act);
                         }
 

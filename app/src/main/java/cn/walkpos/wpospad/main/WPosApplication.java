@@ -27,14 +27,15 @@ public class WPosApplication extends MyApplication {
         globalMDCache = new MemDiskImageCache(MyApplication.app);
         super.onCreate();
         initParams();
+        GToken =  AppStorage.getData(WPosApplication.KEY_TOKEN);
 
-        checkToken();
+
+//        checkToken();
 
     }
 
     private void checkToken()
     {
-        GToken =  AppStorage.getData(WPosApplication.KEY_TOKEN);
         if(!TextUtils.isEmpty(GToken))
         {
             mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);

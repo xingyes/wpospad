@@ -16,7 +16,7 @@ public class WposAccount {
     public String mobile;
     public String  card_number;
     public boolean bdiscount;
-    public boolean bsuper;
+    public boolean bmanage;
     public String token;
 
     public boolean bSuperAdmin; //管理员
@@ -34,7 +34,7 @@ public class WposAccount {
         mobile= "";
         card_number= "";
         bdiscount= false;
-        bsuper = false;
+        bmanage = false;
         token= "";
         passwd="";
 
@@ -61,7 +61,7 @@ public class WposAccount {
         status = json.optBoolean("status");
 
         bdiscount = json.optBoolean("discount");
-        bsuper = json.optBoolean("super");
+        bmanage = json.optBoolean("manage");
 
         passwd = json.optString("passwd");
 
