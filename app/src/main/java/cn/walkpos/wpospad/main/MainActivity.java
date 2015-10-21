@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.login.LoginActivity;
+import cn.walkpos.wpospad.login.VerifyStatusActivity;
 import cn.walkpos.wpospad.module.BranchInfoModule;
 import cn.walkpos.wpospad.store.StoreManageActivity;
 import cn.walkpos.wpospad.util.WPosConfig;
@@ -199,7 +200,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 loadBranchInfo();
                 break;
             case R.id.verify_statinfo:
-                UiUtils.makeToast(this, "去查看进度");
+                UiUtils.startActivity(this,VerifyStatusActivity.class,true);
                 break;
             case R.id.user_layout:
                 if(null==userShiftDialog)

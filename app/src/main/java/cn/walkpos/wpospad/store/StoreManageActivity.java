@@ -66,6 +66,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
     private Drawable      uparrow;
     private Drawable      downarrow;
 
+    private TextView       noProHint;
     private RecyclerView   proListV;
     private LinearLayoutManager proLinearManager;
     private ProInfoAdapter proAdapter;
@@ -175,6 +176,8 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             }
         });
 
+        noProHint = (TextView)this.findViewById(R.id.no_content_hint);
+        noProHint.setVisibility(View.VISIBLE);
         proListV = (RecyclerView)this.findViewById(R.id.pro_list);
         proLinearManager = new LinearLayoutManager(this);
         proListV.setLayoutManager(proLinearManager);
@@ -620,6 +623,8 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             }
             else
                 allFetched = true;
+
+            noProHint.setVisibility(proArray.size() <=0 ? View.GONE : View.VISIBLE);
         }
     }
 }

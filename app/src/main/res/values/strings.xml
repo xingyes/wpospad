@@ -41,6 +41,7 @@
     <string name="stock_hint">库存预警</string>
     <string name="share_defaut_summary">wpos 收银台不错噢快来看看</string>
 
-
+    <string name="verify_status">认证进度</string>
+    <string name="x_user_your_verify_status">%s 用户您好，非常感谢使用本产品\n您当前的认证进度为</string>
 
 </resources>

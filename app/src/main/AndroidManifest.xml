@@ -3,6 +3,8 @@
     package="cn.walkpos.wpospad" >
 
     <uses-sdk android:minSdkVersion="18" android:targetSdkVersion="18"/>
+
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -52,6 +54,9 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".login.VerifyPicActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name=".login.VerifyStatusActivity"
+            android:screenOrientation="landscape"/>
+
 
         <activity android:name=".main.MainActivity"
             android:screenOrientation="landscape"/>

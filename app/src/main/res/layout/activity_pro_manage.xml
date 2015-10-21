@@ -297,11 +297,26 @@
                 android:textSize="24dp"
                 android:textColor="@color/red"/>
             </RelativeLayout>
-        <android.support.v7.widget.RecyclerView
-            android:background="@color/btn_wpos_gray_light_60"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/pro_list"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/no_content_hint"
+                    android:textSize="30dp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:text="商品库中还没有任何商品\n请点击右上角‘添加商品’进行添加"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawablePadding="30dp"
+                    android:drawableTop="@mipmap/icon_upset"/>
+                <android.support.v7.widget.RecyclerView
+                    android:background="@color/btn_wpos_gray_light_60"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/pro_list"/>
+
+            </RelativeLayout>
         </LinearLayout>
 
         <ExpandableListView
