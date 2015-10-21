@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.xingy.util.ToolUtil;
 
+import java.util.ArrayList;
+
 import cn.walkpos.wpospad.R;
 
 /**
@@ -43,15 +45,21 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
     protected TextView      mPositive;
     protected TextView      mNegative;
     protected TextView      mInputPre;
+    protected TextView      mInputPre2;
 
     private String          strCaption;
     private String          strMessage;
     private String          strPositive;
     private String          strNegative;
-    private String          strInputPre;
 
 
     private EditText    mInputEt;
+    private String          strInputPre;
+    private View        editLayout2;
+    private EditText    mInputEt2;
+    private String          strInputPre2;
+
+    private ArrayList<String> inputArray;
 
     public interface WithEditNumClickListener
     {
@@ -59,7 +67,7 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
          * onDialogClick
          * @param nButtonId
          */
-        public abstract void onDialogClick(int nButtonId, String inputStr);
+        public abstract void onDialogClick(int nButtonId, ArrayList<String> array);
     }
 
     private WithEditNumClickListener   mListener;
@@ -68,6 +76,7 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
     protected void onCreate(Bundle aSavedInstanceState) {
         super.onCreate(aSavedInstanceState);
 
+        inputArray = new ArrayList<String>();
         // Load the default configuration.
         setContentView(R.layout.dialog_instock);
         mCaption = (TextView)this.findViewById(R.id.dialog_caption);
@@ -75,10 +84,16 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
         mMessage = (TextView)this.findViewById(R.id.dialog_message);
         mMessage.setText(strMessage);
         mInputEt = (EditText)this.findViewById(R.id.input_edit);
+        editLayout2 = this.findViewById(R.id.edit_layout2);
+        mInputEt2 = (EditText)this.findViewById(R.id.input_edit2);
         mPositive = (TextView)this.findViewById(R.id.dialog_btn_positive);
         mNegative = (TextView)this.findViewById(R.id.dialog_btn_negative);
         mInputPre = (TextView)this.findViewById(R.id.input_pre);
         mInputPre.setText(strInputPre);
+        mInputPre2 = (TextView)this.findViewById(R.id.input_pre2);
+
+        editLayout2.setVisibility( TextUtils.isEmpty(strInputPre2) ? View.GONE: View.VISIBLE);
+        mInputPre2.setText(strInputPre2);
 
         mMessage.setVisibility(TextUtils.isEmpty(strMessage) ? View.GONE : View.VISIBLE);
         mInputEt.setInputType(mInputType);
@@ -96,7 +111,8 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    public void setProperty(final String caption, final String info,final String editpre,final String position, final String negative,
+    public void setProperty(final String caption, final String info,final String editpre,final String editpre2,
+                            final String position, final String negative,
                             int aInputType)
     {
         strCaption = caption;
@@ -104,6 +120,7 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
         strPositive = position;
         strNegative = negative;
         strInputPre = editpre;
+        strInputPre2 = editpre2;
         mInputType = aInputType;
 
         if(null!=mCaption)
@@ -116,6 +133,8 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
             mPositive.setText(strPositive);
         if(!TextUtils.isEmpty(strNegative) && null!=mNegative)
             mNegative.setText(strNegative);
+
+        //edit layout1
         if(null!=mInputPre)
             mInputPre.setText(strInputPre);
         if(null!=mInputEt)
@@ -123,12 +142,20 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
             mInputEt.setInputType(mInputType);
             mInputEt.setText("");
         }
+
+        if(null!=editLayout2)
+            editLayout2.setVisibility( TextUtils.isEmpty(strInputPre2) ? View.GONE: View.VISIBLE);
+
+        if(null!=mInputPre2)
+            mInputPre2.setText(strInputPre2);
+        if(null!=mInputEt2)
+            mInputEt2.setText("");
     }
 
 
     public void setProperty(final String caption, final String info,final String editpre,final String position, final String negative)
     {
-        setProperty(caption,info,editpre,position,negative,InputType.TYPE_CLASS_TEXT);
+        setProperty(caption,info,editpre,"",position,negative,InputType.TYPE_CLASS_TEXT);
     }
 
     @Override
@@ -136,7 +163,7 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
     {
         if((null != mListener) && (keyCode == KeyEvent.KEYCODE_BACK))
         {
-            mListener.onDialogClick(DialogInterface.BUTTON_NEGATIVE,"");
+            mListener.onDialogClick(DialogInterface.BUTTON_NEGATIVE,inputArray);
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -147,11 +174,15 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
 
         if ( null != mListener )
         {
-            final String strinput = mInputEt.getText().toString();
+            String strinput = mInputEt.getText().toString();
+            inputArray.add(strinput);
+            if(mInputEt.getVisibility()==View.VISIBLE)
+                inputArray.add(mInputEt.getText().toString());
+
             if(v== mPositive)
-                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,strinput);
+                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,inputArray);
             else
-                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,strinput);
+                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,inputArray);
         }
 
         // Dismiss the dialog.

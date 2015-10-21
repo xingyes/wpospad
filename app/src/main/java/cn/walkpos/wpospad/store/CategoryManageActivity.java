@@ -26,7 +26,6 @@ import java.util.Random;
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.adapter.CateAdapter;
 import cn.walkpos.wpospad.adapter.DividerItemDecoration;
-import cn.walkpos.wpospad.login.WposAccount;
 import cn.walkpos.wpospad.main.SettingActivity;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
@@ -230,20 +229,23 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
 
 
     @Override
-    public void onDialogClick(int nButtonId, String inputStr) {
+    public void onDialogClick(int nButtonId, ArrayList<String> arrayList) {
+        if(null==arrayList || arrayList.size()<=0)
+            return;
+
         if(cateSetLevel==0)
         {
             if(modifFlag)
-                modifyCateItem(cateRootAdapter.getPickidx(),-1,inputStr);
+                modifyCateItem(cateRootAdapter.getPickidx(),-1,arrayList.get(0));
             else
-                addCateItem(-1,inputStr);
+                addCateItem(-1,arrayList.get(0));
         }
         else if(cateSetLevel == 1)
         {
             if(modifFlag)
-                modifyCateItem(cateRootAdapter.getPickidx(),subcateAdapter.getPickidx(),inputStr);
+                modifyCateItem(cateRootAdapter.getPickidx(),subcateAdapter.getPickidx(),arrayList.get(0));
             else
-                addCateItem(cateRootAdapter.getPickidx(), inputStr);
+                addCateItem(cateRootAdapter.getPickidx(), arrayList.get(0));
         }
 
     }
