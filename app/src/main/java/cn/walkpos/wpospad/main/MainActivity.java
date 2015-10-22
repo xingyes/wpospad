@@ -24,6 +24,7 @@ import com.xingy.util.ajax.Response;
 import org.json.JSONObject;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.cashdesk.MoneyManageActivity;
 import cn.walkpos.wpospad.login.LoginActivity;
 import cn.walkpos.wpospad.login.VerifyStatusActivity;
 import cn.walkpos.wpospad.module.BranchInfoModule;
@@ -200,7 +201,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 loadBranchInfo();
                 break;
             case R.id.verify_statinfo:
-                UiUtils.startActivity(this,VerifyStatusActivity.class,true);
+                UiUtils.startActivity(this, VerifyStatusActivity.class, true);
                 break;
             case R.id.user_layout:
                 if(null==userShiftDialog)
@@ -234,7 +235,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 UiUtils.makeToast(this,"统计报表界面");
                 break;
             case R.id.money_btn:
-                UiUtils.makeToast(this,"金额提现管理界面");
+                UiUtils.startActivity(this, MoneyManageActivity.class,true);
                 break;
             case R.id.setting_btn:
                 bundle.putSerializable(MainActivity.BRANCH_INFO,mBrancInfo);

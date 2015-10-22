@@ -72,9 +72,14 @@
 
         <activity android:name=".store.StoreManageActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".zxing.client.CaptureActivity"
+        <activity android:name=".zxing.android.CaptureActivity"
             android:screenOrientation="landscape"/>
 
+        <!--收款-->
+        <activity android:name=".cashdesk.CashdeskActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".cashdesk.MoneyManageActivity"
+            android:screenOrientation="landscape"/>
 
         <!--thirdpart-->
         <activity android:name=".thirdapi.WeiboShareResponseActivity"

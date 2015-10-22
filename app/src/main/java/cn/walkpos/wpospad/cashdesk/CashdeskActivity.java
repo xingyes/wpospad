@@ -1,13 +1,11 @@
-package cn.walkpos.wpospad.counter;
+package cn.walkpos.wpospad.cashdesk;
 
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
-
 
 import com.xingy.util.activity.BaseActivity;
 
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import cn.walkpos.wpospad.R;
 
 
-public class CounterActivity extends BaseActivity {
+public class CashdeskActivity extends BaseActivity {
 
     private RecyclerView  cateListV;
     private ArrayList<String> cateArray;

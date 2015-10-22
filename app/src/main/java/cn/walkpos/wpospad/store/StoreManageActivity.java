@@ -624,7 +624,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             else
                 allFetched = true;
 
-            noProHint.setVisibility(proArray.size() <=0 ? View.GONE : View.VISIBLE);
+            noProHint.setVisibility(proArray.size() <=0 ? View.VISIBLE : View.GONE);
         }
     }
 }
