@@ -32,6 +32,8 @@
     <string name="manage_pro">管理商品</string>
     <string name="add">添加</string>
     <string name="add_product">添加商品</string>
+    <string name="bill_detail">交易明细</string>
+
     <string name="manage_category">类目管理</string>
 
     <string name="bat_del_sure">是否确认删除所选商品？</string>

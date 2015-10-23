@@ -22,18 +22,18 @@ public class CashdeskActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_counter);
+        setContentView(R.layout.activity_cashdesk);
 
-        cateListV = (RecyclerView)this.findViewById(R.id.cate_list);
-
-        LinearLayoutManager lm = new LinearLayoutManager(this);
-        lm.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-        cateListV.setLayoutManager(lm);
-        cateListV.setItemAnimator(new DefaultItemAnimator());
-
-        cateAdatper = new BottonRecyclerAdapter();
-        cateListV.setAdapter(cateAdatper);
+//        cateListV = (RecyclerView)this.findViewById(R.id.cate_list);
+//
+//        LinearLayoutManager lm = new LinearLayoutManager(this);
+//        lm.setOrientation(LinearLayoutManager.HORIZONTAL);
+//
+//        cateListV.setLayoutManager(lm);
+//        cateListV.setItemAnimator(new DefaultItemAnimator());
+//
+//        cateAdatper = new BottonRecyclerAdapter();
+//        cateListV.setAdapter(cateAdatper);
 
 //          loadCatePro();
     }

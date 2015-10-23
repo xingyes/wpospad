@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--导航栏-->
+    <RelativeLayout
+        android:id="@+id/cashdesk_nav_layout"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.xingy.lib.ui.NavigationBar
+            android:id="@+id/cashdesk_nav"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            inmost:leftVisiable="true"
+            inmost:drawableLeft="@drawable/ico_back"
+            inmost:bgColor="@color/nav_wpos_bg"
+            inmost:textColor="@color/white"/>
+        <EditText
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/search_input"
+            android:layout_alignBottom="@id/cashdesk_nav"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="400dp"
+            android:layout_height="match_parent"
+            android:drawableLeft="@mipmap/icon_search"
+            android:background="@drawable/button_white_10round_shape"
+            android:textColorHint="@color/global_text_info_color"
+            android:textColor="@color/black"
+            android:hint="搜索编号/名称/简称"/>
+        <TextView
+            android:layout_alignBottom="@id/cashdesk_nav"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:text="搜索"
+            android:background="@drawable/global_transparent_shadow_click_state"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/search_input"
+            android:id="@+id/search_btn"/>
+        <TextView
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/cashdesk_nav"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/bill_detail"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@mipmap/icon_add"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:id="@+id/bill_detail_btn"/>
+    </RelativeLayout>
+
+    <!--右侧 操作台-->
+    <include layout="@layout/pg_cashdesk_right"
+        android:layout_below="@id/cashdesk_nav_layout"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"/>
+
+    
+
+
+</RelativeLayout>
