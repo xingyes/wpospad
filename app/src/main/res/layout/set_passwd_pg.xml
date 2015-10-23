@@ -120,17 +120,9 @@
                 android:layout_gravity="center_vertical"
                 inmost:checkboxImageOff="@drawable/choose_radio_off"
                 inmost:checkboxImageOn="@drawable/choose_radio_on"
-
-                />
-            <TextView
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24dp"
-                android:textColor="@color/global_text_info_color"
-                android:text="已阅读并同意"/>
+                inmost:text="@string/read_and_agree"
+                inmost:contentColor="@color/global_text_info_color"
+                inmost:contentSize="24dp"/>/>
             <TextView
                 android:padding="5dp"
                 android:layout_gravity="center_vertical"

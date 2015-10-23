@@ -1,4 +1,4 @@
-package cn.walkpos.wpospad.cashdesk;
+package cn.walkpos.wpospad.money;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
@@ -27,6 +29,7 @@ import com.xingy.util.ajax.Response;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.main.WPosApplication;
@@ -39,6 +42,18 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
     private ImageLoader    mImgLoader;
     private Ajax           mAjax;
     private DrawerLayout   cardDrawer;
+
+    //left 卡片添加
+    private LinearLayout   leftLayout;
+    private EditText       accountNamev;
+    private EditText       accountCodev;
+    private EditText       accountPhonev;
+    private CheckBox       accountAgreev;
+
+
+//    right  卡片管理
+    private TextView       cardDelBtn;
+    private LinearLayout   rightLayout;
     private ListView       cardListV;
     private BandcardAdapter cardAdapter;
 
@@ -72,8 +87,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         cardDrawer = (DrawerLayout)this.findViewById(R.id.money_drawer);
         cardDrawer.closeDrawers();
 
-        cardAdapter = new BandcardAdapter();
-
+        //main part
         incomeTotalv = (TextView)this.findViewById(R.id.income_total);
         this.findViewById(R.id.check_detail).setOnClickListener(this);
         transferAmountv = (EditText)this.findViewById(R.id.amount);
@@ -82,6 +96,24 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         accountInfov.setOnClickListener(this);
         this.findViewById(R.id.open_cardraw_btn).setOnClickListener(this);
         this.findViewById(R.id.money_transfer_btn).setOnClickListener(this);
+
+        //left
+        leftLayout = (LinearLayout)this.findViewById(R.id.bind_card_layout);
+        accountNamev = (EditText)this.findViewById(R.id.account_name);
+        accountCodev = (EditText)this.findViewById(R.id.account_code);
+        accountPhonev = (EditText)this.findViewById(R.id.account_phone);
+        accountAgreev = (CheckBox)this.findViewById(R.id.agree_btn);
+        this.findViewById(R.id.agreement_info).setOnClickListener(this);
+        this.findViewById(R.id.bind_account_btn).setOnClickListener(this);
+
+
+        //right
+        cardDelBtn = (TextView)this.findViewById(R.id.card_del);
+        cardDelBtn.setOnClickListener(this);
+        rightLayout = (LinearLayout)this.findViewById(R.id.manage_card_layout);
+        cardAdapter = new BandcardAdapter();
+
+
         cardListV = (ListView)this.findViewById(R.id.card_listv);
         cardListV.setAdapter(cardAdapter);
         cardListV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,7 +122,12 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                 BCardModule pcard = cardArray.get(position);
                 if(TextUtils.isEmpty(pcard.card_id))
                 {
-                    UiUtils.makeToast(MoneyManageActivity.this,"增加银行卡对话框");
+                    if(!cardDrawer.isDrawerVisible(leftLayout))
+                    {
+                        cardDrawer.openDrawer(leftLayout);
+                    }
+                    cardDrawer.closeDrawer(rightLayout);
+                    UiUtils.makeToast(MoneyManageActivity.this, "增加银行卡对话框");
                     return;
                 }
                 cardAdapter.notifyDataSetChanged();
@@ -104,7 +141,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                     public void run() {
                         cardDrawer.closeDrawers();
                     }
-                },1000);
+                },500);
 
             }
         });
@@ -177,12 +214,35 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         {
             accountInfov.setText("");
         }
-
-            cardArray.remove(pos);
-            cardAdapter.notifyDataSetChanged();
-
+        cardArray.remove(pos);
+        cardAdapter.notifyDataSetChanged();
     }
 
+    private void bindNewCard()
+    {
+        BCardModule card = new BCardModule();
+        Random rd = new Random();
+        card.card_id = "9" + rd.nextInt(9);
+
+        card.cardcode = accountCodev.getText().toString();
+        if(TextUtils.isEmpty(card.cardcode))
+        {
+            UiUtils.makeToast(this,"卡号不能为空");
+            return;
+        }
+        card.usrname = accountNamev.getText().toString();
+        if(TextUtils.isEmpty(card.usrname))
+        {
+            UiUtils.makeToast(this,"持卡人姓名不能为空");
+            return;
+        }
+
+        cardArray.add(card);
+        cardAdapter.notifyDataSetChanged();
+
+        cardDrawer.closeDrawer(leftLayout);
+        cardDrawer.openDrawer(rightLayout);
+    }
 
     @Override
     public void onClick(View v)
@@ -190,16 +250,31 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         switch (v.getId()) {
             case R.id.account_info:
             case R.id.open_cardraw_btn:
-                if(cardDrawer.isDrawerVisible(cardListV))
-                    cardDrawer.closeDrawer(cardListV);
-                else
-                    cardDrawer.openDrawer(cardListV);
+                if(!cardDrawer.isDrawerVisible(rightLayout)) {
+                    cardDrawer.openDrawer(rightLayout);
+                    cardAdapter.bDelstat = false;
+                    cardAdapter.notifyDataSetChanged();
+                }
                 break;
             case R.id.check_detail:
                 UiUtils.makeToast(this,"查看资金明细");
                 break;
             case R.id.money_transfer_btn:
                 UiUtils.makeToast(this,"转移资金成功");
+                break;
+
+//            right
+            case R.id.card_del:
+                cardDelBtn.setText(cardAdapter.bDelstat ? R.string.btn_delete :R.string.btn_done);
+                cardAdapter.bDelstat = !cardAdapter.bDelstat;
+                cardAdapter.notifyDataSetChanged();
+                break;
+            //left
+            case R.id.agreement_info:
+                UiUtils.makeToast(this,"展示服务协议");
+                break;
+            case R.id.bind_account_btn:
+                bindNewCard();
                 break;
             default:
                 super.onClick(v);
@@ -249,10 +324,20 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
     }
 
 
+    @Override
+    public void onBackPressed()
+    {
+        if(cardDrawer.isDrawerVisible(leftLayout) || cardDrawer.isDrawerVisible(rightLayout))
+            cardDrawer.closeDrawers();
+        else
+            super.onBackPressed();
+    }
 
 //    银行账户 adapter
     public class BandcardAdapter extends BaseAdapter {
 
+        public boolean  bDelstat = false;
+        public void setDelstat(boolean flag){bDelstat = flag;}
         public String  chooseId = "";
         public void setChooseId(String id){chooseId = id;}
         @Override
@@ -311,7 +396,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             holder.banknamev.setVisibility(newadd ? View.INVISIBLE : View.VISIBLE);
             holder.cardtypev.setVisibility(newadd ? View.INVISIBLE : View.VISIBLE);
             holder.codev.setVisibility(newadd ? View.INVISIBLE : View.VISIBLE);
-            holder.delv.setVisibility(newadd ? View.INVISIBLE : View.VISIBLE);
+            holder.delv.setVisibility( (bDelstat && !newadd) ? View.VISIBLE : View.INVISIBLE);
 
             holder.pickedv.setVisibility((!newadd && chooseId.equals(card.card_id)) ? View.VISIBLE : View.INVISIBLE);
 

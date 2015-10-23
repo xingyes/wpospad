@@ -159,6 +159,15 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
         refreshProdata();
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        if(cateDrawer.isDrawerVisible(cateListV))
+            cateDrawer.closeDrawers();
+        else
+            super.onBackPressed();
+    }
+
     /**
      *
      * @param fromNet

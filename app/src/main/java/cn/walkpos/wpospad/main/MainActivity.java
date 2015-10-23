@@ -24,10 +24,10 @@ import com.xingy.util.ajax.Response;
 import org.json.JSONObject;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.cashdesk.MoneyManageActivity;
 import cn.walkpos.wpospad.login.LoginActivity;
 import cn.walkpos.wpospad.login.VerifyStatusActivity;
 import cn.walkpos.wpospad.module.BranchInfoModule;
+import cn.walkpos.wpospad.money.MoneyManageActivity;
 import cn.walkpos.wpospad.store.StoreManageActivity;
 import cn.walkpos.wpospad.util.WPosConfig;
 

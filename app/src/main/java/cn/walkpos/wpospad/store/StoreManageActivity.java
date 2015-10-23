@@ -496,7 +496,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
     @Override
     public void onBackPressed()
     {
-        if(cateDrawer.isShown())
+        if(null!=cateDrawer && cateDrawer.isDrawerVisible(cateListV))
             cateDrawer.closeDrawers();
         super.onBackPressed();;
     }

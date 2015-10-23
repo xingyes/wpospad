@@ -9,6 +9,8 @@
     <string name="register_underline"><u>前去注册</u></string>
 
     <string name="realname_verify">实名认证</string>
+    <string name="read_and_agree">已阅读并同意</string>
+
     <string name="agreement_detail">《小云管家服务协议》</string>
 
 
@@ -44,5 +46,7 @@
     <string name="verify_status">认证进度</string>
     <string name="x_user_your_verify_status">%s 用户您好，非常感谢使用本产品\n您当前的认证进度为</string>
     <string name="income">营业款</string>
+    <string name="bind_new_bandcard">绑定新卡</string>
+    <string name="card_manage">卡片管理</string>
 
 </resources>

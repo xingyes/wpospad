@@ -78,7 +78,7 @@
         <!--收款-->
         <activity android:name=".cashdesk.CashdeskActivity"
             android:screenOrientation="landscape"/>
-        <activity android:name=".cashdesk.MoneyManageActivity"
+        <activity android:name=".money.MoneyManageActivity"
             android:screenOrientation="landscape"/>
 
         <!--thirdpart-->
