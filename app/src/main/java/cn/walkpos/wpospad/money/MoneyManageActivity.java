@@ -3,6 +3,7 @@ package cn.walkpos.wpospad.money;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.login.VerifyDetailActivity;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.BCardModule;
+import cn.walkpos.wpospad.ui.VerifyCodeDialog;
 
 
 public class MoneyManageActivity extends BaseActivity implements DrawerLayout.DrawerListener,
@@ -63,7 +66,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
     private EditText transferAmountv;
 
     private TextView accountInfov;
-
+    private VerifyCodeDialog verifyDialog;
 
     
     @Override
@@ -260,7 +263,22 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                 UiUtils.makeToast(this,"查看资金明细");
                 break;
             case R.id.money_transfer_btn:
-                UiUtils.makeToast(this,"转移资金成功");
+                if(null == verifyDialog)
+                {
+                    verifyDialog = new VerifyCodeDialog(this,new VerifyCodeDialog.VerifyResultListener() {
+                        @Override
+                        public boolean onVerifyDialogDismiss(boolean result) {
+                            if(result)
+                                UiUtils.makeToast(MoneyManageActivity.this,"验证短信成功转移资金成功");
+                            else
+                                UiUtils.makeToast(MoneyManageActivity.this,"验证短信失败，无法转移资金");
+                            return false;
+                        }
+                    });
+                    verifyDialog.setProperty("验证码校验","信息已经发往您在银行绑定的手机","","");
+                }
+                verifyDialog.show();
+
                 break;
 
 //            right
@@ -329,6 +347,8 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
     {
         if(cardDrawer.isDrawerVisible(leftLayout) || cardDrawer.isDrawerVisible(rightLayout))
             cardDrawer.closeDrawers();
+        else if(verifyDialog!=null && verifyDialog.isShowing())
+            verifyDialog.dismiss();
         else
             super.onBackPressed();
     }

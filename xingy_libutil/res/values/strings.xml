@@ -90,7 +90,10 @@
 	<string name="please_input_password">请输入密码(6-16位字母或数字)</string>
 	<string name="verify_code_resend">120秒后可重新发送</string>
 	<string name="send">发送</string>
-	<string name="left_second">%s秒</string>
+    <string name="resend">重新发送</string>
+
+    <string name="left_second">%s秒</string>
+    <string name="already_sent_left_second">已发送(%s秒)</string>
 	<string name="please_input_correct_phone_num">请输入正确的手机号码</string>
 	<string name="please_input_correct_psw">请输入合适的密码</string>
 	<string name="please_input_verifycode">请输入验证码</string>
