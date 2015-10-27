@@ -24,6 +24,7 @@ import com.xingy.util.ajax.Response;
 import org.json.JSONObject;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.cashdesk.CashdeskActivity;
 import cn.walkpos.wpospad.login.LoginActivity;
 import cn.walkpos.wpospad.login.VerifyStatusActivity;
 import cn.walkpos.wpospad.module.BranchInfoModule;
@@ -223,7 +224,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                     userShiftDialog.show();
                 break;
             case R.id.checkout_btn:
-                UiUtils.makeToast(this,"去结账页面");
+                UiUtils.startActivity(this, CashdeskActivity.class, true);
                 break;
             case R.id.pro_btn:
                 UiUtils.startActivity(this,StoreManageActivity.class,true);

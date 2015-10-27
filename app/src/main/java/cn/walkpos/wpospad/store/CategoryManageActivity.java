@@ -21,10 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.adapter.CateAdapter;
+import cn.walkpos.wpospad.adapter.CateManagAdapter;
 import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.main.SettingActivity;
 import cn.walkpos.wpospad.main.WPosApplication;
@@ -40,8 +39,8 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
     private RecyclerView   cateRootListV;
     private RecyclerView   subcateListV;
     private ArrayList<CateItemModule> cateGroupArray;
-    private CateAdapter cateRootAdapter;
-    private CateAdapter subcateAdapter;
+    private CateManagAdapter cateRootAdapter;
+    private CateManagAdapter subcateAdapter;
 
     private CateItemModule curCateItem;
     private ImageView setHintV;
@@ -79,7 +78,7 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
         cateRootListV.setLayoutManager(new LinearLayoutManager(this));
         subcateListV.setLayoutManager(new LinearLayoutManager(this));
 
-        cateRootAdapter = new CateAdapter(this,new CateAdapter.ItemClickListener() {
+        cateRootAdapter = new CateManagAdapter(this,new CateManagAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
                 cateRootAdapter.setPickIdx(pos);
@@ -117,7 +116,7 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
         },false);
 
 
-        subcateAdapter = new CateAdapter(this,new CateAdapter.ItemClickListener() {
+        subcateAdapter = new CateManagAdapter(this,new CateManagAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
                 subcateAdapter.setPickIdx(pos);

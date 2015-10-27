@@ -16,7 +16,7 @@ import cn.walkpos.wpospad.module.CateItemModule;
 /**
  * Created by xingyao on 15-8-27.
  */
-public class CateAdapter extends RecyclerView.Adapter<CateAdapter.CateViewHolder>
+public class CateManagAdapter extends RecyclerView.Adapter<CateManagAdapter.CateViewHolder>
 {
     private ArrayList<CateItemModule> cateArray;
     private boolean useCheckIcon = false;
@@ -32,7 +32,7 @@ public class CateAdapter extends RecyclerView.Adapter<CateAdapter.CateViewHolder
         pickidx = pic;
     }
     public int getPickidx(){return pickidx;}
-    public CateAdapter(BaseActivity activity,ItemClickListener listener, boolean flag)
+    public CateManagAdapter(BaseActivity activity, ItemClickListener listener, boolean flag)
     {
         mActivity = activity;
         mListener = listener;
@@ -46,7 +46,7 @@ public class CateAdapter extends RecyclerView.Adapter<CateAdapter.CateViewHolder
 
     @Override
     public CateViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = mActivity.getLayoutInflater().inflate(R.layout.item_cate, null);
+            View v = mActivity.getLayoutInflater().inflate(R.layout.item_manage_cate, null);
             return new CateViewHolder(v);
     }
 

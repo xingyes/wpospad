@@ -50,5 +50,6 @@
     <string name="income">营业款</string>
     <string name="bind_new_bandcard">绑定新卡</string>
     <string name="card_manage">卡片管理</string>
+    <string name="_back">&lt;返回</string>
 
 </resources>

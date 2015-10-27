@@ -375,8 +375,19 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             UiUtils.makeToast(this,msg);
             return;
         }
+        if(response.getId() == WPosConfig.REQ_LOAD_CATEGORY)
+        {
+            JSONArray array = jsonObject.optJSONArray("data");
+            if (null == array) {
+                String msg = jsonObject.optString("res", getString(R.string.network_error));
+                UiUtils.makeToast(this, msg);
+                return;
+            }
+            IPageCache cache = new IPageCache();
+            cache.set(CateItemModule.CACHEKEY_CATEGORY,array.toString(),86400*7);
+            refreshCateData(array);
 
-        if(response.getId() == WPosConfig.REQ_ADD_GOODS || response.getId() == WPosConfig.REQ_MODIFY_GOODS) {
+        }else if(response.getId() == WPosConfig.REQ_ADD_GOODS || response.getId() == WPosConfig.REQ_MODIFY_GOODS) {
             String msg = jsonObject.optString("res", "提交成功");
             UiUtils.makeToast(this, msg);
 

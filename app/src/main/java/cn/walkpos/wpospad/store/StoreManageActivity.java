@@ -291,6 +291,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             mAjax.send();
         }
     }
+
     private void refreshCateData(JSONArray array)
     {
         if(null!=array && array.length()>0)
@@ -576,8 +577,18 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             UiUtils.makeToast(this,msg);
             return;
         }
-
-        if(response.getId()==WPosConfig.REQ_INSTOCK_GOODS)
+        if(response.getId() == WPosConfig.REQ_LOAD_CATEGORY)
+        {
+            JSONArray array = jsonObject.optJSONArray("data");
+            if (null == array) {
+                String msg = jsonObject.optString("res", getString(R.string.network_error));
+                UiUtils.makeToast(this, msg);
+                return;
+            }
+            IPageCache cache = new IPageCache();
+            cache.set(CateItemModule.CACHEKEY_CATEGORY,array.toString(),86400*7);
+            refreshCateData(array);
+        }else if(response.getId()==WPosConfig.REQ_INSTOCK_GOODS)
         {
             String msg = jsonObject.optString("res", getString(R.string.submit_succ));
             UiUtils.makeToast(this,msg);

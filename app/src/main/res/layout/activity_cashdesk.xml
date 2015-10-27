@@ -61,12 +61,72 @@
 
     <!--右侧 操作台-->
     <include layout="@layout/pg_cashdesk_right"
+        android:id="@+id/right_oprate_desk"
         android:layout_below="@id/cashdesk_nav_layout"
         android:layout_width="400dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"/>
 
-    
+    <RelativeLayout
+        android:id="@+id/cate_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_toLeftOf="@id/right_oprate_desk"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:background="@color/btn_wpos_gray_dark"
+            android:textColor="@color/global_text_info_color"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:id="@+id/back_cate_level1"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:text="&lt; 返回"
+            android:layout_alignParentLeft="true"/>
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/btn_wpos_gray_dark"
+            android:layout_toRightOf="@id/back_cate_level1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cate_list"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_above="@id/cate_list_layout"
+        android:id="@+id/pro_panel_layout"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        android:background="@color/btn_wpos_gray"
+        android:layout_toLeftOf="@id/right_oprate_desk">
+        <TextView
+            android:id="@+id/no_content_hint"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:text="没有符合条件的商品"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawablePadding="30dp"
+            android:drawableTop="@mipmap/icon_upset"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pro_panel"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/to_buy_layout"
+        android:layout_below="@id/cashdesk_nav_layout"
+        android:layout_above="@id/pro_panel_layout"
+        android:layout_toLeftOf="@id/right_oprate_desk"
+        android:background="@color/btn_wpos_red"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        </RelativeLayout>
+    <include layout="@layout/global_loading"/>
 
 
 </RelativeLayout>
