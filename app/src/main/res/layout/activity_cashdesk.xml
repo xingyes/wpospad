@@ -67,6 +67,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"/>
 
+    <!--下方分类挑选panel-->
     <RelativeLayout
         android:id="@+id/cate_list_layout"
         android:layout_width="match_parent"
@@ -91,12 +92,14 @@
             android:id="@+id/cate_list"/>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_above="@id/cate_list_layout"
-        android:id="@+id/pro_panel_layout"
+
+    <!--商品挑选panel-->
+    <cn.walkpos.wpospad.ui.FlingDown2GoneLayout
+        android:id="@+id/goods_panel_layout"
         android:layout_width="match_parent"
         android:layout_height="310dp"
         android:background="@color/btn_wpos_gray"
+        android:layout_above="@id/cate_list_layout"
         android:layout_toLeftOf="@id/right_oprate_desk">
         <TextView
             android:id="@+id/no_content_hint"
@@ -113,19 +116,109 @@
             android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-     </RelativeLayout>
+    </cn.walkpos.wpospad.ui.FlingDown2GoneLayout>
 
-    <RelativeLayout
+
+    <!--商品购买列表-->
+    <LinearLayout
         android:id="@+id/to_buy_layout"
+        android:layout_above="@id/goods_panel_layout"
         android:layout_below="@id/cashdesk_nav_layout"
-        android:layout_above="@id/pro_panel_layout"
         android:layout_toLeftOf="@id/right_oprate_desk"
-        android:background="@color/btn_wpos_red"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:background="@color/btn_wpos_gray_light"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:orientation="horizontal">
+            <CheckBox
+                android:layout_marginLeft="-40dp"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buy_choose"
+                android:checked="true"
+                android:button="@drawable/radio_choose_selector"/>
+            <TextView
+                android:textSize="14dp"
+                android:textColor="@color/global_text_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_all"/>
+            <TextView
+                android:text="编码"
+                android:textColor="@color/global_text_bold"
+                android:layout_width="140dp"
+                android:layout_height="60dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textSize="18dp"/>
+            <TextView
+                android:textColor="@color/global_text_bold"
+                android:layout_marginLeft="5dp"
+                android:layout_width="160dp"
+                android:layout_height="60dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="简称"/>
+            <TextView
+                android:textColor="@color/global_text_bold"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="价格"/>
+            <TextView
+                android:textColor="@color/global_text_bold"
+                android:layout_marginLeft="15dp"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="数量"/>
+            <TextView
+                android:textColor="@color/global_text_bold"
+                android:layout_marginLeft="5dp"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="单品折扣"/>
+            <TextView
+                android:text="小计"
+                android:textColor="@color/global_text_bold"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:textSize="18dp"/>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/global_text_info_color"/>
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/global_wpos_gray_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/buy_pro_list"/>
+    </LinearLayout>
 
-
-        </RelativeLayout>
     <include layout="@layout/global_loading"/>
 
 

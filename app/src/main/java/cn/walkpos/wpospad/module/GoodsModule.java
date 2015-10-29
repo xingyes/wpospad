@@ -23,6 +23,30 @@ public class GoodsModule extends BaseModel {
     public String  cat_id;
     public String  cat_name;
 
+    public int     buy_num;
+    public GoodsModule(GoodsModule other)
+    {
+        clear();
+        if(other==null)
+            return;
+        goods_id = other.goods_id;
+        bn = other.bn;
+        pricein = other.pricein;
+        priceout = other.priceout;
+        name = other.name;
+        name_s = other.name_s;
+        img_src = other.img_src;
+        stock = other.stock;
+        up_warn = other.up_warn;
+        down_warn = other.down_warn;
+        discount = other.discount;
+        marketable = other.marketable;
+        cat_id = other.cat_id;
+        cat_name = other.cat_name;
+
+        buy_num = other.buy_num;
+
+    }
     public GoodsModule()
     {
         clear();
@@ -44,6 +68,8 @@ public class GoodsModule extends BaseModel {
         marketable = true;
         cat_id = "";
         cat_name = "";
+
+        buy_num = 1;
 
     }
 

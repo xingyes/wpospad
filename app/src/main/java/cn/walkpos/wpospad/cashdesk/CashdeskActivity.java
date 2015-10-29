@@ -1,16 +1,18 @@
 package cn.walkpos.wpospad.cashdesk;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.view.MotionEvent;
+import android.text.TextWatcher;
+import android.view.GestureDetector;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xingy.lib.IPageCache;
@@ -28,39 +30,59 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.adapter.BuyProAdapter;
 import cn.walkpos.wpospad.adapter.CashCateAdapter;
+import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.adapter.ProBtnAdapter;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.module.GoodsModule;
+import cn.walkpos.wpospad.ui.FlingDown2GoneLayout;
 import cn.walkpos.wpospad.util.WPosConfig;
 
 
-public class CashdeskActivity extends BaseActivity implements OnSuccessListener<JSONObject>{
+public class CashdeskActivity extends BaseActivity implements OnSuccessListener<JSONObject>,
+                BuyProAdapter.InfoChangedListener{
 
     private Ajax          mAjax;
 
     private RecyclerView  cateListV;
     private ArrayList<CateItemModule> cateGroupArray;
-    private CateItemModule            curCateItem;
+    private CateItemModule            curRootCateItem;//返回是  当前分类置空
+    private CateItemModule            curSubCateItem;//返回是  当前分类置空
+
     private int                       curCatePos;
-    private TextView                 backCateroot;
+    private TextView                  backCaterootv;
     private CashCateAdapter       cateAdapter;
 
 
-    private View           proPaneLayout;
-    private String         proFilter = "";
+    private FlingDown2GoneLayout goodsPaneLayout;
     private EditText       searchInputV;
-    private int            pageno = 1;
+    private int            pageno = 0;
+    private int            ajaxPageno;
+    private static final int PAGE_SZ = 27;
     private boolean        allFetched = false;
-    private RecyclerView   proListV;
+    private RecyclerView   goodsListV;
     private GridLayoutManager proGridManager;
     private ProBtnAdapter  proBtnAdapter;
     private TextView       noproHintv;
     private ArrayList<GoodsModule> proArray;
 
-    private RelativeLayout pickProLayout;
 
+    private android.widget.CheckBox allCheckV;
+    private RecyclerView   buyListV;
+    private BuyProAdapter          buyAdapter;
+
+    private TextView       billTotalv;
+    private EditText       billDiscountv;
+    private TextView       incomeTotalv;
+    private Handler mHandler = new Handler();
+    private Runnable       updateIncomeRunnable =  new Runnable(){
+        @Override
+        public void run() {
+            updateBillTotal();
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +90,9 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
         loadNavBar(R.id.cashdesk_nav);
 
-        backCateroot = (TextView)this.findViewById(R.id.back_cate_level1);
-        backCateroot.setVisibility(View.GONE);
-        backCateroot.setOnClickListener(this);
+        backCaterootv = (TextView)this.findViewById(R.id.back_cate_level1);
+        backCaterootv.setVisibility(View.GONE);
+        backCaterootv.setOnClickListener(this);
 
         this.findViewById(R.id.search_input).setOnClickListener(this);
 
@@ -86,20 +108,22 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         cateAdapter = new CashCateAdapter(this,new CashCateAdapter.ItemClickListener() {
             @Override
             public void onRecyclerItemClick(View v, int pos) {
-                if (null == curCateItem) {
-                    pageno = 1;
+                if (null == curRootCateItem) {
                     curCatePos = pos;
-                    curCateItem = cateGroupArray.get(pos);
-                    cateAdapter.setDataset(curCateItem.subCateArray);
+                    curRootCateItem = cateGroupArray.get(pos);
+                    curSubCateItem = null;
+                    cateAdapter.setDataset(curRootCateItem.subCateArray);
                     cateAdapter.setCateroot(false);
-                    cateAdapter.notifyDataSetChanged();
-                    refreshProducts(curCateItem, pageno);
+                    cateAdapter.setPickIdx(-1);
                     cateListV.scrollToPosition(0);
-                    backCateroot.setVisibility(View.VISIBLE);
+                    backCaterootv.setVisibility(View.VISIBLE);
                 } else {
-                    pageno = 1;
-                    refreshProducts(curCateItem.subCateArray.get(pos), pageno);
+                    cateAdapter.setPickIdx(pos);
+                    curSubCateItem = curRootCateItem.subCateArray.get(pos);
                 }
+                cateAdapter.notifyDataSetChanged();
+                pageno = 0;
+                loadProductPanel(pageno+1);
             }
 
             @Override
@@ -111,20 +135,19 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         loadCateData(false);
 
         //product panel
-        proPaneLayout = this.findViewById(R.id.pro_panel_layout);
+        goodsPaneLayout = (FlingDown2GoneLayout)this.findViewById(R.id.goods_panel_layout);
         noproHintv = (TextView)this.findViewById(R.id.no_content_hint);
-        proListV = (RecyclerView)this.findViewById(R.id.pro_panel);
+        goodsListV = (RecyclerView)this.findViewById(R.id.pro_panel);
         proGridManager = new GridLayoutManager(this,3);
         proGridManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        proListV.setLayoutManager(proGridManager);
-        proListV.setOnScrollListener(new RecyclerView.OnScrollListener() {
+        goodsListV.setLayoutManager(proGridManager);
+        goodsListV.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if(newState == RecyclerView.SCROLL_STATE_IDLE)
-                {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     int tail = proGridManager.findLastVisibleItemPosition();
-                    if(tail >= (proArray.size()-1) && !allFetched)
-                        refreshProducts(null, pageno + 1);
+                    if (tail >= (proArray.size() - 1) && !allFetched)
+                        loadProductPanel(pageno + 1);
                 }
                 super.onScrollStateChanged(recyclerView, newState);
             }
@@ -133,7 +156,10 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         proBtnAdapter = new ProBtnAdapter(this,new ProBtnAdapter.ItemClickListener() {
             @Override
             public void onRecyclerItemClick(View v, int pos) {
-
+                GoodsModule item = proArray.get(pos);
+                buyAdapter.addBuyItem(item);
+                buyAdapter.notifyDataSetChanged();
+                updateBillTotal();
             }
 
             @Override
@@ -143,22 +169,76 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         });
         proArray = new ArrayList<GoodsModule>();
         proBtnAdapter.setDataset(proArray);
-        proListV.setAdapter(proBtnAdapter);
+        goodsListV.setAdapter(proBtnAdapter);
 
-        //pick products
-        this.findViewById(R.id.to_buy_layout).setOnTouchListener(new View.OnTouchListener() {
+        allCheckV = (android.widget.CheckBox)this.findViewById(R.id.buy_choose);
+        allCheckV.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN)
-                {
-                    proPaneLayout.setVisibility(View.GONE);
-                }
-                return false;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    buyAdapter.chooseAll();
+                else
+                    buyAdapter.chooseNone();
+                buyAdapter.notifyDataSetChanged();
+                updateBillTotal();
             }
         });
+        buyListV = (RecyclerView)this.findViewById(R.id.buy_pro_list);
+        buyListV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        LinearLayoutManager lm2 = new LinearLayoutManager(this);
+        lm2.setOrientation(LinearLayoutManager.VERTICAL);
+        buyListV.setLayoutManager(lm2);
+
+        buyAdapter = new BuyProAdapter(this,this);
+        buyListV.setAdapter(buyAdapter);
+
+        //右侧操作
+        billTotalv = (TextView)this.findViewById(R.id.bill_total);
+        billDiscountv = (EditText)this.findViewById(R.id.bill_discount);
+        billDiscountv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mHandler.removeCallbacks(updateIncomeRunnable);
+                mHandler.postDelayed(updateIncomeRunnable,1500);
+            }
+        });
+        incomeTotalv = (TextView)this.findViewById(R.id.income_total);
+
+
 
     }
 
+
+    private void updateBillTotal()
+    {
+        if(null==buyAdapter)
+            return;
+        buyAdapter.getTotalPrice();
+        billTotalv.setText(""+buyAdapter.getTotalPrice());
+
+        double billdis = 1.0;
+        String info = billDiscountv.getText().toString();
+        try {
+            Double newdis = Double.valueOf(info);
+            if(newdis >=0 && newdis <=1)
+                billdis= newdis;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        incomeTotalv.setText(String.format("%.2f",buyAdapter.getTotalPrice()*billdis));
+    }
 
 
     private void loadCateData(boolean fromNet) {
@@ -203,38 +283,33 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     }
 
 
-    private void refreshProducts(CateItemModule module,int pagno)
+    private void loadProductPanel(int apgno)
     {
         mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
         if (null == mAjax)
             return;
 
         showLoadingLayer();
-        proPaneLayout.setVisibility(View.VISIBLE);
+
+        ajaxPageno = apgno;
+        goodsPaneLayout.setVisibility(View.VISIBLE);
+
         mAjax.setId(WPosConfig.REQ_GOODSLIST);
         mAjax.setData("method", "goods.search");
 //        mAjax.setData("store", WPosApplication.StockBn);
         mAjax.setData("store_bn", "S55FFA78EC7F56");
         mAjax.setData("token", WPosApplication.GToken);
-        mAjax.setData("current",pagno);
-        mAjax.setData("page",30);
+        mAjax.setData("current",ajaxPageno);
+        mAjax.setData("page",PAGE_SZ);
 
-        String searchKey = searchInputV.getText().toString();
-        if(!TextUtils.isEmpty(searchKey))
-            mAjax.setData("keywords", searchKey);
-        if(null!=module && !TextUtils.isEmpty(module.cat_id))
-            mAjax.setData("cat_id", module.cat_id);
+        String cid = "";
+        if(null!=curSubCateItem && !TextUtils.isEmpty(curSubCateItem.cat_id))
+            cid = curSubCateItem.cat_id;
+        else if(null!=curRootCateItem && !TextUtils.isEmpty(curRootCateItem.cat_id))
+            cid = curRootCateItem.cat_id;
+        mAjax.setData("cat_id", cid);
 
-        String newfilter = searchKey + module.cat_id;
-        if(!proFilter.equals(newfilter))
-        {
-            proArray.clear();
-            noproHintv.setVisibility(View.VISIBLE);
-            proBtnAdapter.notifyDataSetChanged();
-        }
-        proFilter = newfilter;
-
-        UiUtils.makeToast(this,"Search Key:" + searchKey + ",cateid:" + module.cat_id + ",pageno:" + pagno);
+        UiUtils.makeToast(this,"Search cateid:" + cid + ",pageno:" + ajaxPageno);
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -248,16 +323,18 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         switch (v.getId())
         {
             case R.id.back_cate_level1:
-                curCateItem = null;
-                backCateroot.setVisibility(View.GONE);
+                cateAdapter.setPickIdx(-1);
+                curRootCateItem = null;
+                curSubCateItem = null;
+                backCaterootv.setVisibility(View.GONE);
                 cateAdapter.setDataset(cateGroupArray);
                 cateAdapter.setCateroot(true);
                 cateAdapter.notifyDataSetChanged();
                 cateListV.scrollToPosition(curCatePos);
                 break;
             case R.id.search_input:
-                pageno = 1;
-                refreshProducts(null,pageno);
+//                pageno = 1;
+//                loadProductPanel(pageno);
                 break;
             default:
                 break;
@@ -298,6 +375,9 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 return;
             }
             JSONArray array = data.optJSONArray("list");
+            if(ajaxPageno<=1) // first pg 清空panel
+                proArray.clear();
+
             if(null!=array && array.length()>0)
             {
                 for(int i = 0; i < array.length(); i++) {
@@ -305,27 +385,8 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                     goods.parse(array.optJSONObject(i));
                     proArray.add(goods);
 
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-
                 }
-                if(array.length() < 30)
+                if(array.length() < PAGE_SZ)
                 {
                     allFetched = true;
                 }
@@ -344,5 +405,17 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     }
 
 
+    @Override
+    public void onInfoChanged(View v, int pos) {
+        UiUtils.makeToast(this,"pos:" + pos + ":改变");
+        buyAdapter.notifyDataSetChanged();
+        updateBillTotal();
+    }
 
+    @Override
+    public void onInfoRemoved(View v, int pos) {
+        UiUtils.makeToast(this,"pos:" + pos + ":移除");
+        buyAdapter.notifyDataSetChanged();
+        updateBillTotal();
+    }
 }

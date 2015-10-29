@@ -74,6 +74,7 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
     public void onBindViewHolder(ProInfoAdapter.contHolder holder, int position) {
         GoodsModule pro = prolist.get(position);
 
+        holder.categoryV.setText(pro.cat_name);
         holder.codeV.setText(pro.goods_id);
         holder.titleV.setText(pro.name);
         holder.titleSV.setText(pro.name);

@@ -129,6 +129,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
      */
     private void initUserInfo()
     {
+        if(null==WPosApplication.account)
+            return;
 
         userIconV.setUseShader(true);
         userIconV.setImageUrl(WPosApplication.account.logo,mImgLoader);

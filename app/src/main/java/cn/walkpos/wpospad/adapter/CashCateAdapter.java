@@ -21,6 +21,7 @@ import cn.walkpos.wpospad.module.GoodsModule;
  */
 public class CashCateAdapter extends RecyclerView.Adapter<CashCateAdapter.contHolder>
 {
+    private int pickIdx = -1;
     private BaseActivity mActivity;
     private boolean      cateroot = true;
     public void setCateroot(boolean flag){cateroot = flag;}
@@ -37,6 +38,10 @@ public class CashCateAdapter extends RecyclerView.Adapter<CashCateAdapter.contHo
         clickListener = listener;
     }
 
+    public void setPickIdx(int idx)
+    {
+        pickIdx = idx;
+    }
     public void setDataset(ArrayList<CateItemModule> alist)
     {
         dataSet = alist;
@@ -57,6 +62,9 @@ public class CashCateAdapter extends RecyclerView.Adapter<CashCateAdapter.contHo
             holder.rootv.setBackgroundResource(R.color.btn_wpos_gray_dark);
 
         holder.titleV.setText(cate.cat_name);
+        holder.titleV.setTextColor(mActivity.getResources().getColor( pickIdx == position ?
+                R.color.btn_wpos_red : R.color.global_text_info_color));
+
     }
 
     @Override

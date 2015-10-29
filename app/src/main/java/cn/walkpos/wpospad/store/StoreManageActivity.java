@@ -608,25 +608,6 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                     GoodsModule goods = new GoodsModule();
                     goods.parse(array.optJSONObject(i));
                     proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-                    goods = new GoodsModule();
-                    goods.parse(array.optJSONObject(i));
-                    proArray.add(goods);
-
                 }
                 pageno++;
                 allFetched = false;
