@@ -54,4 +54,7 @@
     <string name="choose_all">全选</string>
     <string name="choose_none">全不选</string>
 
+    <string name="income_x">收款:%s</string>
+
+
 </resources>

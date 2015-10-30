@@ -176,8 +176,8 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
         {
             String strinput = mInputEt.getText().toString();
             inputArray.add(strinput);
-            if(mInputEt.getVisibility()==View.VISIBLE)
-                inputArray.add(mInputEt.getText().toString());
+            if(mInputEt2.getVisibility()==View.VISIBLE)
+                inputArray.add(mInputEt2.getText().toString());
 
             if(v== mPositive)
                 mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,inputArray);

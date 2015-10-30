@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.GestureDetector;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -37,7 +36,11 @@ import cn.walkpos.wpospad.adapter.ProBtnAdapter;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.module.GoodsModule;
+import cn.walkpos.wpospad.ui.CardPayDialog;
+import cn.walkpos.wpospad.ui.CashPayDialog;
 import cn.walkpos.wpospad.ui.FlingDown2GoneLayout;
+import cn.walkpos.wpospad.ui.InStockDialog;
+import cn.walkpos.wpospad.ui.OtherPayDialog;
 import cn.walkpos.wpospad.util.WPosConfig;
 
 
@@ -83,6 +86,11 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
             updateBillTotal();
         }
     };
+
+    private CashPayDialog payCashDialog;
+    private CardPayDialog payCardDialog;
+    private OtherPayDialog payOtherDialog;
+    private InStockDialog payQuickDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,6 +223,11 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         });
         incomeTotalv = (TextView)this.findViewById(R.id.income_total);
 
+        this.findViewById(R.id.pay_bank).setOnClickListener(this);
+        this.findViewById(R.id.pay_cash).setOnClickListener(this);
+        this.findViewById(R.id.pay_quick).setOnClickListener(this);
+        this.findViewById(R.id.pay_back).setOnClickListener(this);
+        this.findViewById(R.id.pay_other).setOnClickListener(this);
 
 
     }
@@ -336,6 +349,52 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 //                pageno = 1;
 //                loadProductPanel(pageno);
                 break;
+            case R.id.pay_bank:
+                if(null==payCardDialog)
+                {
+                    payCardDialog = new CardPayDialog(CashdeskActivity.this,incomeTotalv.getText().toString());
+                }
+                else
+                    payCardDialog.setBill(incomeTotalv.getText().toString());
+                payCardDialog.show();
+                break;
+            case R.id.pay_cash:
+                if(null==payCashDialog)
+                {
+                    payCashDialog = new CashPayDialog(CashdeskActivity.this,incomeTotalv.getText().toString());
+                }
+                else
+                    payCashDialog.setBill(incomeTotalv.getText().toString());
+                payCashDialog.show();
+                break;
+            case R.id.pay_quick:
+                if(null==payQuickDialog)
+                {
+                    payQuickDialog =  new InStockDialog(this,new InStockDialog.WithEditNumClickListener() {
+                        @Override
+                        public void onDialogClick(int nButtonId, ArrayList<String> array) {
+                            if(null!=array && array.size()>0)
+                                UiUtils.makeToast(CashdeskActivity.this,array.get(0));
+                        }
+                    });
+                    payQuickDialog.setProperty("快速收款","","待收款","","");
+                }
+                payQuickDialog.show();
+                break;
+            case R.id.pay_back:
+                UiUtils.makeToast(this,"退款");
+                break;
+            case R.id.pay_other:
+                if(null==payOtherDialog)
+                {
+                    payOtherDialog = new OtherPayDialog(CashdeskActivity.this,incomeTotalv.getText().toString());
+                }
+                else
+                    payOtherDialog.setBill(incomeTotalv.getText().toString());
+                payOtherDialog.show();
+                UiUtils.makeToast(this,"其他支付方式");
+                break;
+
             default:
                 break;
 
