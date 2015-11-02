@@ -1,6 +1,7 @@
 package cn.walkpos.wpospad.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -54,7 +55,10 @@ public class ProBtnAdapter extends RecyclerView.Adapter<ProBtnAdapter.contHolder
         GoodsModule pro = null;
         if(position < prolist.size()) {
             pro = prolist.get(position);
-            holder.title1.setText(pro.name_s);
+            if(!TextUtils.isEmpty(pro.name_s))
+                holder.title1.setText(pro.name_s);
+            else
+                holder.title1.setText(pro.name);
         }
         else
             holder.title1.setVisibility(View.INVISIBLE);

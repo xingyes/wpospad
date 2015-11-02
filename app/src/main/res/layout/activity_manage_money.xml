@@ -200,6 +200,7 @@
                     android:textSize="22dp"/>
             </RelativeLayout>
             <ListView
+                android:divider="@color/transparent"
                 android:listSelector="@drawable/none"
                 android:background="@color/transparent"
                 android:id="@+id/card_listv"

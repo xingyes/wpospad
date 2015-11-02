@@ -45,7 +45,7 @@
 
     <TextView
         android:textSize="26dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/card_pay_ok"
         android:layout_width="match_parent"
         android:layout_height="60dp"

@@ -53,7 +53,7 @@
         android:layout_below="@id/bill_discount"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/white"/>
+        android:background="@color/global_text_info_color"/>
     <RelativeLayout
         android:layout_margin="10dp"
         android:layout_width="wrap_content"
@@ -142,7 +142,7 @@
             android:text="快速收款"/>
         <TextView
             android:layout_marginLeft="5dp"
-            android:background="@drawable/button_pay_other"
+            android:background="@drawable/button_pay_quick"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="70dp"
@@ -150,8 +150,8 @@
             android:layout_gravity="right"
             android:textSize="30dp"
             android:id="@+id/pay_back"
-            android:textColor="@color/global_text_label"
             android:enabled="false"
+            android:textColor="@drawable/gray_white_textcolor_selector"
             android:text="退款"/>
     </LinearLayout>
 </LinearLayout>

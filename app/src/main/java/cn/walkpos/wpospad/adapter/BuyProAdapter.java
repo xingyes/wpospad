@@ -87,7 +87,10 @@ public class BuyProAdapter extends RecyclerView.Adapter<BuyProAdapter.contHolder
         GoodsModule pro = prolist.get(position);
 
         holder.buy_item_code.setText(pro.goods_id);
-        holder.buy_item_name.setText(pro.name_s);
+        if(!TextUtils.isEmpty(pro.name_s))
+            holder.buy_item_name.setText(pro.name_s);
+        else
+            holder.buy_item_name.setText(pro.name);
         holder.buy_item_price.setText(pro.priceout);
 
         holder.buy_item_discount.removeTextChangedListener(holder.buy_discount_watcher);

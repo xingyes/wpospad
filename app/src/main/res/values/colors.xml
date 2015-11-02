@@ -7,6 +7,8 @@
     <color name="btn_wpos_gray_dark">#3d3f43</color>
     <color name="btn_wpos_gray_light">#dddddd</color>
     <color name="btn_wpos_gray_mid">#999999</color>
+    <color name="btn_wpos_gray_split">#666666</color>
+
     <color name="btn_wpos_gray_light_60">#66dddddd</color>
     <color name="nav_wpos_bg">#333333</color>
 

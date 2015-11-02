@@ -92,6 +92,7 @@
             android:layout_toRightOf="@id/back_cate_level1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:divider="@color/btn_wpos_gray_split"
             android:id="@+id/cate_list"/>
     </RelativeLayout>
 
