@@ -5,6 +5,7 @@
     <color name="global_blue_dark">#152f77</color>
     <color name="global_blue_bright">#2948a2</color>
     <color name="global_text_gray">#666666</color>
+    <color name="global_text_goods">#252525</color>
     <color name="global_text_bold">#111111</color>
 
     <color name="global_75_transparent">#40ffffff</color>

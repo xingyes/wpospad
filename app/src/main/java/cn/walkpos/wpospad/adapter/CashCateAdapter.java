@@ -57,14 +57,13 @@ public class CashCateAdapter extends RecyclerView.Adapter<CashCateAdapter.contHo
         CateItemModule cate = dataSet.get(position);
 
         if(!cateroot)
-            holder.rootv.setBackgroundResource(R.color.btn_wpos_gray_light);
+            holder.rootv.setBackgroundResource(pickIdx == position ? R.color.btn_wpos_gray_light: R.color.btn_wpos_gray_mid);
         else
-            holder.rootv.setBackgroundResource(R.color.btn_wpos_gray_dark);
+            holder.rootv.setBackgroundResource(pickIdx == position ? R.color.btn_wpos_gray_mid : R.color.btn_wpos_gray_dark);
 
         holder.titleV.setText(cate.cat_name);
         holder.titleV.setTextColor(mActivity.getResources().getColor( pickIdx == position ?
-                R.color.btn_wpos_red : R.color.global_text_info_color));
-
+                R.color.btn_wpos_red : R.color.white));
     }
 
     @Override

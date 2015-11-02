@@ -83,7 +83,7 @@
 
     <!--buttons-->
     <TextView
-        android:background="@drawable/button_wpos_red_round_rect"
+        android:background="@drawable/button_pay_bank"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -100,7 +100,7 @@
         android:orientation="horizontal">
         <TextView
             android:layout_marginRight="5dp"
-            android:background="@drawable/button_blue_round"
+            android:background="@drawable/button_pay_cash"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="70dp"
@@ -112,7 +112,7 @@
             android:text="现金"/>
         <TextView
             android:layout_marginLeft="5dp"
-            android:background="@drawable/button_darkblue_round"
+            android:background="@drawable/button_pay_other"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="70dp"
@@ -120,7 +120,7 @@
             android:layout_gravity="right"
             android:textSize="30dp"
             android:id="@+id/pay_other"
-            android:textColor="@color/white"
+            android:textColor="@color/global_text_label"
             android:text="其他"/>
     </LinearLayout>
     <LinearLayout
@@ -130,7 +130,7 @@
         android:orientation="horizontal">
         <TextView
             android:layout_marginRight="5dp"
-            android:background="@drawable/button_darkblue_round"
+            android:background="@drawable/button_pay_quick"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="70dp"
@@ -138,11 +138,11 @@
             android:layout_gravity="right"
             android:textSize="30dp"
             android:id="@+id/pay_quick"
-            android:textColor="@color/white"
+            android:textColor="@drawable/gray_white_textcolor_selector"
             android:text="快速收款"/>
         <TextView
             android:layout_marginLeft="5dp"
-            android:background="@drawable/button_blue_round"
+            android:background="@drawable/button_pay_other"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="70dp"
@@ -150,7 +150,7 @@
             android:layout_gravity="right"
             android:textSize="30dp"
             android:id="@+id/pay_back"
-            android:textColor="@color/white"
+            android:textColor="@color/global_text_label"
             android:enabled="false"
             android:text="退款"/>
     </LinearLayout>

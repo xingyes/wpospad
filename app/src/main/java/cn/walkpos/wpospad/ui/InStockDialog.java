@@ -29,6 +29,7 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
 
     public InStockDialog(Context context,WithEditNumClickListener listener) {
         super(context, com.xingy.R.style.Dialog);
+        this.setCancelable(true);
         mListener = listener;
     }
     public InStockDialog(Context context, int theme) {

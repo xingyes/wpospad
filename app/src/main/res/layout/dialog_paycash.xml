@@ -102,7 +102,6 @@
             android:layout_height="60dp"
             android:gravity="center"
             android:text="@string/btn_ok"
-            android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/button_wpos_red_round_rect"
             android:layout_centerHorizontal="true"/>

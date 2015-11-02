@@ -21,6 +21,9 @@
         inmost:bgColor="@color/nav_wpos_bg"
         inmost:textColor="@color/white"/>
         <EditText
+            android:textSize="22dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:id="@+id/search_input"
@@ -90,8 +93,7 @@
             android:orientation="horizontal"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/btn_wpos_gray_dark">
+            android:layout_height="match_parent">
             <RadioButton
                 android:id="@+id/by_stock_opt"
                 android:paddingLeft="30dp"
@@ -102,7 +104,7 @@
                 android:drawableRight="@mipmap/icon_arrow_up"
                 android:textColor="@drawable/red_gray_textcolor_selector"
                 android:button="@null"
-                android:background="@drawable/button_gray_frame_round"
+                android:background="@drawable/button_gray_frame_round_pick"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
             <RadioButton
@@ -115,7 +117,7 @@
                 android:drawableRight="@mipmap/icon_arrow_down"
                 android:textColor="@drawable/red_gray_textcolor_selector"
                 android:button="@null"
-                android:background="@drawable/button_gray_frame_round"
+                android:background="@drawable/button_gray_frame_round_pick"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         </LinearLayout>
@@ -178,6 +180,7 @@
                     android:gravity="center"
                     android:padding="10dp">
                     <TextView
+                      android:textColor="@color/global_text_gray"
                     android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:singleLine="true"
@@ -186,7 +189,8 @@
                     android:textSize="24dp"
                     android:text="类别"/>
                     <TextView
-                    android:layout_marginLeft="5dp"
+                        android:textColor="@color/global_text_gray"
+                        android:layout_marginLeft="5dp"
                     android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:singleLine="true"
@@ -195,7 +199,8 @@
                     android:textSize="24dp"
                     android:text="条码编号"/>
                     <TextView
-                    android:layout_marginLeft="5dp"
+                        android:textColor="@color/global_text_gray"
+                        android:layout_marginLeft="5dp"
                     android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:singleLine="true"
@@ -204,6 +209,7 @@
                     android:textSize="24dp"
                     android:text="名称"/>
                     <TextView
+                        android:textColor="@color/global_text_gray"
                     android:layout_marginLeft="5dp"
                     android:layout_width="160dp"
                     android:layout_height="match_parent"
@@ -213,6 +219,7 @@
                     android:textSize="24dp"
                     android:text="简称"/>
                     <TextView
+                        android:textColor="@color/global_text_gray"
                     android:layout_marginLeft="5dp"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
@@ -220,8 +227,9 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
-                    android:text="进货价格"/>
+                    android:text="进货价"/>
                     <TextView
+                        android:textColor="@color/global_text_gray"
                     android:layout_marginLeft="5dp"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
@@ -229,9 +237,10 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:textSize="24dp"
-                    android:text="销售价格"/>
+                    android:text="销售价"/>
                     <TextView
-                    android:layout_width="80dp"
+                        android:textColor="@color/global_text_gray"
+                        android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:singleLine="true"
                     android:ellipsize="end"
@@ -239,6 +248,7 @@
                     android:textSize="24dp"
                     android:text="库存"/>
                     <TextView
+                        android:textColor="@color/global_text_gray"
                     android:layout_marginLeft="5dp"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
@@ -256,37 +266,33 @@
                     android:gravity="center"
                     android:textSize="24dp"
                     android:textColor="@color/white"
-                    android:text="删除操作"
-                    android:background="@color/red"/>
+                    android:text="删除"
+                    android:background="@drawable/button_wpos_orange_round_rect"/>
             </LinearLayout>
                 <!--批量操作按钮-->
-                <TextView
-                android:id="@+id/pick_all_btn"
-                android:gravity="center"
-                android:layout_width="130dp"
-                android:layout_height="match_parent"
-                android:text="全选"
-                android:textSize="24dp"
-                android:textColor="@color/red"
-                android:layout_alignParentRight="true"/>
-                <TextView
-                android:id="@+id/pick_none_btn"
-                android:layout_toLeftOf="@id/pick_all_btn"
-                android:gravity="center"
-                android:layout_width="130dp"
-                android:layout_height="match_parent"
-                android:text="全不选"
-                android:textSize="24dp"
-                android:textColor="@color/red"/>
+                <com.xingy.lib.ui.CheckBox
+                    android:padding="10dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/pick_all_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    inmost:checkboxImageOff="@drawable/choose_radio_off"
+                    inmost:checkboxImageOn="@drawable/choose_radio_on"
+                    inmost:text="@string/choose_all"
+                    inmost:contentColor="@color/global_wpos_orange"
+                    inmost:contentSize="24dp"/>
                 <TextView
                 android:id="@+id/batch_del_btn"
-                android:layout_toLeftOf="@id/pick_none_btn"
+                android:layout_toLeftOf="@id/pick_all_btn"
                 android:gravity="center"
                 android:layout_width="130dp"
                 android:layout_height="match_parent"
                 android:text="删除勾选"
                 android:textSize="24dp"
-                android:textColor="@color/red"/>
+                android:textColor="@color/global_wpos_orange"/>
                 <TextView
                 android:id="@+id/batch_cancel_btn"
                 android:layout_toLeftOf="@id/batch_del_btn"
@@ -295,7 +301,7 @@
                 android:layout_height="match_parent"
                 android:text="取消"
                 android:textSize="24dp"
-                android:textColor="@color/red"/>
+                android:textColor="@color/global_wpos_orange"/>
             </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -323,7 +329,7 @@
             android:groupIndicator="@null"
             android:choiceMode="singleChoice"
             android:layout_gravity="left"
-            android:listSelector="@null"
+            android:listSelector="@drawable/none"
             android:background="@color/global_gray"
                 android:id="@+id/cate_expand_list"
                 android:layout_width="250dp"

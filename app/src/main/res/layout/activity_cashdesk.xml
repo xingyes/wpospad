@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:inmost="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/store_bg">
 
     <!--导航栏-->
     <RelativeLayout
@@ -18,6 +19,8 @@
             inmost:bgColor="@color/nav_wpos_bg"
             inmost:textColor="@color/white"/>
         <EditText
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:id="@+id/search_input"
@@ -53,7 +56,7 @@
             android:layout_height="match_parent"
             android:text="@string/bill_detail"
             android:drawablePadding="8dp"
-            android:drawableLeft="@mipmap/icon_add"
+            android:drawableLeft="@mipmap/icon_detail"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:id="@+id/bill_detail_btn"/>
@@ -76,7 +79,7 @@
         android:layout_alignParentBottom="true">
         <TextView
             android:background="@color/btn_wpos_gray_dark"
-            android:textColor="@color/global_text_info_color"
+            android:textColor="@color/white"
             android:textSize="25dp"
             android:gravity="center"
             android:id="@+id/back_cate_level1"
@@ -98,7 +101,7 @@
         android:id="@+id/goods_panel_layout"
         android:layout_width="match_parent"
         android:layout_height="310dp"
-        android:background="@color/btn_wpos_gray"
+        android:background="@color/btn_wpos_gray_light"
         android:layout_above="@id/cate_list_layout"
         android:layout_toLeftOf="@id/right_oprate_desk">
         <TextView
@@ -117,6 +120,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </cn.walkpos.wpospad.ui.FlingDown2GoneLayout>
+    <View
+        android:id="@+id/goods_panel_layout_shade"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@mipmap/split_hor"
+        android:layout_above="@id/goods_panel_layout"
+        android:layout_toLeftOf="@id/right_oprate_desk"/>
 
 
     <!--商品购买列表-->
@@ -213,11 +223,17 @@
             android:layout_height="1px"
             android:background="@color/global_text_info_color"/>
         <android.support.v7.widget.RecyclerView
-            android:background="@color/global_wpos_gray_bg"
+            android:background="@color/transparent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/buy_pro_list"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="@mipmap/split_vert"
+        android:layout_toLeftOf="@id/right_oprate_desk"/>
 
     <include layout="@layout/global_loading"/>
 

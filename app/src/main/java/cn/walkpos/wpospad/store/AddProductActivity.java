@@ -244,7 +244,7 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             return;
         }
         String nameShstr = nameShortEt.getText().toString();
-        if(TextUtils.isEmpty(nameShstr))
+        if(!TextUtils.isEmpty(nameShstr))
             nameShstr = namestr.substring(0,6);
         String inpricestr = inPriceEt.getText().toString();
         if(TextUtils.isEmpty(inpricestr))

@@ -312,7 +312,7 @@
         <ExpandableListView
             android:groupIndicator="@null"
             android:layout_gravity="left"
-            android:listSelector="@null"
+            android:listSelector="@drawable/none"
             android:background="@color/global_gray"
             android:id="@+id/cate_expand_list"
             android:layout_width="250dp"

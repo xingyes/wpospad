@@ -421,15 +421,15 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             holder.pickedv.setVisibility((!newadd && chooseId.equals(card.card_id)) ? View.VISIBLE : View.INVISIBLE);
 
             if(newadd)
-                holder.mainlayout.setBackgroundResource(R.color.white);
+                holder.mainlayout.setBackgroundResource(R.mipmap.dash_frame);
             else {
                 int cid = Integer.valueOf(card.card_id);
                 if (cid % 3 == 0)
-                    holder.mainlayout.setBackgroundResource(R.drawable.button_blue_round);
+                    holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_1);
                 else if (cid % 3 == 1)
-                    holder.mainlayout.setBackgroundResource(R.drawable.button_gray_round);
+                    holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_2);
                 else
-                    holder.mainlayout.setBackgroundResource(R.drawable.button_darkblue_round);
+                    holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_3);
             }
 
             if(!TextUtils.isEmpty(card.iconurl))

@@ -33,15 +33,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
-                android:layout_margin="10dp"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@drawable/button_gray_frame_round"/>
+                android:layout_margin="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/alipay_btn"/>
             <ImageView
-                android:layout_margin="10dp"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@drawable/button_gray_frame_round"/>
+                android:layout_margin="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/weixin_btn"/>
         </LinearLayout>
         <TextView
             android:layout_margin="20dp"
@@ -59,62 +59,61 @@
             android:layout_height="60dp"
             android:gravity="center"
             android:text="@string/btn_done"
-            android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/button_wpos_red_round_rect"
             android:layout_centerHorizontal="true"/>
     </LinearLayout>
 
-    <!--分割线-->
-    <View
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="30dp"
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@+id/right_keyboard"
-        android:background="@color/global_text_info_color"/>
+    <!--&lt;!&ndash;分割线&ndash;&gt;-->
+    <!--<View-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_marginRight="30dp"-->
+        <!--android:layout_width="1px"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_toLeftOf="@+id/right_keyboard"-->
+        <!--android:background="@color/global_text_info_color"/>-->
 
-    <LinearLayout
-        android:layout_marginLeft="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:textColor="@color/white"
-            android:layout_width="85dp"
-            android:layout_height="90dp"
-            android:textSize="30dp"
-            android:id="@+id/btn_10"
-            android:text="10"
-            android:gravity="center"
-            android:background="@drawable/button_gray_frame_round"/>
-        <TextView
-            android:textColor="@color/white"
-            android:layout_width="85dp"
-            android:layout_height="90dp"
-            android:textSize="30dp"
-            android:id="@+id/btn_20"
-            android:text="20"
-            android:gravity="center"
-            android:background="@drawable/button_gray_frame_round"/>
-        <TextView
-            android:textColor="@color/white"
-            android:layout_width="85dp"
-            android:layout_height="90dp"
-            android:textSize="30dp"
-            android:id="@+id/btn_50"
-            android:text="50"
-            android:gravity="center"
-            android:background="@drawable/button_gray_frame_round"/>
-        <TextView
-            android:textColor="@color/white"
-            android:layout_width="85dp"
-            android:layout_height="90dp"
-            android:textSize="30dp"
-            android:id="@+id/btn_100"
-            android:text="100"
-            android:gravity="center"
-            android:background="@drawable/button_gray_frame_round"/>
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:layout_marginLeft="40dp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+        <!--<TextView-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_width="85dp"-->
+            <!--android:layout_height="90dp"-->
+            <!--android:textSize="30dp"-->
+            <!--android:id="@+id/btn_10"-->
+            <!--android:text="10"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/button_gray_frame_round"/>-->
+        <!--<TextView-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_width="85dp"-->
+            <!--android:layout_height="90dp"-->
+            <!--android:textSize="30dp"-->
+            <!--android:id="@+id/btn_20"-->
+            <!--android:text="20"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/button_gray_frame_round"/>-->
+        <!--<TextView-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_width="85dp"-->
+            <!--android:layout_height="90dp"-->
+            <!--android:textSize="30dp"-->
+            <!--android:id="@+id/btn_50"-->
+            <!--android:text="50"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/button_gray_frame_round"/>-->
+        <!--<TextView-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_width="85dp"-->
+            <!--android:layout_height="90dp"-->
+            <!--android:textSize="30dp"-->
+            <!--android:id="@+id/btn_100"-->
+            <!--android:text="100"-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/button_gray_frame_round"/>-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

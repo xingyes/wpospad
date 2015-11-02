@@ -200,7 +200,7 @@
                     android:textSize="22dp"/>
             </RelativeLayout>
             <ListView
-                android:listSelector="@null"
+                android:listSelector="@drawable/none"
                 android:background="@color/transparent"
                 android:id="@+id/card_listv"
                 android:layout_width="390dp"
@@ -212,7 +212,7 @@
             android:background="@color/global_button_cancel"
             android:id="@+id/bind_card_layout"
             android:layout_width="520dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="left">
             <LinearLayout

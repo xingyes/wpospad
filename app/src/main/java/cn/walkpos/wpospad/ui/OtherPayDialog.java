@@ -65,10 +65,10 @@ public class OtherPayDialog extends Dialog implements View.OnClickListener {
         // Load the default configuration.
         setContentView(R.layout.dialog_payother);
 
-        this.findViewById(R.id.btn_10).setOnClickListener(this);
-        this.findViewById(R.id.btn_20).setOnClickListener(this);
-        this.findViewById(R.id.btn_50).setOnClickListener(this);
-        this.findViewById(R.id.btn_100).setOnClickListener(this);
+//        this.findViewById(R.id.btn_10).setOnClickListener(this);
+//        this.findViewById(R.id.btn_20).setOnClickListener(this);
+//        this.findViewById(R.id.btn_50).setOnClickListener(this);
+//        this.findViewById(R.id.btn_100).setOnClickListener(this);
         this.findViewById(R.id.other_pay_ok).setOnClickListener(this);
 
         billTotalv = (TextView) this.findViewById(R.id.bill_total_tv);
@@ -106,22 +106,22 @@ public class OtherPayDialog extends Dialog implements View.OnClickListener {
 
         switch (v.getId())
         {
-            case R.id.btn_10:
-                inputStr = "10";
-                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
-                break;
-            case R.id.btn_20:
-                inputStr = "20";
-                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
-                break;
-            case R.id.btn_50:
-                inputStr = "50";
-                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
-                break;
-            case R.id.btn_100:
-                inputStr = "100";
-                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
-                break;
+//            case R.id.btn_10:
+//                inputStr = "10";
+//                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
+//                break;
+//            case R.id.btn_20:
+//                inputStr = "20";
+//                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
+//                break;
+//            case R.id.btn_50:
+//                inputStr = "50";
+//                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
+//                break;
+//            case R.id.btn_100:
+//                inputStr = "100";
+//                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
+//                break;
             case R.id.other_pay_ok:
                 dismiss();
                 break;

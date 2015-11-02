@@ -21,7 +21,8 @@ public class ProBtnAdapter extends RecyclerView.Adapter<ProBtnAdapter.contHolder
 {
     private ArrayList<GoodsModule> prolist;
     private BaseActivity  mActivity;
-
+    private static int BgShape[] = {R.drawable.button_goods_1,R.drawable.button_goods_2,R.drawable.button_goods_3};
+    int bgcolorIdx = 0;
     public interface ItemClickListener{
         public void onRecyclerItemClick(View v, int pos);
         public void onRecyclerItemLongClick(View v, int pos);
@@ -34,6 +35,10 @@ public class ProBtnAdapter extends RecyclerView.Adapter<ProBtnAdapter.contHolder
         clickListener = listener;
     }
 
+    public void shiftBgcolor()
+    {
+        bgcolorIdx = (bgcolorIdx+1)% BgShape.length;
+    }
     public void setDataset(ArrayList<GoodsModule> goods)
     {
         prolist = goods;
@@ -53,6 +58,7 @@ public class ProBtnAdapter extends RecyclerView.Adapter<ProBtnAdapter.contHolder
         }
         else
             holder.title1.setVisibility(View.INVISIBLE);
+        holder.title1.setBackgroundResource(BgShape[bgcolorIdx]);
 
     }
 

@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/global_transparent_shadow_click_state">
+    android:background="@color/transparent">
 
     <RelativeLayout
         android:id="@+id/main_layout"
         android:layout_margin="15dp"
         android:paddingRight="30dp"
         android:paddingBottom="30dp"
-        android:background="@drawable/button_blue_round"
+        android:background="@mipmap/dash_frame"
         android:layout_width="350dp"
         android:layout_height="wrap_content">
         <RelativeLayout
@@ -62,8 +62,8 @@
         <ImageView
             android:id="@+id/add_img"
             android:layout_centerInParent="true"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@mipmap/icon_add_gray"/>
     </RelativeLayout>
 
@@ -75,7 +75,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/del_card"
-        android:src="@mipmap/big_icon_del"/>
+        android:src="@mipmap/icon_red_del"/>
     <ImageView
         android:layout_alignBottom="@id/main_layout"
         android:layout_alignRight="@id/main_layout"

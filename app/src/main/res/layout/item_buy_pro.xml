@@ -76,14 +76,14 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/buy_item_num"
-            android:src="@mipmap/icon_del"/>
+            android:src="@mipmap/icon_num_down"/>
         <ImageView
             android:id="@+id/buy_num_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/buy_item_num"
-            android:src="@mipmap/icon_add"/>
+            android:src="@mipmap/icon_num_up"/>
     </RelativeLayout>
 
     <RelativeLayout

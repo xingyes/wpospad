@@ -36,6 +36,11 @@ public class BuyProAdapter extends RecyclerView.Adapter<BuyProAdapter.contHolder
         public void onInfoRemoved(View v, int pos);
     };
     private InfoChangedListener  infoListener;
+    public void clear()
+    {
+        prolist.clear();
+        chooseProIdSet.clear();
+    }
     public void chooseAll()
     {
         for(GoodsModule pmod : prolist)

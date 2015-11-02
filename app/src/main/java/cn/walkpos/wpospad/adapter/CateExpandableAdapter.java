@@ -123,7 +123,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
         else
             gpHolder.namev.setTextColor(mActivity.getResources().getColor(R.color.white));
         if(gpMod.subCateArray.size()<=0)
-            gpHolder.arrowv.setVisibility(View.GONE);
+            gpHolder.arrowv.setVisibility(View.INVISIBLE);
         else
             gpHolder.arrowv.setVisibility(View.VISIBLE);
         return convertView;
@@ -138,7 +138,7 @@ public class CateExpandableAdapter extends BaseExpandableListAdapter
             itHolder = new CateItHolder();
             itHolder.namev= (TextView) convertView.findViewById(R.id.name);
             itHolder.arrowv = (ImageView)convertView.findViewById(R.id.arrow);
-            itHolder.arrowv.setVisibility(View.GONE);
+            itHolder.arrowv.setVisibility(View.INVISIBLE);
             convertView.setTag(itHolder);
         }
         else

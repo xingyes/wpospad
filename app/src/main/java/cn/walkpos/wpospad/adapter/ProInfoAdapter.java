@@ -101,7 +101,7 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
         holder.stockV.setText(""+pro.stock);
         holder.stockV.setTextColor((bStockHint && pro.down_warn>0 && pro.stock < pro.down_warn) ?
                     mActivity.getResources().getColor(R.color.btn_wpos_red) :
-                    mActivity.getResources().getColor(R.color.global_text_gray));
+                    mActivity.getResources().getColor(R.color.global_text_goods));
 
     }
 

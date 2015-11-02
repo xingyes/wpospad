@@ -6,9 +6,20 @@
     <color name="btn_wpos_gray">#878383</color>
     <color name="btn_wpos_gray_dark">#3d3f43</color>
     <color name="btn_wpos_gray_light">#dddddd</color>
+    <color name="btn_wpos_gray_mid">#999999</color>
     <color name="btn_wpos_gray_light_60">#66dddddd</color>
     <color name="nav_wpos_bg">#333333</color>
 
     <color name="global_wpos_gray_bg">#dddddd</color>
+    <color name="global_wpos_orange">#ff501a</color>
+    <color name="global_wpos_orange_dark">#d94416</color>
+
+    <color name="btn_bg_1">#31bfb2</color>
+    <color name="btn_bg_2">#f87c56</color>
+    <color name="btn_bg_3">#edae25</color>
+
+    <color name="card_bg_1">#3d58ca</color>
+    <color name="card_bg_2">#d4434d</color>
+    <color name="card_bg_3">#0faf62</color>
 
 </resources>

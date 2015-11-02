@@ -88,8 +88,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
     private LinearLayout   norTitleLayout;
     private TextView       batStartBtn;
     private TextView       batCancelBtn;
-    private TextView       batChooseAllBtn;
-    private TextView       batChooseNoneBtn;
+    private CheckBox       batChooseAllBtn;
     private TextView       batDelBtn;
     private AppDialog      batDelDialog;
 
@@ -246,18 +245,24 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         batStartBtn = (TextView)this.findViewById(R.id.batch_start_btn);
         batCancelBtn = (TextView)this.findViewById(R.id.batch_cancel_btn);
         batDelBtn = (TextView)this.findViewById(R.id.batch_del_btn);
-        batChooseAllBtn = (TextView)this.findViewById(R.id.pick_all_btn);
-        batChooseNoneBtn = (TextView)this.findViewById(R.id.pick_none_btn);
+        batChooseAllBtn = (CheckBox)this.findViewById(R.id.pick_all_btn);
+        batChooseAllBtn.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChange(Boolean isChecked) {
+                if(isChecked)
+                    proAdapter.chooseAll();
+                else
+                    proAdapter.chooseNone();
+                proAdapter.notifyDataSetChanged();
+            }
+        });
         batStartBtn.setOnClickListener(this);
         batCancelBtn.setOnClickListener(this);
         batDelBtn.setOnClickListener(this);
-        batChooseAllBtn.setOnClickListener(this);
-        batChooseNoneBtn.setOnClickListener(this);
 
         batCancelBtn.setVisibility(View.GONE);
         batDelBtn.setVisibility(View.GONE);
         batChooseAllBtn.setVisibility(View.GONE);
-        batChooseNoneBtn.setVisibility(View.GONE);
     }
 
 
@@ -431,7 +436,6 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                 batCancelBtn.setVisibility(View.GONE);
                 batDelBtn.setVisibility(View.GONE);
                 batChooseAllBtn.setVisibility(View.GONE);
-                batChooseNoneBtn.setVisibility(View.GONE);
                 proAdapter.setBatOptMod(false);
                 proAdapter.notifyDataSetChanged();
                 break;
@@ -440,7 +444,6 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                 batCancelBtn.setVisibility(View.VISIBLE);
                 batDelBtn.setVisibility(View.VISIBLE);
                 batChooseAllBtn.setVisibility(View.VISIBLE);
-                batChooseNoneBtn.setVisibility(View.VISIBLE);
                 proAdapter.setBatOptMod(true);
                 proAdapter.notifyDataSetChanged();
                 break;
@@ -459,14 +462,6 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                             });
                 }
                 batDelDialog.show();
-                break;
-            case R.id.pick_all_btn:
-                proAdapter.chooseAll();
-                proAdapter.notifyDataSetChanged();
-                break;
-            case R.id.pick_none_btn:
-                proAdapter.chooseNone();
-                proAdapter.notifyDataSetChanged();
                 break;
             case R.id.category_btn:
                 UiUtils.startActivity(this,CategoryManageActivity.class,true);
@@ -499,7 +494,17 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
     {
         if(null!=cateDrawer && cateDrawer.isDrawerVisible(cateListV))
             cateDrawer.closeDrawers();
-        super.onBackPressed();;
+        else if(norTitleLayout.getVisibility()==View.GONE)
+        {
+            norTitleLayout.setVisibility(View.VISIBLE);
+            batCancelBtn.setVisibility(View.GONE);
+            batDelBtn.setVisibility(View.GONE);
+            batChooseAllBtn.setVisibility(View.GONE);
+            proAdapter.setBatOptMod(false);
+            proAdapter.notifyDataSetChanged();
+        }
+        else
+            super.onBackPressed();;
     }
 
     @Override
