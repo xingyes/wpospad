@@ -17,6 +17,7 @@
             inmost:leftVisiable="true"
             inmost:drawableLeft="@drawable/ico_back"
             inmost:bgColor="@color/nav_wpos_bg"
+            inmost:bgResource="@drawable/button_pay_other"
             inmost:textColor="@color/white"/>
         <EditText
             android:layout_marginTop="5dp"

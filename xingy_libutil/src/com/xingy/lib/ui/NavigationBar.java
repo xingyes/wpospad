@@ -2,6 +2,8 @@ package com.xingy.lib.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -158,6 +160,8 @@ public class NavigationBar extends RelativeLayout implements OnClickListener {
         setBackgroundColor(0x00000000);
         mRootView = inflate(context, R.layout.navigationbar_layout, null);
 		mRootView.setBackgroundColor(mBgColor);
+        if(mBgResourceId!=0)
+            mRootView.setBackgroundResource(mBgResourceId);
 		mRootView.setId(ID_NAV_LAYOUT);
 		addView(mRootView, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		
@@ -218,6 +222,7 @@ public class NavigationBar extends RelativeLayout implements OnClickListener {
 			TypedArray array = mContext.obtainStyledAttributes(attrs, R.styleable.xingy_attrs);
 			mTextColor = UiUtils.getColor(mContext, array, R.styleable.xingy_attrs_textColor);
 			mBgColor = UiUtils.getColor(mContext, array, R.styleable.xingy_attrs_bgColor);
+            mBgResourceId = UiUtils.getResId(mContext, array, R.styleable.xingy_attrs_bgResource);
 			mCaption = UiUtils.getString(mContext, array, R.styleable.xingy_attrs_text);
 			mDrawableId = UiUtils.getResId(mContext, array, R.styleable.xingy_attrs_drawableRight);
 			mLeftDrawableId = UiUtils.getResId(mContext, array, R.styleable.xingy_attrs_drawableLeft);
@@ -238,6 +243,17 @@ public class NavigationBar extends RelativeLayout implements OnClickListener {
 		mRootView.invalidate();
 		}
 	}
+
+    public void setBgResource(int rid)
+    {
+        mBgResourceId = rid;
+        if(null!=mRootView)
+        {
+            mRootView.setBackgroundResource(mBgResourceId);
+            mRootView.invalidate();
+        }
+    }
+
 	
 	private View           mRootView;
 	private Context        mContext;
@@ -245,7 +261,9 @@ public class NavigationBar extends RelativeLayout implements OnClickListener {
 	private TextView       mText;
 	private TextView       mLeftText;
 	private int            mBgColor = 0;
-	private int            mTextColor = 0;
+    private int            mBgResourceId = 0;
+
+    private int            mTextColor = 0;
 	private int            mDrawableId = 0;
 	private int 		   mLeftDrawableId = 0;
 	private boolean        bLeftVisiable = false;

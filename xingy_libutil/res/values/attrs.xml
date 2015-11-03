@@ -18,6 +18,7 @@
         <attr format="reference|string" name="text" />
         <attr format="reference|string" name="hint" />
         <attr format="reference|string" name="info" />
+        <attr format="reference" name="bgResource" />
         <attr format="boolean" name="leftVisiable" />
         <attr format="reference|string" name="editPostfix" />
         
