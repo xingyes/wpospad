@@ -73,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/shop_single"
                 android:layout_gravity="center_vertical"
-                inmost:checkboxImageOff="@drawable/choose_radio_off"
-                inmost:checkboxImageOn="@drawable/choose_radio_on"
+                inmost:checkboxImageOff="@mipmap/wpos_radio_n"
+                inmost:checkboxImageOn="@mipmap/wpos_radio_y"
                 inmost:text="@string/shop_single"
                 inmost:contentColor="@color/white"
                 inmost:contentSize="24dp"/>
@@ -84,8 +84,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/shop_store"
                 android:layout_gravity="center_vertical"
-                inmost:checkboxImageOff="@drawable/choose_radio_off"
-                inmost:checkboxImageOn="@drawable/choose_radio_on"
+                inmost:checkboxImageOff="@mipmap/wpos_radio_n"
+                inmost:checkboxImageOn="@mipmap/wpos_radio_y"
                 inmost:text="@string/shop_store"
                 inmost:contentColor="@color/white"
                 inmost:contentSize="24dp"/>

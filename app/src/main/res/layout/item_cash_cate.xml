@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:gravity="center"
-    android:background="@drawable/global_transparent_shadow_click_state"
+    android:background="@drawable/button_whitebg_gray_frame_shape"
     android:padding="5dp"
     android:id="@+id/root_layout">
     <TextView

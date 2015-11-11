@@ -1,158 +1,152 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/global_button_cancel"
-    android:padding="25dp"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:padding="15dp"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+    <LinearLayout
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="@drawable/cash_pro_btn_n"
+        android:orientation="vertical">
     <RelativeLayout
-        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
+            android:layout_margin="10dp"
+            android:id="@+id/bill_total_pre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="总计"
-            android:textSize="30dp"
-            android:textColor="@color/global_text_info_color"/>
+            android:textSize="28dp"
+            android:textColor="@color/black"/>
         <TextView
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/bill_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:textSize="30dp"
-            android:textColor="@color/global_text_info_color"/>
+            android:textSize="28dp"
+            android:text="0.00"
+            android:textColor="@color/black"/>
+
     </RelativeLayout>
     <RelativeLayout
-        android:layout_margin="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-        <EditText
-            android:inputType="numberDecimal"
-            android:layout_centerVertical="true"
-            android:id="@+id/bill_discount"
-            android:gravity="right"
-            android:maxLength="4"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="1.0"
-            android:textSize="30dp"
-            android:textColor="@color/global_text_info_color"/>
         <TextView
+            android:layout_margin="10dp"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="整单折扣"
-            android:textSize="30dp"
-            android:textColor="@color/global_text_info_color"/>
-    </RelativeLayout>
-    <View
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/bill_discount"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/global_text_info_color"/>
-    <RelativeLayout
-        android:layout_margin="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            android:textSize="28dp"
+            android:textColor="@color/black"/>
         <TextView
-            android:id="@+id/income_total_pre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:minWidth="120dp"
-            android:text="总价"
-            android:textSize="30dp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:gravity="bottom|right"
-            android:layout_toRightOf="@id/income_total_pre"
-            android:layout_centerVertical="true"
-            android:id="@+id/income_total"
+            android:layout_margin="10dp"
+            android:id="@+id/bill_discount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:minLines="2"
-            android:textSize="40dp"
-            android:textColor="@color/btn_wpos_red"/>
+            android:textSize="28dp"
+            android:text="1.0"
+            android:textColor="@color/black"/>
     </RelativeLayout>
+    <TextView
+        android:layout_gravity="right"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="60dp"
+        android:id="@+id/income_total"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:minLines="2"
+        android:textSize="45dp"
+        android:textColor="@color/btn_wpos_red"
+        android:text="0.00"/>
+    </LinearLayout>
+
+
 
     <!--buttons-->
-    <TextView
-        android:background="@drawable/button_pay_bank"
-        android:layout_marginTop="100dp"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:layout_gravity="right"
-        android:textSize="30dp"
-        android:id="@+id/pay_bank"
-        android:textColor="@color/white"
-        android:text="银行卡"/>
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_marginRight="5dp"
-            android:background="@drawable/button_pay_cash"
+            android:layout_marginRight="7dp"
+            android:background="@drawable/button_pay_red"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="70dp"
+            android:layout_height="90dp"
             android:gravity="center"
-            android:layout_gravity="right"
-            android:textSize="30dp"
-            android:id="@+id/pay_cash"
-            android:textColor="@color/white"
-            android:text="现金"/>
+            android:textSize="28dp"
+            android:id="@+id/pay_discount"
+            android:textColor="@drawable/gray_white_textcolor_selector"
+            android:text="整单折扣"/>
         <TextView
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/button_pay_other"
+            android:layout_marginLeft="7dp"
+            android:background="@drawable/button_pay_blue"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="70dp"
+            android:layout_height="90dp"
             android:gravity="center"
-            android:layout_gravity="right"
-            android:textSize="30dp"
+            android:textSize="28dp"
             android:id="@+id/pay_other"
-            android:textColor="@color/global_text_label"
+            android:textColor="@drawable/gray_white_textcolor_selector"
             android:text="其他"/>
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_marginRight="5dp"
-            android:background="@drawable/button_pay_quick"
+            android:layout_marginRight="7dp"
+            android:background="@drawable/button_pay_blue"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="70dp"
+            android:layout_height="90dp"
             android:gravity="center"
             android:layout_gravity="right"
-            android:textSize="30dp"
+            android:textSize="28dp"
+            android:id="@+id/pay_bank"
+            android:textColor="@color/white"
+            android:text="银行卡"/>
+        <TextView
+            android:layout_marginLeft="7dp"
+            android:background="@drawable/button_pay_green"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="90dp"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:textSize="28dp"
             android:id="@+id/pay_quick"
             android:textColor="@drawable/gray_white_textcolor_selector"
             android:text="快速收款"/>
-        <TextView
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/button_pay_quick"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="70dp"
-            android:gravity="center"
-            android:layout_gravity="right"
-            android:textSize="30dp"
-            android:id="@+id/pay_back"
-            android:enabled="false"
-            android:textColor="@drawable/gray_white_textcolor_selector"
-            android:text="退款"/>
     </LinearLayout>
+    <TextView
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_pay_blue"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:layout_gravity="right"
+        android:textSize="28dp"
+        android:id="@+id/pay_cash"
+        android:textColor="@color/white"
+        android:text="现金收款"/>
+
+
 </LinearLayout>
 

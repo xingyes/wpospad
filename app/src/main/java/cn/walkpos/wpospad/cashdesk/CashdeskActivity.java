@@ -79,7 +79,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     private BuyProAdapter buyAdapter;
 
     private TextView billTotalv;
-    private EditText billDiscountv;
+    private TextView billDiscountv;
     private TextView incomeTotalv;
     private Handler mHandler = new Handler();
     private Runnable updateIncomeRunnable = new Runnable() {
@@ -94,6 +94,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     private CardPayDialog payCardDialog;
     private OtherPayDialog payOtherDialog;
     private InStockDialog payQuickDialog;
+    private InStockDialog payDiscountDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,30 +209,30 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
         //右侧操作
         billTotalv = (TextView) this.findViewById(R.id.bill_total);
-        billDiscountv = (EditText) this.findViewById(R.id.bill_discount);
-        billDiscountv.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mHandler.removeCallbacks(updateIncomeRunnable);
-                mHandler.postDelayed(updateIncomeRunnable, 1500);
-            }
-        });
+        billDiscountv = (TextView) this.findViewById(R.id.bill_discount);
+//        billDiscountv.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                mHandler.removeCallbacks(updateIncomeRunnable);
+//                mHandler.postDelayed(updateIncomeRunnable, 1500);
+//            }
+//        });
         incomeTotalv = (TextView) this.findViewById(R.id.income_total);
 
         this.findViewById(R.id.pay_bank).setOnClickListener(this);
         this.findViewById(R.id.pay_cash).setOnClickListener(this);
         this.findViewById(R.id.pay_quick).setOnClickListener(this);
-        this.findViewById(R.id.pay_back).setOnClickListener(this);
+        this.findViewById(R.id.pay_discount).setOnClickListener(this);
         this.findViewById(R.id.pay_other).setOnClickListener(this);
 
 
@@ -345,13 +346,6 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 //                pageno = 1;
 //                loadProductPanel(pageno);
                 break;
-            case R.id.pay_bank:
-                if (null == payCardDialog) {
-                    payCardDialog = new CardPayDialog(CashdeskActivity.this, incomeTotalv.getText().toString());
-                } else
-                    payCardDialog.setBill(incomeTotalv.getText().toString());
-                payCardDialog.show();
-                break;
             case R.id.pay_cash:
                 if (null == payCashDialog) {
                     payCashDialog = new CashPayDialog(CashdeskActivity.this, incomeTotalv.getText().toString());
@@ -386,8 +380,31 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 }
                 payQuickDialog.show();
                 break;
-            case R.id.pay_back:
-                UiUtils.makeToast(this, "退款");
+            case R.id.pay_discount:
+                if (null == payDiscountDialog) {
+                    payDiscountDialog = new InStockDialog(this, new InStockDialog.WithEditNumClickListener() {
+                        @Override
+                        public void onDialogClick(int nButtonId, ArrayList<String> array) {
+                            if (nButtonId == AppDialog.BUTTON_POSITIVE) {
+                                if (null != array && array.size() > 0) {
+                                    try {
+                                        Double newdis = Double.valueOf(array.get(0));
+                                        if (newdis >= 0 && newdis <= 1) {
+                                            billDiscountv.setText(array.get(0));
+                                            updateBillTotal(buyAdapter.getTotalPrice());
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            else
+                                payDiscountDialog.dismiss();
+                        }
+                    });
+                    payDiscountDialog.setProperty("整单折扣", "", "折扣", "", "", "", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                }
+                payDiscountDialog.show();
                 break;
             case R.id.pay_other:
                 if (null == payOtherDialog) {
@@ -395,14 +412,22 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 } else
                     payOtherDialog.setBill(incomeTotalv.getText().toString());
                 payOtherDialog.show();
-                UiUtils.makeToast(this, "其他支付方式");
+                break;
+            case R.id.pay_bank:
+                if (null == payCardDialog) {
+                    payCardDialog = new CardPayDialog(CashdeskActivity.this, incomeTotalv.getText().toString());
+                } else
+                    payCardDialog.setBill(incomeTotalv.getText().toString());
+                payCardDialog.show();
                 break;
 
+
             default:
+                super.onClick(v);
                 break;
 
         }
-        super.onClick(v);
+
     }
 
     @Override
@@ -490,6 +515,8 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
             payOtherDialog.dismiss();
         else if(payQuickDialog!=null && payQuickDialog.isShowing())
             payQuickDialog.dismiss();
+        else if(payDiscountDialog!=null && payDiscountDialog.isShowing())
+            payDiscountDialog.dismiss();
         else
             super.onBackPressed();
     }

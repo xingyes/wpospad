@@ -27,8 +27,6 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
 
     private String  strBill;
     private String  inputStr = "";
-    private double   mIncome;
-    private boolean inDecimals = false;
     public CardPayDialog(Context context, String abill) {
         super(context, com.xingy.R.style.Dialog);
         strBill = abill;
@@ -103,12 +101,10 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
 
             case R.id.card_pay_ok:
                 UiUtils.makeToast(getContext(),"正在连接设备...");
-                dismiss();
                 break;
             default:
                 dismiss();
                 break;
-
         }
 
     }

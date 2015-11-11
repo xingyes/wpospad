@@ -43,8 +43,6 @@ public class OtherPayDialog extends Dialog implements View.OnClickListener {
 
     protected int           mWinWidth;
 
-    protected TextView  incomeEditv;
-    protected TextView         cashChangev;
     protected TextView         billTotalv;
 
     public interface WithEditNumClickListener
@@ -65,10 +63,8 @@ public class OtherPayDialog extends Dialog implements View.OnClickListener {
         // Load the default configuration.
         setContentView(R.layout.dialog_payother);
 
-//        this.findViewById(R.id.btn_10).setOnClickListener(this);
-//        this.findViewById(R.id.btn_20).setOnClickListener(this);
-//        this.findViewById(R.id.btn_50).setOnClickListener(this);
-//        this.findViewById(R.id.btn_100).setOnClickListener(this);
+        this.findViewById(R.id.scan_ali_btn).setOnClickListener(this);
+        this.findViewById(R.id.scan_wx_btn).setOnClickListener(this);
         this.findViewById(R.id.other_pay_ok).setOnClickListener(this);
 
         billTotalv = (TextView) this.findViewById(R.id.bill_total_tv);
@@ -114,14 +110,12 @@ public class OtherPayDialog extends Dialog implements View.OnClickListener {
 //                inputStr = "20";
 //                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
 //                break;
-//            case R.id.btn_50:
-//                inputStr = "50";
-//                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
-//                break;
-//            case R.id.btn_100:
-//                inputStr = "100";
-//                billTotalv.setText(this.getContext().getString(R.string.income_x,inputStr));
-//                break;
+            case R.id.scan_wx_btn:
+                UiUtils.makeToast(getContext(),"唤起微信扫码");
+                break;
+            case R.id.scan_ali_btn:
+                UiUtils.makeToast(getContext(),"唤起支付宝扫码");
+                break;
             case R.id.other_pay_ok:
                 dismiss();
                 break;

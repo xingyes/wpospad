@@ -22,7 +22,8 @@ public class ProBtnAdapter extends RecyclerView.Adapter<ProBtnAdapter.contHolder
 {
     private ArrayList<GoodsModule> prolist;
     private BaseActivity  mActivity;
-    private static int BgShape[] = {R.drawable.button_goods_1,R.drawable.button_goods_2,R.drawable.button_goods_3};
+//    private static int BgShape[] = {R.drawable.button_goods_1,R.drawable.button_goods_2,R.drawable.button_goods_3};
+    private static int BgShape[] = {R.drawable.button_pro_orange};
     int bgcolorIdx = 0;
     public interface ItemClickListener{
         public void onRecyclerItemClick(View v, int pos);

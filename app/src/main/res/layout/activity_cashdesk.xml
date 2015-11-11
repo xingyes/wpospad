@@ -17,7 +17,6 @@
             inmost:leftVisiable="true"
             inmost:drawableLeft="@drawable/ico_back"
             inmost:bgColor="@color/nav_wpos_bg"
-            inmost:bgResource="@drawable/button_pay_other"
             inmost:textColor="@color/white"/>
         <EditText
             android:layout_marginTop="5dp"
@@ -67,7 +66,7 @@
     <include layout="@layout/pg_cashdesk_right"
         android:id="@+id/right_oprate_desk"
         android:layout_below="@id/cashdesk_nav_layout"
-        android:layout_width="400dp"
+        android:layout_width="360dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"/>
 
@@ -89,7 +88,7 @@
             android:text="&lt; 返回"
             android:layout_alignParentLeft="true"/>
         <android.support.v7.widget.RecyclerView
-            android:background="@color/btn_wpos_gray_dark"
+            android:background="@drawable/button_whitebg_gray_frame_shape"
             android:layout_toRightOf="@id/back_cate_level1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -155,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/buy_choose"
                 android:checked="true"
-                android:button="@drawable/radio_choose_selector"/>
+                android:button="@drawable/wpos_radio_selector"/>
             <TextView
                 android:textSize="14dp"
                 android:textColor="@color/global_text_bold"
@@ -225,7 +224,7 @@
             android:layout_height="1px"
             android:background="@color/global_text_info_color"/>
         <android.support.v7.widget.RecyclerView
-            android:background="@color/transparent"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/buy_pro_list"/>
@@ -235,7 +234,8 @@
         android:layout_width="10dp"
         android:layout_height="match_parent"
         android:background="@mipmap/split_vert"
-        android:layout_toLeftOf="@id/right_oprate_desk"/>
+        android:layout_toLeftOf="@id/right_oprate_desk"
+        android:layout_below="@id/cashdesk_nav_layout"/>
 
     <include layout="@layout/global_loading"/>
 

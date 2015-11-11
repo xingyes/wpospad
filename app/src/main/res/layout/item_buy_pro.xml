@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <LinearLayout
         android:gravity="center"
@@ -16,11 +17,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/buy_item_choose"
-            android:button="@drawable/radio_choose_selector"/>
+            android:button="@drawable/wpos_radio_selector"/>
 
         <TextView
         android:text="1223345567WS"
-        android:textColor="@color/global_text_gray"
+        android:textColor="@color/cash_text_info"
         android:layout_marginLeft="5dp"
         android:layout_width="140dp"
         android:layout_height="60dp"
@@ -30,7 +31,7 @@
         android:gravity="center"
         android:textSize="18dp"/>
         <TextView
-        android:textColor="@color/global_text_gray"
+        android:textColor="@color/cash_text_info"
         android:layout_marginLeft="5dp"
         android:layout_width="160dp"
         android:layout_height="60dp"
@@ -41,7 +42,7 @@
         android:textSize="18dp"
         android:text="统一冰红茶红茶红茶"/>
     <TextView
-        android:textColor="@color/global_text_gray"
+        android:textColor="@color/cash_text_info"
         android:layout_width="100dp"
         android:layout_height="60dp"
         android:id="@+id/buy_item_price"
@@ -63,7 +64,7 @@
         android:layout_centerInParent="true"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/global_text_gray"
+        android:textColor="@color/cash_text_info"
         android:id="@+id/buy_item_num"
         android:singleLine="true"
         android:ellipsize="end"
@@ -76,14 +77,14 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/buy_item_num"
-            android:src="@mipmap/icon_num_down"/>
+            android:src="@mipmap/icon_num_down_black"/>
         <ImageView
             android:id="@+id/buy_num_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/buy_item_num"
-            android:src="@mipmap/icon_num_up"/>
+            android:src="@mipmap/icon_num_up_black"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -96,7 +97,7 @@
             android:layout_centerInParent="true"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/global_text_gray"
+            android:textColor="@color/cash_text_info"
             android:id="@+id/buy_item_discount"
             android:singleLine="true"
             android:ellipsize="end"
@@ -107,7 +108,7 @@
 
         <TextView
             android:text="6,591.111,12"
-            android:textColor="@color/global_text_gray"
+            android:textColor="@color/cash_text_info"
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:id="@+id/buy_item_sum"

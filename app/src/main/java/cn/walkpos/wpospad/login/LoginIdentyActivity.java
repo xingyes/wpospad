@@ -48,7 +48,7 @@ public class LoginIdentyActivity extends BaseActivity implements OnSuccessListen
         super.onResume();
         nameEdt.setText("");
         IDcardEdt.setText("");
-        nameEdt.append("王校长");
+        nameEdt.append("王小二");
         IDcardEdt.append("310911198912046012");
     }
 

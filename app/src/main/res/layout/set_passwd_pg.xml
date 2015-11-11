@@ -118,8 +118,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/agree_btn"
                 android:layout_gravity="center_vertical"
-                inmost:checkboxImageOff="@drawable/choose_radio_off"
-                inmost:checkboxImageOn="@drawable/choose_radio_on"
+                inmost:checkboxImageOff="@mipmap/wpos_radio_n"
+                inmost:checkboxImageOn="@mipmap/wpos_radio_y"
                 inmost:text="@string/read_and_agree"
                 inmost:contentColor="@color/global_text_info_color"
                 inmost:contentSize="24dp"/>/>

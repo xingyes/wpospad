@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/transparent"
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -14,6 +13,6 @@
         android:textSize="19dp"
         android:text="统一冰红茶"
         android:layout_centerInParent="true"
-        android:textColor="@color/white"
-        android:background="@drawable/button_goods_1"/>
+        android:textColor="@drawable/white_black_textcolor_selector"
+        android:background="@drawable/button_pro_orange"/>
 </LinearLayout>

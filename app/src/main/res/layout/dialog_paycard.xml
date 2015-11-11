@@ -9,25 +9,25 @@
     android:padding="30dp">
 
     <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
-    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="刷卡收款"
-        android:textColor="@color/white"
-        android:textSize="20dp"/>
-    <TextView
-        android:id="@+id/bill_total_tv"
-        android:layout_margin="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="@string/income_x"
-        android:textColor="@color/white"
-        android:textSize="30dp"/>
-    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="刷卡收款"
+            android:textColor="@color/white"
+            android:textSize="20dp"/>
+        <TextView
+            android:id="@+id/bill_total_tv"
+            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/income_x"
+            android:textColor="@color/white"
+            android:textSize="30dp"/>
+           <RelativeLayout
         android:layout_width="500dp"
         android:layout_height="300dp"
         android:orientation="horizontal"
@@ -42,18 +42,16 @@
             android:textSize="24dp"/>
         </RelativeLayout>
 
-
-    <TextView
-        android:textSize="26dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/card_pay_ok"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:text="@string/btn_done"
-        android:textColor="@color/white"
-        android:background="@drawable/button_wpos_red_round_rect"
-        android:layout_centerHorizontal="true"/>
-
+        <TextView
+            android:textSize="26dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/card_pay_ok"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="@string/btn_done"
+            android:textColor="@color/white"
+            android:background="@drawable/button_wpos_red_round_rect"
+            android:layout_centerHorizontal="true"/>
     </LinearLayout>
 </LinearLayout>

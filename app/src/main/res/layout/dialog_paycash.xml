@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -139,7 +139,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -148,7 +148,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -157,7 +157,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -171,7 +171,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -180,7 +180,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -189,7 +189,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -198,7 +198,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textStyle="bold"
@@ -212,7 +212,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -221,7 +221,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -230,7 +230,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -239,7 +239,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -255,7 +255,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -264,7 +264,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -273,7 +273,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"
@@ -282,7 +282,7 @@
                 android:gravity="center"
                 android:background="@drawable/button_gray_frame_round"/>
             <TextView
-                android:textColor="@color/white"
+                android:textColor="@drawable/gray_white_textcolor_selector"
                 android:layout_width="85dp"
                 android:layout_height="90dp"
                 android:textSize="30dp"

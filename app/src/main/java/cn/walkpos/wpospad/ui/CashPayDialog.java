@@ -91,6 +91,8 @@ public class CashPayDialog extends Dialog implements View.OnClickListener {
             billTotalv.setText(strBill);
         mWinWidth = this.setAttributes();
 
+        incomeEditv.requestFocus();
+
     }
 
     public void setBill(String abill)
@@ -220,9 +222,13 @@ public class CashPayDialog extends Dialog implements View.OnClickListener {
 
         incomeEditv.setText(inputStr);
         BigDecimal bill = new BigDecimal(strBill);
-        BigDecimal income = new BigDecimal(inputStr);
-        BigDecimal change = income.subtract(bill);
-        cashChangev.setText(change.toString());
+        if(TextUtils.isEmpty(inputStr))
+            cashChangev.setText("");
+        else {
+            BigDecimal income = new BigDecimal(inputStr);
+            BigDecimal change = income.subtract(bill);
+            cashChangev.setText(change.toString());
+        }
     }
 
 

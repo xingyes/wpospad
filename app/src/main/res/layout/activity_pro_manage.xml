@@ -143,8 +143,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            inmost:checkboxImageOff="@drawable/choose_radio_off"
-            inmost:checkboxImageOn="@drawable/choose_radio_on"
+            inmost:checkboxImageOff="@mipmap/wpos_radio_n"
+            inmost:checkboxImageOn="@mipmap/wpos_radio_y"
             inmost:text="@string/stock_hint"
             inmost:contentColor="@color/white"
             inmost:contentSize="24dp"/>
@@ -279,8 +279,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    inmost:checkboxImageOff="@drawable/choose_radio_off"
-                    inmost:checkboxImageOn="@drawable/choose_radio_on"
+                    inmost:checkboxImageOff="@mipmap/wpos_radio_n"
+                    inmost:checkboxImageOn="@mipmap/wpos_radio_y"
                     inmost:text="@string/choose_all"
                     inmost:contentColor="@color/global_wpos_orange"
                     inmost:contentSize="24dp"/>
