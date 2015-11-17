@@ -50,7 +50,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        MyApplication.start();
+        WPosApplication.start();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 

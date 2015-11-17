@@ -10,7 +10,9 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -111,6 +113,16 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
         //cate
         searchInputV = (EditText) this.findViewById(R.id.search_input);
+        searchInputV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH)
+                {
+                    UiUtils.makeToast(CashdeskActivity.this,"搜索:" + searchInputV.getText().toString());
+                }
+                return false;
+            }
+        });
         cateListV = (RecyclerView) this.findViewById(R.id.cate_list);
         if (null == cateGroupArray)
             cateGroupArray = new ArrayList<CateItemModule>();
@@ -121,15 +133,21 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         cateAdapter = new CashCateAdapter(this, new CashCateAdapter.ItemClickListener() {
             @Override
             public void onRecyclerItemClick(View v, int pos) {
-                if (null == curRootCateItem) {
+                if (cateAdapter.isCateroot() || null == curRootCateItem) {
                     curCatePos = pos;
                     curRootCateItem = cateGroupArray.get(pos);
                     curSubCateItem = null;
-                    cateAdapter.setDataset(curRootCateItem.subCateArray);
-                    cateAdapter.setCateroot(false);
-                    cateAdapter.setPickIdx(-1);
-                    cateListV.scrollToPosition(0);
-                    backCaterootv.setVisibility(View.VISIBLE);
+                    if(curRootCateItem.subCateArray.size()<=0)
+                    {
+                        cateAdapter.setPickIdx(pos);
+                    }
+                    else {
+                        cateAdapter.setDataset(curRootCateItem.subCateArray);
+                        cateAdapter.setCateroot(false);
+                        cateAdapter.setPickIdx(-1);
+                        cateListV.scrollToPosition(0);
+                        backCaterootv.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     cateAdapter.setPickIdx(pos);
                     curSubCateItem = curRootCateItem.subCateArray.get(pos);
@@ -145,7 +163,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
             }
         });
         cateListV.setAdapter(cateAdapter);
-        loadCateData(false);
+
 
         //product panel
         goodsPaneLayout = (FlingDown2GoneLayout) this.findViewById(R.id.goods_panel_layout);
@@ -235,6 +253,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         this.findViewById(R.id.pay_discount).setOnClickListener(this);
         this.findViewById(R.id.pay_other).setOnClickListener(this);
 
+        loadCateData(false);
 
     }
 
@@ -292,7 +311,19 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
             cateGroupArray.add(cate);
         }
         cateAdapter.setDataset(cateGroupArray);
+        if (null == curRootCateItem) {
+            curCatePos = 0;
+            curRootCateItem = cateGroupArray.get(0);
+            curSubCateItem = null;
+            cateAdapter.setDataset(curRootCateItem.subCateArray);
+            cateAdapter.setCateroot(false);
+            cateAdapter.setPickIdx(-1);
+            cateListV.scrollToPosition(0);
+            backCaterootv.setVisibility(View.VISIBLE);
+        }
         cateAdapter.notifyDataSetChanged();
+        pageno = 0;
+        loadProductPanel(pageno + 1);
     }
 
 

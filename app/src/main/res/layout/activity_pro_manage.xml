@@ -36,6 +36,8 @@
             android:background="@drawable/button_white_10round_shape"
             android:textColorHint="@color/global_text_info_color"
             android:textColor="@color/black"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
             android:hint="搜索编号/名称/简称"/>
         <TextView
             android:layout_alignBottom="@id/pro_manage_nav"
@@ -282,6 +284,7 @@
                     inmost:checkboxImageOff="@mipmap/wpos_radio_n"
                     inmost:checkboxImageOn="@mipmap/wpos_radio_y"
                     inmost:text="@string/choose_all"
+                    inmost:isChecked="false"
                     inmost:contentColor="@color/global_wpos_orange"
                     inmost:contentSize="24dp"/>
                 <TextView

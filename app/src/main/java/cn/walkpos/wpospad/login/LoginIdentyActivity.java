@@ -49,7 +49,7 @@ public class LoginIdentyActivity extends BaseActivity implements OnSuccessListen
         nameEdt.setText("");
         IDcardEdt.setText("");
         nameEdt.append("王小二");
-        IDcardEdt.append("310911198912046012");
+        IDcardEdt.append("310123123123");
     }
 
     private void loginAccount()

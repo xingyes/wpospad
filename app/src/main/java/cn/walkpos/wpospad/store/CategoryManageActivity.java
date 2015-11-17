@@ -1,5 +1,6 @@
 package cn.walkpos.wpospad.store;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -229,7 +230,8 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
 
     @Override
     public void onDialogClick(int nButtonId, ArrayList<String> arrayList) {
-        if(null==arrayList || arrayList.size()<=0)
+
+        if(null==arrayList || arrayList.size()<=0 || nButtonId!= DialogInterface.BUTTON_POSITIVE)
             return;
 
         if(cateSetLevel==0)
@@ -319,6 +321,8 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
      */
     private void addCateItem(int rootCateIdx, final String cateName) {
 
+        if(TextUtils.isEmpty(cateName))
+            return;
         mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
         if (null == mAjax)
             return;
@@ -372,7 +376,7 @@ public class CategoryManageActivity extends BaseActivity implements InStockDialo
 
     private void refreshCateData(JSONArray array)
     {
-
+        cateGroupArray.clear();
         for(int i = 0; array!=null && i < array.length(); i++)
         {
             CateItemModule cate = new CateItemModule();

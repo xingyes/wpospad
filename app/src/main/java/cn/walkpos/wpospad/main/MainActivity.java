@@ -15,6 +15,7 @@ import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.CircleImageView;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.preference.Preference;
+import com.xingy.util.MyApplication;
 import com.xingy.util.ServiceConfig;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
@@ -63,6 +64,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        WPosApplication.start();
 
         PowerManager powerManager = (PowerManager)getSystemService(this.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");

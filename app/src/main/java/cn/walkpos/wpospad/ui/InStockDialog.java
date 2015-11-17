@@ -175,6 +175,7 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
 
         if ( null != mListener )
         {
+            inputArray.clear();
             String strinput = mInputEt.getText().toString();
             inputArray.add(strinput);
             if(mInputEt2.getVisibility()==View.VISIBLE)
@@ -183,7 +184,7 @@ public class InStockDialog extends Dialog implements View.OnClickListener {
             if(v== mPositive)
                 mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,inputArray);
             else
-                mListener.onDialogClick(DialogInterface.BUTTON_POSITIVE,inputArray);
+                mListener.onDialogClick(DialogInterface.BUTTON_NEGATIVE,inputArray);
         }
 
         // Dismiss the dialog.

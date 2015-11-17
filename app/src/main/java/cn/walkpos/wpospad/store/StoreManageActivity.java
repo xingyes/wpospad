@@ -8,7 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -16,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.xingy.lib.AppStorage;
 import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.CheckBox;
@@ -47,6 +50,7 @@ import cn.walkpos.wpospad.util.WPosConfig;
 public class StoreManageActivity extends BaseActivity implements DrawerLayout.DrawerListener,
         ProInfoAdapter.ItemClickListener,InStockDialog.WithEditNumClickListener,OnSuccessListener<JSONObject> {
 
+    public static final String  STORE_REFRESH = "store_refresh";
     private Ajax           mAjax;
     private int            pageno = 1;
     private boolean        allFetched = false;
@@ -114,6 +118,16 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
         loadNavBar(R.id.pro_manage_nav);
         searchInputEt = (EditText)this.findViewById(R.id.search_input);
+        searchInputEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH)
+                {
+                    searchPro();
+                }
+                return false;
+            }
+        });
 
         cateDrawerBtn = (TextView)this.findViewById(R.id.cate_drawer_btn);
         cateDrawer = (DrawerLayout)this.findViewById(R.id.cate_list_drawer);
@@ -209,6 +223,20 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         searchCateid = "";
         loadProData(pageno);
 
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        String sf = AppStorage.getData(StoreManageActivity.STORE_REFRESH);
+        if(!TextUtils.isEmpty(sf) && sf.equals("1")) {
+            allFetched = false;
+            pageno = 1;
+            proArray.clear();
+            loadProData(pageno);
+            AppStorage.setData(StoreManageActivity.STORE_REFRESH, "0", false);
+        }
     }
 
     /**
@@ -392,6 +420,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             allFetched = false;
             pageno = 1;
             searchCateid = "";
+            proArray.clear();
             loadProData(pageno);
         }
     }
@@ -548,10 +577,16 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         if(pos >= (proArray.size()-1))
             return;
         GoodsModule goods = proArray.get(pos);
+        if(null!=batChooseAllBtn && batChooseAllBtn.getVisibility() == View.VISIBLE)
+        {
+            proAdapter.changeChoose(goods.goods_id);
+            proAdapter.notifyDataSetChanged();
+            return;
+        }
+
         Bundle bundle = new Bundle();
         bundle.putSerializable(AddProductActivity.GOODS_MODEL,goods);
         UiUtils.startActivity(StoreManageActivity.this,AddProductActivity.class,bundle,true);
-
     }
 
     @Override

@@ -25,6 +25,7 @@ public class CashCateAdapter extends RecyclerView.Adapter<CashCateAdapter.contHo
     private BaseActivity mActivity;
     private boolean      cateroot = true;
     public void setCateroot(boolean flag){cateroot = flag;}
+    public boolean isCateroot(){return cateroot;}
     public interface ItemClickListener{
         public void onRecyclerItemClick(View v,int pos);
         public void onRecyclerItemLongClick(View v,int pos);

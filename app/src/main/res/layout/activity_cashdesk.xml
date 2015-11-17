@@ -33,6 +33,8 @@
             android:background="@drawable/button_white_10round_shape"
             android:textColorHint="@color/global_text_info_color"
             android:textColor="@color/black"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
             android:hint="搜索编号/名称/简称"/>
         <TextView
             android:layout_alignBottom="@id/cashdesk_nav"

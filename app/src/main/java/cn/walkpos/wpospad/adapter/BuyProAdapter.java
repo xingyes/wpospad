@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.activity.BaseActivity;
 
 import java.util.ArrayList;
@@ -67,7 +68,12 @@ public class BuyProAdapter extends RecyclerView.Adapter<BuyProAdapter.contHolder
         for(int i=0; i < prolist.size(); i++) {
             GoodsModule item = prolist.get(i);
             if (item.goods_id.equals(addItem.goods_id)) {
-                item.buy_num++;
+                if(item.buy_num+1 > item.stock )
+                {
+                    UiUtils.makeToast(mActivity,"库存: " + item.stock + "不足");
+                }
+                else
+                    item.buy_num++;
                 return;
             }
         }

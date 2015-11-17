@@ -78,7 +78,15 @@
                     android:gravity="left|center_vertical"
                     android:background="@drawable/button_gray_round_frame_shape"/>
                 <TextView
-                    android:layout_marginLeft="125dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="30dp"/>
+                <TextView
+                    android:layout_marginLeft="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="28dp"
@@ -135,7 +143,15 @@
                     android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
                 <TextView
-                    android:layout_marginLeft="125dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="30dp"/>
+                <TextView
+                    android:layout_marginLeft="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="28dp"
@@ -156,6 +172,14 @@
                     android:gravity="left|center_vertical"
                     android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="30dp"/>
             </LinearLayout>
             <!--简称 ＋ 销售价格-->
             <LinearLayout
@@ -210,6 +234,14 @@
                     android:gravity="left|center_vertical"
                     android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"/>
+                <TextView
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="*"
+                    android:textColor="@color/red"
+                    android:textSize="30dp"/>
             </LinearLayout>
             <!--进货数量 折扣设置-->
             <LinearLayout
@@ -295,6 +327,14 @@
                     android:background="@drawable/button_gray_round_frame_shape"
                     android:textColorHint="@color/global_text_info_color"
                     android:hint="默认少于100进行提示"/>
+                <TextView
+                    android:layout_marginLeft="125dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="28dp"
+                    android:textColor="@color/red"
+                    android:text="* 为必填项目"/>
+
             </LinearLayout>
             <TextView
                 android:background="@drawable/button_wpos_red_round_rect"

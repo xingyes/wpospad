@@ -25,6 +25,13 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
     private BaseActivity  mActivity;
     private boolean       batOptMod = false;
 
+    public void changeChoose(String gid) {
+        if(chooseProIdSet.contains(gid))
+            chooseProIdSet.remove(gid);
+        else
+            chooseProIdSet.add(gid);
+    }
+
     public interface ItemClickListener{
         public void onRecyclerItemClick(View v,int pos);
         public void onRecyclerItemLongClick(View v,int pos);
@@ -92,6 +99,7 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
         {
             holder.instockV.setVisibility(View.GONE);
             holder.chooseV.setVisibility(View.VISIBLE);
+            holder.chooseV.setChecked(chooseProIdSet.contains(pro.goods_id));
         }
         else{
             holder.instockV.setVisibility(View.VISIBLE);
@@ -102,6 +110,8 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
         holder.stockV.setTextColor((bStockHint && pro.down_warn>0 && pro.stock < pro.down_warn) ?
                     mActivity.getResources().getColor(R.color.btn_wpos_red) :
                     mActivity.getResources().getColor(R.color.global_text_goods));
+
+
 
     }
 

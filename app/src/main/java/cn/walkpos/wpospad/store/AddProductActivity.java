@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.xingy.lib.AppStorage;
 import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
@@ -244,8 +245,12 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             return;
         }
         String nameShstr = nameShortEt.getText().toString();
-        if(!TextUtils.isEmpty(nameShstr))
-            nameShstr = namestr.substring(0,6);
+        if(TextUtils.isEmpty(nameShstr)) {
+            if(namestr.length()>6)
+                nameShstr = namestr.substring(0, 6);
+            else
+                nameShstr = namestr;
+        }
         String inpricestr = inPriceEt.getText().toString();
         if(TextUtils.isEmpty(inpricestr))
         {
@@ -267,6 +272,15 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
         if(TextUtils.isEmpty(discountstr))
         {
             discountstr = "1.0";
+        }else {
+            try {
+                double dis = Double.valueOf(discountstr);
+                if(dis>1 || dis<0)
+                    discountstr = "1.0";
+            }catch (Exception e)
+            {
+                discountstr = "1.0";
+            }
         }
         String stockhintNumstr = stockHintNumEt.getText().toString();
         if(TextUtils.isEmpty(stockhintNumstr))
@@ -391,6 +405,8 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             String msg = jsonObject.optString("res", "提交成功");
             UiUtils.makeToast(this, msg);
 
+            AppStorage.setData(StoreManageActivity.STORE_REFRESH, "1", false);
+
             JSONObject data = jsonObject.optJSONObject("data");
             editGoods = new GoodsModule();
             editGoods.parse(data);
@@ -399,6 +415,9 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
             if(!bEditGood) {
                 submitBtn.setText("继续添加");
                 submitBtn.setTag("1");
+            }else
+            {
+                finish();
             }
         }
     }
