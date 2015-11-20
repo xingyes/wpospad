@@ -1,5 +1,6 @@
 {"errno":0,"data":{
-"URL_API_ALL":{"url":"http://116.247.87.237:10080/index.php/openapi/mobileapi_route/api","method":"GET"}
+"URL_API_ALL":{"url":"http://116.247.87.237:10080/index.php/openapi/mobileapi_route/api","method":"GET"},
+"URL_API_BUSINESS":{"url":"http://116.247.87.237:10080/index.php/openapi/business_center/api","method":"GET"}
 
 
 },"enable":true,"message":"","version":"1","autoResume":1}

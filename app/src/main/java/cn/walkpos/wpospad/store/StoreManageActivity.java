@@ -408,6 +408,29 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         mAjax.setOnErrorListener(this);
         mAjax.send();
     }
+
+    private void delProduct(final ArrayList<String>  array){
+        if(requesting)
+            return;
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        requesting = true;
+        mAjax.setId(WPosConfig.REQ_DEL_GOODS);
+        mAjax.setData("method", "goods.del");
+//        mAjax.setData("store", WPosApplication.StockBn);
+        mAjax.setData("store_bn", "S55FFA78EC7F56");
+        mAjax.setData("token", WPosApplication.GToken);
+
+        mAjax.setData("goods_id",proArray.get(mInstockProIdx).goods_id);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+    }
     /**
      *
      */
@@ -485,6 +508,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                                 public void onDialogClick(int nButtonId) {
                                     if(nButtonId == AppDialog.BUTTON_POSITIVE)
                                     {
+
                                         UiUtils.makeToast(StoreManageActivity.this,R.string.del_succ);
                                     }
                                 }
@@ -629,6 +653,12 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             cache.set(CateItemModule.CACHEKEY_CATEGORY,array.toString(),86400*7);
             refreshCateData(array);
         }else if(response.getId()==WPosConfig.REQ_INSTOCK_GOODS)
+        {
+            String msg = jsonObject.optString("res", getString(R.string.submit_succ));
+            UiUtils.makeToast(this,msg);
+            return;
+        }
+        else if(response.getId()==WPosConfig.REQ_DEL_GOODS)
         {
             String msg = jsonObject.optString("res", getString(R.string.submit_succ));
             UiUtils.makeToast(this,msg);

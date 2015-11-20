@@ -5,10 +5,13 @@ import com.xingy.util.Config;
 public class WPosConfig extends Config {
 
     public static final String URL_API_ALL = "URL_API_ALL";
+    public static final String URL_API_BUSINESS = "URL_API_BUSINESS";
 
     //login
     public static final int REQ_LOGIN = 100;
     public static final int REQ_LOGIN_IDENTITY = 101;
+    public static final int REQ_SMS = 102;
+    public static final int REQ_VERIFY_STOREINFO = 103;
     //register
     public static final int   REQ_REGISTER = 201;
     public static final int   REQ_RESET_PASSWD = 202;
@@ -35,6 +38,9 @@ public class WPosConfig extends Config {
     public static final int   REQ_MODIFY_CATEGORY = 603;
     public static final int   REQ_DEL_CATEGORY = 604;
 
+    //money
+    public static final int   REQ_BINDED_CARDS= 701;
+    public static final int   REQ_BIND_NEW_CARD = 702;
     //////////Server api configuration.
     //login
     public static final String URL_LOGIN_IDENTITY = "URL_LOGIN_IDENTITY";
@@ -43,7 +49,7 @@ public class WPosConfig extends Config {
     public static final String URL_IMAGE_STREAM_UPLOAD = "URL_IMAGE_STREAM_UPLOAD";
     public static final String URL_CHANGE_NICKNAME = "URL_CHANGE_NICKNAME";
     public static final String URL_CHANGE_PHONE = "URL_CHANGE_PHONE";
-    public static final String URL_VERIFYCODE_SMS = "URL_VERIFYCODE_SMS";
+
     public static final String URL_VERIFY_LOGIN = "URL_VERIFY_LOGIN";
 
 

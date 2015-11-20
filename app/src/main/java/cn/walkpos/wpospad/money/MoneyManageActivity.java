@@ -20,13 +20,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
+import com.xingy.lib.model.Account;
 import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ServiceConfig;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
 import com.xingy.util.ajax.Response;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ import cn.walkpos.wpospad.login.VerifyDetailActivity;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.BCardModule;
 import cn.walkpos.wpospad.ui.VerifyCodeDialog;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 
 public class MoneyManageActivity extends BaseActivity implements DrawerLayout.DrawerListener,
@@ -68,17 +72,15 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
     private TextView accountInfov;
     private VerifyCodeDialog verifyDialog;
 
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Intent ait = getIntent();
-        if(ait == null)
+        if(ait == null || null==WPosApplication.account)
         {
             finish();
             return;
         }
-
 
         RequestQueue mQueue = Volley.newRequestQueue(this);
         mImgLoader = new ImageLoader(mQueue, WPosApplication.globalMDCache);
@@ -134,8 +136,8 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                     return;
                 }
                 cardAdapter.notifyDataSetChanged();
-                String info = cardArray.get(position).bandname;
-                String code = cardArray.get(position).cardcode;
+                String info = cardArray.get(position).account_bank;
+                String code = cardArray.get(position).bank_card;
                 cardAdapter.setChooseId(cardArray.get(position).card_id);
                 info = info + " " + code.substring(0,4) + " **** **** " + code.substring(12);
                 accountInfov.setText(info);
@@ -159,55 +161,21 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
      *
      */
     private void loadCardData() {
-//        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
-//        if (null == mAjax)
-//            return;
-//
-//        showLoadingLayer();
-//
-//        mAjax.setId(WPosConfig.REQ_LOAD_CATEGORY);
-//        mAjax.setData("method", "goods.cat");
-//        mAjax.setData("store_bn", WPosApplication.StockBn);
-//        mAjax.setOnSuccessListener(this);
-//        mAjax.setOnErrorListener(this);
-//        mAjax.send();
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_BUSINESS);
+        if (null == mAjax)
+            return;
 
-        cardArray = new ArrayList<BCardModule>();
-        BCardModule cm = new BCardModule();
-        cm.bandname = "平安银行";
-        cm.cardcode = "6211110000232321";
-        cm.card_id = "121";
+        showLoadingLayer();
 
-        cardArray.add(cm);
-        cm = new BCardModule();
-        cm.bandname = "招商银行";
-        cm.cardcode = "6211110000232321";
-        cm.card_id = "122";
-        cardArray.add(cm);
+        mAjax.setId(WPosConfig.REQ_BINDED_CARDS);
+        mAjax.setData("method", "businescenter.bindquery");
+        mAjax.setData("card_number", "320911198912046021X");
+//        mAjax.setData("card_number", WPosApplication.account.card_number);
 
-        cm = new BCardModule();
-        cm.bandname = "建设银行";
-        cm.cardcode = "6211110000111111";
-        cm.card_id = "123";
-        cardArray.add(cm);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
 
-        cm = new BCardModule();
-        cm.bandname = "农业银行";
-        cm.cardcode = "6211110000233333";
-        cm.card_id = "124";
-        cardArray.add(cm);
-
-        cm = new BCardModule();
-        cm.bandname = "工商银行";
-        cm.cardcode = "6211110000244444";
-        cm.card_id = "125";
-        cardArray.add(cm);
-
-        //last new addone
-        cm = new BCardModule();
-        cardArray.add(cm);
-
-        cardAdapter.notifyDataSetChanged();
     }
 
     private void delCardItem(int pos)
@@ -227,8 +195,8 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         Random rd = new Random();
         card.card_id = "9" + rd.nextInt(9);
 
-        card.cardcode = accountCodev.getText().toString();
-        if(TextUtils.isEmpty(card.cardcode))
+        card.bank_card = accountCodev.getText().toString();
+        if(TextUtils.isEmpty(card.bank_card))
         {
             UiUtils.makeToast(this,"卡号不能为空");
             return;
@@ -240,11 +208,22 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             return;
         }
 
-        cardArray.add(card);
-        cardAdapter.notifyDataSetChanged();
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_BUSINESS);
+        if (null == mAjax)
+            return;
 
-        cardDrawer.closeDrawer(leftLayout);
-        cardDrawer.openDrawer(rightLayout);
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_BIND_NEW_CARD);
+        mAjax.setData("method", "businescenter.bindcard");
+        mAjax.setData("card_number", "320911198912046021X");
+        mAjax.setData("bank_card", card.bank_card);
+        mAjax.setData("account_bank", card.account_bank);
+        mAjax.setData("user", card.usrname);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
     }
 
     @Override
@@ -339,6 +318,33 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             UiUtils.makeToast(this,msg);
             return;
         }
+
+        if(response.getId() == WPosConfig.REQ_BINDED_CARDS) {
+            JSONObject data = jsonObject.optJSONObject("data");
+            if (null == data)
+                return;
+
+            JSONArray array = data.optJSONArray("list");
+            BCardModule cm;
+            for (int i = 0; null != array && i < array.length(); i++) {
+                cm = new BCardModule();
+                cm.parse(array.optJSONObject(i));
+                cardArray.add(cm);
+            }
+
+            //last empty card to add
+            cm = new BCardModule();
+            cardArray.add(cm);
+
+            cardAdapter.notifyDataSetChanged();
+        }
+        else if(response.getId() == WPosConfig.REQ_BIND_NEW_CARD) {
+
+            cardDrawer.closeDrawer(leftLayout);
+            loadCardData();
+
+            cardDrawer.openDrawer(rightLayout);
+        }
     }
 
 
@@ -409,7 +415,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
 
 
             BCardModule card = cardArray.get(position);
-            boolean newadd = TextUtils.isEmpty(card.cardcode);
+            boolean newadd = TextUtils.isEmpty(card.bank_card);
             holder.addv.setVisibility(newadd ? View.VISIBLE : View.GONE);
             holder.iconlayout.setVisibility(newadd ? View.INVISIBLE : View.VISIBLE);
             holder.iconv.setVisibility(newadd ? View.INVISIBLE : View.VISIBLE);
@@ -434,9 +440,9 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
 
             if(!TextUtils.isEmpty(card.iconurl))
                 holder.iconv.setImageUrl(card.iconurl,mImgLoader);
-            holder.banknamev.setText(card.bandname);
+            holder.banknamev.setText(card.account_bank);
             holder.cardtypev.setText(card.cardtype);
-            holder.codev.setText(card.cardcode);
+            holder.codev.setText(card.bank_card);
             holder.delv.setTag(position);
 
 

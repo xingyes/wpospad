@@ -67,28 +67,32 @@
                 android:textSize="28dp"
                 android:textColor="@color/white"
                 android:text="店铺类型"/>
-            <com.xingy.lib.ui.CheckBox
+            <RadioGroup
+                android:id="@+id/shop_type_rg"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            <RadioButton
+                android:button="@drawable/wpos_radio_selector"
                 android:layout_marginLeft="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/shop_single"
+                android:id="@+id/shop_unit"
                 android:layout_gravity="center_vertical"
-                inmost:checkboxImageOff="@mipmap/wpos_radio_n"
-                inmost:checkboxImageOn="@mipmap/wpos_radio_y"
-                inmost:text="@string/shop_single"
-                inmost:contentColor="@color/white"
-                inmost:contentSize="24dp"/>
-            <com.xingy.lib.ui.CheckBox
-                android:layout_marginLeft="60dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/shop_store"
-                android:layout_gravity="center_vertical"
-                inmost:checkboxImageOff="@mipmap/wpos_radio_n"
-                inmost:checkboxImageOn="@mipmap/wpos_radio_y"
-                inmost:text="@string/shop_store"
-                inmost:contentColor="@color/white"
-                inmost:contentSize="24dp"/>
+                android:text="@string/shop_single"
+                android:textColor="@color/white"
+                android:textSize="24dp"/>
+                <RadioButton
+                    android:button="@drawable/wpos_radio_selector"
+                    android:layout_marginLeft="60dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shop_business"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/shop_store"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"/>
+            </RadioGroup>
         </LinearLayout>
         <TextView
             android:layout_marginTop="10dp"
@@ -125,7 +129,7 @@
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:id="@+id/law_owner_name"
-                android:text="我喔喔我"
+                android:text="王小小"
                 android:gravity="left|center_vertical"
                 android:background="@drawable/button_gray_round_frame_shape"
                 android:textColorHint="@color/global_text_info_color"/>
@@ -147,13 +151,13 @@
                 android:layout_width="380dp"
                 android:layout_height="60dp"
                 android:id="@+id/law_owner_idcard"
-                android:text="33050120001010203x"
+                android:text="3209111892102341222"
                 android:gravity="left|center_vertical"
                 android:background="@drawable/button_gray_round_frame_shape"
                 android:textColorHint="@color/global_text_info_color"/>
         </LinearLayout>
 
-        <!--line 3 法人 ＋ 身份证-->
+        <!--line 3 银行 卡号 ＋ 银行名-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -178,7 +182,7 @@
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:id="@+id/bank_account"
-                android:text="622020300303012345"
+                android:text="6222813347211947329"
                 android:gravity="left|center_vertical"
                 android:background="@drawable/button_gray_round_frame_shape"
                 android:textColorHint="@color/global_text_info_color"/>
@@ -202,7 +206,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:src="@mipmap/icon_arrow_down"/>
+                    android:src="@mipmap/icon_arrow_down"
+                    android:visibility="gone"/>
             <EditText
                 android:layout_toLeftOf="@id/bank_more"
                 android:layout_width="match_parent"
@@ -215,7 +220,7 @@
                 android:textColor="@color/white"
                 android:singleLine="true"
                 android:id="@+id/bank_name"
-                android:text="33050120001010203x"
+                android:text="中国银行"
                 android:gravity="left|center_vertical"
                 android:textColorHint="@color/global_text_info_color"/>
             </RelativeLayout>
@@ -249,7 +254,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:src="@mipmap/icon_arrow_down"/>
+                    android:src="@mipmap/icon_arrow_down"
+                    android:visibility="gone"/>
                 <EditText
                     android:layout_toLeftOf="@id/business_more"
                     android:layout_width="match_parent"
@@ -262,7 +268,7 @@
                     android:textColor="@color/white"
                     android:singleLine="true"
                     android:id="@+id/business_name"
-                    android:text="百货"
+                    android:text="餐饮"
                     android:gravity="left|center_vertical"
                     android:textColorHint="@color/global_text_info_color"/>
             </RelativeLayout>
@@ -292,11 +298,15 @@
         android:id="@+id/tail_cover"
         android:layout_below="@id/no_pos_btn"
         android:background="@color/cover_black"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:visibility="gone"/>
     <ListView
         android:layout_width="500dp"
         android:layout_height="400dp"
         android:layout_centerInParent="true"
-        android:id="@+id/device_list"/>
+        android:id="@+id/device_list"
+        android:visibility="gone"/>
+
+
 
 </RelativeLayout>

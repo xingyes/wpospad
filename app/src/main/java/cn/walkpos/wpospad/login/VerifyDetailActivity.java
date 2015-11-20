@@ -16,16 +16,27 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ServiceConfig;
+import com.xingy.util.ToolUtil;
 import com.xingy.util.activity.BaseActivity;
+import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,9 +47,11 @@ import java.util.UUID;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.util.BlueUtil;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 
-public class VerifyDetailActivity extends BaseActivity implements BluetoothAdapter.LeScanCallback, AdapterView.OnItemClickListener {
+public class VerifyDetailActivity extends BaseActivity implements OnSuccessListener<JSONObject>,
+        BluetoothAdapter.LeScanCallback, AdapterView.OnItemClickListener {
 
     public static final String TAG = VerifyDetailActivity.class.getName();
     private final static String UUID_KEY_DATA = "0000ffe1-0000-1000-8000-00805f9b34fb";
@@ -59,6 +72,17 @@ public class VerifyDetailActivity extends BaseActivity implements BluetoothAdapt
     private BluetoothGattCallback mGattCallback;
 
     private View coverView;
+    private RadioGroup shopTypeRg;
+    private static final String unitShop = "unit";
+    private static final String businessShop = "business";
+    private String shopTypestr;
+
+    private EditText     fullNameEt;
+    private EditText     idcardEt;
+    private EditText     bankAccountEt;
+    private EditText     bankNameEt;
+    private EditText     industryEt;
+    private Ajax         mAjax;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +93,26 @@ public class VerifyDetailActivity extends BaseActivity implements BluetoothAdapt
         findViewById(R.id.bind_pos_btn).setOnClickListener(this);
         coverView = findViewById(R.id.tail_cover);
         coverView.setVisibility(View.VISIBLE);
+
+        shopTypeRg = (RadioGroup)this.findViewById(R.id.shop_type_rg);
+        shopTypeRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId ==R.id.shop_unit)
+                {
+                    shopTypestr = unitShop;
+                }
+                else if(checkedId == R.id.shop_business)
+                    shopTypestr = businessShop;
+            }
+        });
+        shopTypeRg.check(R.id.shop_unit);
+        fullNameEt = (EditText)this.findViewById(R.id.law_owner_name);
+        idcardEt = (EditText)this.findViewById(R.id.law_owner_idcard);
+        bankAccountEt = (EditText)this.findViewById(R.id.bank_account);
+        bankNameEt = (EditText)this.findViewById(R.id.bank_name);
+        industryEt = (EditText)this.findViewById(R.id.business_name);
+
 
         mLeAdapter = new LeDevListAdapter();
         mListV = (ListView) findViewById(R.id.device_list);
@@ -199,17 +243,65 @@ public class VerifyDetailActivity extends BaseActivity implements BluetoothAdapt
 
     }
 
+    private void verifyBasicInfo() {
+        String fullnamestr = fullNameEt.getText().toString();
+        if (TextUtils.isEmpty(fullnamestr)) {
+            UiUtils.makeToast(this, "请输入有效法人全名");
+            return;
+        }
+        String idcardstr = idcardEt.getText().toString();
+        if (TextUtils.isEmpty(idcardstr)) {
+            UiUtils.makeToast(this, "请输入有效法人身份证号");
+            return;
+        }
+        String bankaccoutstr = bankAccountEt.getText().toString();
+        if (TextUtils.isEmpty(bankaccoutstr)) {
+            UiUtils.makeToast(this, "请输入有效银行账号");
+            return;
+        }
+        String banknamestr = bankNameEt.getText().toString();
+        if (TextUtils.isEmpty(banknamestr)) {
+            UiUtils.makeToast(this, "请输入有效银行名");
+            return;
+        }
+        String industrystr = industryEt.getText().toString();
+        if (TextUtils.isEmpty(industrystr)) {
+            UiUtils.makeToast(this, "请输入有效所属行业");
+            return;
+        }
+
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_BUSINESS);
+        if (null == mAjax)
+            return;
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_VERIFY_STOREINFO);
+        mAjax.setData("method", "businescenter.verify");
+        mAjax.setData("full_name", fullnamestr);
+        mAjax.setData("card_number", idcardstr);
+        mAjax.setData("bank_card", bankaccoutstr);
+        mAjax.setData("account_bank", banknamestr);
+        mAjax.setData("industry", industrystr);
+        mAjax.setData("shop_type", shopTypestr);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+
+        mAjax.send();
+    }
 
     @Override
     public void onClick(View v) {
         Bundle bundle = null;
         switch (v.getId()) {
             case R.id.verify_next_btn:
-                UiUtils.startActivity(VerifyDetailActivity.this, VerifyPicActivity.class, bundle, true);
+                verifyBasicInfo();
                 break;
             case R.id.bind_pos_btn:
-                mListV.setVisibility(View.VISIBLE);
-                initBlue();
+//                mListV.setVisibility(View.VISIBLE);
+                UiUtils.makeToast(this,"绑定成功");
+                coverView.setVisibility(View.GONE);
+//                initBlue();
             default:
                 super.onClick(v);
                 break;
@@ -303,6 +395,23 @@ public class VerifyDetailActivity extends BaseActivity implements BluetoothAdapt
         } else
             super.onBackPressed();
     }
+
+    @Override
+    public void onSuccess(JSONObject jsonObject, Response response) {
+        closeLoadingLayer();
+
+        int errno = jsonObject.optInt("response_code",-1);
+        if(errno!=0)
+        {
+            String msg = jsonObject.optString("res", getString(R.string.network_error));
+            UiUtils.makeToast(this,msg);
+            return;
+        }
+
+        UiUtils.makeToast(this,jsonObject.optString("res", "认证成功请继续上传照片资料"));
+        UiUtils.startActivity(VerifyDetailActivity.this, VerifyPicActivity.class, true);
+    }
+
 
     public class LeDevListAdapter extends BaseAdapter {
         private ArrayList<BluetoothDevice> devArray;

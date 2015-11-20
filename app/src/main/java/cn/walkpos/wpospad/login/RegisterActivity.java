@@ -295,19 +295,24 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
         String phoneNum = mPhonev.getText().toString();
         if(ToolUtil.isPhoneNum(phoneNum))
         {
-//            if(mAjax!=null)
-//                mAjax.abort();
-//            mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);//URL_VERIFYCODE_SMS
-//            if (null == mAjax)
-//                return false;
-//
-//            showLoadingLayer();
-//            mAjax.setId(REQ_SMS);
-//            mAjax.setData("phone_number", phoneNum);
-//
-//            mAjax.setOnSuccessListener(this);
-//            mAjax.setOnErrorListener(this);
-//            mAjax.send();
+            if(mAjax!=null)
+                mAjax.abort();
+
+            mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+            if (null == mAjax)
+                return false;
+
+
+            showLoadingLayer();
+
+            mAjax.setId(WPosConfig.REQ_SMS);
+            mAjax.setData("method", "message.code");
+            mAjax.setData("mobile", mPhoneStr);
+
+            mAjax.setOnSuccessListener(this);
+            mAjax.setOnErrorListener(this);
+
+            mAjax.send();
             return true;
         }
         else
@@ -344,6 +349,7 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
             UiUtils.makeToast(this,msg);
             return;
         }
+
 
         if(response.getId() == WPosConfig.REQ_REGISTER)
         {
@@ -390,6 +396,9 @@ public class RegisterActivity extends BaseActivity implements OnSuccessListener<
             {
                 UiUtils.makeToast(this,jsonObject.optString("res","密码更新失败请重试"));
             }
+        }else if(response.getId() == WPosConfig.REQ_SMS)
+        {
+            UiUtils.makeToast(this,jsonObject.optString("res","短信发送成功"));
         }
 
     }

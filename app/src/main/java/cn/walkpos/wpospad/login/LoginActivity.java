@@ -130,6 +130,8 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
         accountEt.setText("");
         passwdEt.setText("");
         UiUtils.makeToast(this,"demo:1qazxsw2");
+        UiUtils.makeToast(this,"18016036868:123456m");
+        UiUtils.makeToast(this,"18521359287:654321mm");
         accountEt.append("18016036868");
         passwdEt.append("123456m");
     }
