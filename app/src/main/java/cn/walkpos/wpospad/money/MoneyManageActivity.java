@@ -3,7 +3,6 @@ package cn.walkpos.wpospad.money;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
-import com.xingy.lib.model.Account;
 import com.xingy.lib.ui.CheckBox;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
@@ -36,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import cn.walkpos.wpospad.R;
-import cn.walkpos.wpospad.login.VerifyDetailActivity;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.BCardModule;
 import cn.walkpos.wpospad.ui.VerifyCodeDialog;
@@ -63,6 +60,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
     private LinearLayout   rightLayout;
     private ListView       cardListV;
     private BandcardAdapter cardAdapter;
+    private BCardModule     curCard;
 
     private ArrayList<BCardModule>  cardArray;
 
@@ -136,9 +134,10 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                     return;
                 }
                 cardAdapter.notifyDataSetChanged();
-                String info = cardArray.get(position).account_bank;
-                String code = cardArray.get(position).bank_card;
-                cardAdapter.setChooseId(cardArray.get(position).bank_card);
+                curCard = pcard;
+                String info = curCard.account_bank;
+                String code = curCard.bank_card;
+                cardAdapter.setChooseId(curCard.bank_card);
                 info = info + " " + code.substring(0,4) + " **** **** " + code.substring(12);
                 accountInfov.setText(info);
                 cardDrawer.getHandler().postDelayed(new Runnable() {
@@ -256,7 +255,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                             return false;
                         }
                     });
-                    verifyDialog.setProperty("验证码校验","信息已经发往您在银行绑定的手机","","");
+                    verifyDialog.setProperty("验证码校验","信息已经发往您在银行绑定的手机",WPosApplication.account.mobile,"","");
                 }
                 verifyDialog.show();
 
