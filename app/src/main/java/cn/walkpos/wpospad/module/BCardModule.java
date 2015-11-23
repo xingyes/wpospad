@@ -10,7 +10,7 @@ import org.json.JSONObject;
 public class BCardModule extends BaseModel {
 
     public String bank_card;
-    public String card_id;
+//    public String card_id;
     public String iconurl;
     public String account_bank;
     public String usrname;
@@ -24,7 +24,7 @@ public class BCardModule extends BaseModel {
     public void clear()
     {
         bank_card = "";
-        card_id = "";
+//        card_id = "";
         iconurl = "";
         account_bank = "";
         usrname = "";
@@ -38,7 +38,7 @@ public class BCardModule extends BaseModel {
         bank_card = json.optString("bank_card");
         account_bank = json.optString("account_bank");
 
-        card_id = json.optString("bn");
+//        card_id = json.optString("bn");
         usrname = json.optString("short_name");
 
     }

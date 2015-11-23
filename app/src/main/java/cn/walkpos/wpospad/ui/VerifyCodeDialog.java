@@ -18,12 +18,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
 import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 /**
  * Created by xingyao on 2015/8/22.
@@ -58,6 +64,7 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
     private String          strMessage;
     private String          strPositive;
     private String          strNegative;
+    private String          mPhonestr;
 
     private EditText    mInputEt;
     private TextView    mRequestVerifyBtn;
@@ -123,25 +130,21 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
         mRequestVerifyBtn.setOnClickListener(this);
         mWinWidth = this.setAttributes();
 
-        mRequestVerifyBtn.setEnabled(false);
-        mRequestVerifyBtn.setText(getContext().getString(R.string.already_sent_left_second, mCounting));
-
-        bSending = true;
-        mHandler.sendEmptyMessageDelayed(MSG_VERIFY_INTERVAL, 1000);
     }
 
-    public void setProperty(final String caption, final String info,
+    public void setProperty(final String caption, final String info,final String phone,
                             final String position, final String negative)
     {
-        setProperty(caption,info,position,negative,COUTING_DOWN_SECOND);
+        setProperty(caption,info,phone,position,negative,COUTING_DOWN_SECOND);
     }
 
-    public void setProperty(final String caption, final String info,
+    public void setProperty(final String caption, final String info,final String phone,
                             final String position, final String negative, final int countdown)
 
     {
         strCaption = caption;
         strMessage = info;
+        mPhonestr = phone;
         strPositive = position;
         strNegative = negative;
         mCounting = countdown;
@@ -206,20 +209,31 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
 
     private boolean resendSms() {
 
-//            if(mAjax!=null)
-//                mAjax.abort();
-//            mAjax = ServiceConfig.getAjax(braConfig.URL_HOME_FLOOR);//URL_VERIFYCODE_SMS
-//            if (null == mAjax)
-//                return false;
-//
-//            showLoadingLayer();
-//            mAjax.setId(REQ_SMS);
-//            mAjax.setData("phone_number", phoneNum);
-//
-//            mAjax.setOnSuccessListener(this);
-//            mAjax.setOnErrorListener(this);
-//            mAjax.send();
-        return true;
+        if(ToolUtil.isPhoneNum(mPhonestr))
+        {
+            if(mAjax!=null)
+                mAjax.abort();
+
+            mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+            if (null == mAjax)
+                return false;
+
+
+            mAjax.setId(WPosConfig.REQ_SMS);
+            mAjax.setData("method", "message.code");
+            mAjax.setData("mobile", mPhonestr);
+
+            mAjax.setOnSuccessListener(new OnSuccessListener<JSONObject>() {
+                @Override
+                public void onSuccess(JSONObject jsonObject, Response response) {
+
+                }
+            });
+
+            mAjax.send();
+            return true;
+        }
+        return false;
     }
 
     private void verifyCode()

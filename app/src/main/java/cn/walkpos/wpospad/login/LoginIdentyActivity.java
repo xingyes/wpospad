@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.main.MainActivity;
+import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.util.WPosConfig;
 
 
@@ -28,6 +29,7 @@ public class LoginIdentyActivity extends BaseActivity implements OnSuccessListen
     private EditText IDcardEdt;
 
     private TextView submitBtn;
+    private String idcardstr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,7 @@ public class LoginIdentyActivity extends BaseActivity implements OnSuccessListen
             UiUtils.makeToast(this,"请填入真实姓名");
             return;
         }
-        String idcardstr = IDcardEdt.getText().toString();
+        idcardstr = IDcardEdt.getText().toString();
         if(TextUtils.isEmpty(idcardstr))
         {
             UiUtils.makeToast(this,"请填入身份证号码");
@@ -113,6 +115,7 @@ public class LoginIdentyActivity extends BaseActivity implements OnSuccessListen
         if(bstatus) {
             UiUtils.makeToast(this, jsonObject.optString("res", "校验成功"));
             UiUtils.startActivity(this, MainActivity.class, true);
+            WPosApplication.account.card_number = idcardstr;
             finish();
         }
         else

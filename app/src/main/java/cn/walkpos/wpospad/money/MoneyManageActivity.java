@@ -125,7 +125,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 BCardModule pcard = cardArray.get(position);
-                if(TextUtils.isEmpty(pcard.card_id))
+                if(TextUtils.isEmpty(pcard.bank_card))
                 {
                     if(!cardDrawer.isDrawerVisible(leftLayout))
                     {
@@ -138,7 +138,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                 cardAdapter.notifyDataSetChanged();
                 String info = cardArray.get(position).account_bank;
                 String code = cardArray.get(position).bank_card;
-                cardAdapter.setChooseId(cardArray.get(position).card_id);
+                cardAdapter.setChooseId(cardArray.get(position).bank_card);
                 info = info + " " + code.substring(0,4) + " **** **** " + code.substring(12);
                 accountInfov.setText(info);
                 cardDrawer.getHandler().postDelayed(new Runnable() {
@@ -151,7 +151,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             }
         });
 
-
+        cardArray = new ArrayList<BCardModule>();
         loadCardData();
 
     }
@@ -181,7 +181,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
     private void delCardItem(int pos)
     {
         BCardModule card = cardArray.get(pos);
-        if(card.card_id.equals(cardAdapter.chooseId))
+        if(card.bank_card.equals(cardAdapter.chooseId))
         {
             accountInfov.setText("");
         }
@@ -193,7 +193,6 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
     {
         BCardModule card = new BCardModule();
         Random rd = new Random();
-        card.card_id = "9" + rd.nextInt(9);
 
         card.bank_card = accountCodev.getText().toString();
         if(TextUtils.isEmpty(card.bank_card))
@@ -217,6 +216,9 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         mAjax.setId(WPosConfig.REQ_BIND_NEW_CARD);
         mAjax.setData("method", "businescenter.bindcard");
         mAjax.setData("card_number", "320911198912046021X");
+//        mAjax.setData("card_number", WPosApplication.account.card_number);
+
+
         mAjax.setData("bank_card", card.bank_card);
         mAjax.setData("account_bank", card.account_bank);
         mAjax.setData("user", card.usrname);
@@ -326,6 +328,10 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
 
             JSONArray array = data.optJSONArray("list");
             BCardModule cm;
+            if(array==null || array.length()<=0)
+                return;
+
+            cardArray.clear();
             for (int i = 0; null != array && i < array.length(); i++) {
                 cm = new BCardModule();
                 cm.parse(array.optJSONObject(i));
@@ -424,15 +430,14 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             holder.codev.setVisibility(newadd ? View.INVISIBLE : View.VISIBLE);
             holder.delv.setVisibility( (bDelstat && !newadd) ? View.VISIBLE : View.INVISIBLE);
 
-            holder.pickedv.setVisibility((!newadd && chooseId.equals(card.card_id)) ? View.VISIBLE : View.INVISIBLE);
+            holder.pickedv.setVisibility((!newadd && chooseId.equals(card.bank_card)) ? View.VISIBLE : View.INVISIBLE);
 
             if(newadd)
                 holder.mainlayout.setBackgroundResource(R.mipmap.dash_frame);
             else {
-                int cid = Integer.valueOf(card.card_id);
-                if (cid % 3 == 0)
+                if (position % 3 == 0)
                     holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_1);
-                else if (cid % 3 == 1)
+                else if (position % 3 == 1)
                     holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_2);
                 else
                     holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_3);
