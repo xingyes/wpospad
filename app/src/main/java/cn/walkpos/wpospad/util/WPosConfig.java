@@ -45,6 +45,8 @@ public class WPosConfig extends Config {
     //order
     public static final int   REQ_CREATE_ORDER = 801;
     public static final int   REQ_PAY_CASH = 802;
+    public static final int   REQ_WX_BARCODE = 803;
+    public static final int   REQ_WX_SCAN = 804;
 
 
     //////////Server api configuration.

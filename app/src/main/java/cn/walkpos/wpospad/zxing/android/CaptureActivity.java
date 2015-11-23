@@ -72,6 +72,8 @@ public class CaptureActivity extends BaseActivity implements Callback {
     private static String TAG = "Barcode_CaptureActivity";
     private static final float BEEP_VOLUME = 0.10f;
 
+    public static final int REQ_SCAN_CODE = 101;
+
     private Camera    mCamera;
 	private CaptureActivityHandler handler;
 	private ViewfinderView viewfinderView;
@@ -206,7 +208,10 @@ public class CaptureActivity extends BaseActivity implements Callback {
 		
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
-	}
+
+        setResult(RESULT_CANCELED);
+
+    }
 
 
 	@Override
@@ -312,19 +317,13 @@ public class CaptureActivity extends BaseActivity implements Callback {
 		if (resultString.equals("")) {
             UiUtils.makeToast(CaptureActivity.this, "Scan failed!");
 		} else {
-			/*Intent resultIntent = new Intent(CaptureActivity.this, BarcodeActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putString(Intents.Scan.RESULT, resultString);
-			bundle.putString(Intents.Scan.RESULT_FORMAT, formatString);
-			resultIntent.putExtras(bundle);
+			Intent resultIntent = new Intent();
+			resultIntent.putExtra(Intents.Scan.RESULT, resultString);
+            resultIntent.putExtra(Intents.Scan.RESULT_FORMAT, formatString);
 			resultIntent.putExtra(Intents.Scan.ACTION, 1);
-			startActivity(resultIntent);
-//			JDMtaUtils.sendCommonData(getBaseContext(),getClass(), "Scan_Scan_Scan",BarcodeActivity.class,resultString);
-			JDMtaUtils.sendCommonData(getBaseContext(), "Scan_Scan_Scan",resultString,"", CaptureActivity.this,"",BarcodeActivity.class ,"");
-//			finish();*/
+			setResult(RESULT_OK,resultIntent);
+            finish();
 
-
-            UiUtils.makeToast(this,resultString);
         }
 
 //		CaptureActivity.this.finish();

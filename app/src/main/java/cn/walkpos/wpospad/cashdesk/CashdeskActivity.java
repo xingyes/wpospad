@@ -1,5 +1,6 @@
 package cn.walkpos.wpospad.cashdesk;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -49,6 +50,8 @@ import cn.walkpos.wpospad.ui.FlingDown2GoneLayout;
 import cn.walkpos.wpospad.ui.InStockDialog;
 import cn.walkpos.wpospad.ui.OtherPayDialog;
 import cn.walkpos.wpospad.util.WPosConfig;
+import cn.walkpos.wpospad.zxing.android.CaptureActivity;
+import cn.walkpos.wpospad.zxing.android.Intents;
 
 
 public class CashdeskActivity extends BaseActivity implements OnSuccessListener<JSONObject>,
@@ -475,11 +478,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 payDiscountDialog.show();
                 break;
             case R.id.pay_other:
-                if (null == payOtherDialog) {
-                    payOtherDialog = new OtherPayDialog(CashdeskActivity.this, incomeTotalv.getText().toString());
-                } else
-                    payOtherDialog.setBill(incomeTotalv.getText().toString());
-                payOtherDialog.show();
+                createOrder(R.id.pay_other);
                 break;
             case R.id.pay_bank:
                 createOrder(R.id.pay_bank);
@@ -557,6 +556,15 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
             payWithOrderId();
         }
+        else if(response.getId() == WPosConfig.REQ_WX_SCAN)
+        {
+            JSONObject data = jsonObject.optJSONObject("data");
+            String transaction_id = data.optString("transaction_id");
+            String total_fee = data.optString("total_fee");
+            String result_code = data.optString("result_code");
+            String pay_type = data.optString("result_code");
+            UiUtils.makeToast(this, "支付订单流水 " + transaction_id + "\n金额:" + total_fee);
+        }
     }
 
     private void payWithOrderId()
@@ -575,9 +583,15 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 if (null == payCardDialog)
                     payCardDialog = new CardPayDialog(CashdeskActivity.this, orderId,orderAmount);
                 else
-                    payCardDialog.setPayInfo(orderId,orderAmount);
+                    payCardDialog.setPayInfo(orderId, orderAmount);
                 payCardDialog.show();
                 break;
+            case R.id.pay_other:
+                if (null == payOtherDialog)
+                    payOtherDialog = new OtherPayDialog(CashdeskActivity.this, orderId,orderAmount);
+                else
+                    payOtherDialog.setPayInfo(orderId,orderAmount);
+                payOtherDialog.show();
 
         }
     }
@@ -599,6 +613,27 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     }
 
 
+    private void reqWxScan(Intent data)
+    {
+        String authcode = data.getStringExtra(Intents.Scan.RESULT);
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_WX_SCAN);
+        mAjax.setData("method", "weixinpay.brushcard");
+        mAjax.setData("auth_code",authcode);
+        mAjax.setData("order_id",orderId);
+        mAjax.setData("token", WPosApplication.GToken);
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
+
+    }
+
     @Override
     public void onBackPressed() {
         if(payCardDialog!=null && payCardDialog.isShowing())
@@ -613,5 +648,29 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
             payDiscountDialog.dismiss();
         else
             super.onBackPressed();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == CaptureActivity.REQ_SCAN_CODE)
+        {
+            if(resultCode==RESULT_CANCELED || data == null || payOtherDialog == null)
+                UiUtils.makeToast(this,"扫码失败");
+            else
+            {
+                if(payOtherDialog.scanType == OtherPayDialog.ALIPAY_SCAN)
+                {
+
+                }
+                else if(payOtherDialog.scanType == OtherPayDialog.WX_SCAN)
+                {
+                    reqWxScan(data);
+                }
+
+            }
+        }
+        else
+            super.onActivityResult(requestCode,resultCode,data);
     }
 }

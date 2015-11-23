@@ -52,7 +52,7 @@ import cn.walkpos.wpospad.zxing.android.Intents;
 *
 * @author dswitkin@google.com (Daniel Switkin)
 */
-final class QRCodeEncoder {
+public final class QRCodeEncoder {
 
   private static final String TAG = QRCodeEncoder.class.getSimpleName();
 

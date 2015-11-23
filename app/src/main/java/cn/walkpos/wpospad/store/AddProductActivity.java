@@ -42,7 +42,6 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
     private GoodsModule   editGoods;
     private boolean       bEditGood = true;
 
-    public static final int REQ_SCAN_CODE = 101;
     private DrawerLayout   cateDrawer;
     private ExpandableListView  cateListV;
     private ArrayList<CateItemModule> cateGroupArray;
@@ -328,7 +327,7 @@ public class AddProductActivity extends BaseActivity implements DrawerLayout.Dra
                 break;
             case R.id.scan_code_btn:
                 Intent ait = new Intent(AddProductActivity.this, CaptureActivity.class);
-                startActivityForResult(ait,REQ_SCAN_CODE);
+                startActivityForResult(ait,CaptureActivity.REQ_SCAN_CODE);
                 break;
             case R.id.pro_submit_btn:
                 Object obj = v.getTag();

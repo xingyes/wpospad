@@ -28,6 +28,7 @@
             android:textColor="@color/white"
             android:textSize="30dp"/>
         <LinearLayout
+            android:id="@+id/scan_opt_layout"
             android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,12 +40,29 @@
                 android:layout_height="wrap_content"
                 android:background="@mipmap/alipay_btn"/>
             <ImageView
+                android:id="@+id/barcode_ali_btn"
+                android:layout_margin="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/alipay_btn"/>
+            <ImageView
                 android:id="@+id/scan_wx_btn"
                 android:layout_margin="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/weixin_btn"/>
+            <ImageView
+                android:id="@+id/barcode_wx_btn"
+                android:layout_margin="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/weixin_btn"/>
         </LinearLayout>
+        <ImageView
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:id="@+id/barcode_img"
+            android:background="@color/white"/>
         <TextView
             android:layout_margin="20dp"
             android:layout_width="wrap_content"
@@ -53,16 +71,16 @@
             android:textColor="@color/global_text_info_color"
             android:textSize="30dp"/>
 
-        <TextView
-            android:textSize="26dp"
-            android:layout_marginTop="20dp"
-            android:id="@+id/other_pay_ok"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:text="@string/btn_done"
-            android:textColor="@color/white"
-            android:background="@drawable/button_wpos_red_round_rect"
-            android:layout_centerHorizontal="true"/>
+        <!--<TextView-->
+            <!--android:textSize="26dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:id="@+id/other_pay_ok"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/btn_done"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:background="@drawable/button_wpos_red_round_rect"-->
+            <!--android:layout_centerHorizontal="true"/>-->
     </LinearLayout>
 </LinearLayout>
