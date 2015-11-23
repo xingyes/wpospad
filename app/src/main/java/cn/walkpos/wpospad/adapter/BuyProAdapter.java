@@ -15,7 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.StringUtil;
 import com.xingy.util.activity.BaseActivity;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -118,7 +121,7 @@ public class BuyProAdapter extends RecyclerView.Adapter<BuyProAdapter.contHolder
         holder.buy_item_choose.setChecked(chooseProIdSet.contains(pro));
         holder.buy_item_choose.setOnCheckedChangeListener(holder.buy_choose_checklistener);
 
-        holder.buy_item_sum.setText(String.format("%.2f",(Double.valueOf(pro.priceout)*pro.buy_num*pro.discount)));
+        holder.buy_item_sum.setText(StringUtil.formatMoney((Double.valueOf(pro.priceout) * pro.buy_num * pro.discount)));
 
     }
 
@@ -129,6 +132,25 @@ public class BuyProAdapter extends RecyclerView.Adapter<BuyProAdapter.contHolder
         return (null == prolist ? 0 : prolist.size());
     }
 
+    public String getTotalGoodsJsonString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for(GoodsModule goods : chooseProIdSet) {
+            if(sb.length()>2)
+                sb.append(",");
+
+            sb.append("{\"goods_id\": \"");
+            sb.append(goods.goods_id);
+            sb.append("\",\"num\":\"");
+            sb.append(goods.buy_num);
+            sb.append("\",\"discount\":\"");
+            sb.append(goods.discount);
+            sb.append("\"}");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
     public double getTotalPrice()
     {
         double value = 0.0;

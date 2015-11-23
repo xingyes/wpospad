@@ -18,9 +18,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xingy.lib.IPageCache;
+import com.xingy.lib.model.Account;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
+import com.xingy.util.StringUtil;
 import com.xingy.util.activity.BaseActivity;
 import com.xingy.util.ajax.Ajax;
 import com.xingy.util.ajax.OnSuccessListener;
@@ -37,6 +39,7 @@ import cn.walkpos.wpospad.adapter.BuyProAdapter;
 import cn.walkpos.wpospad.adapter.CashCateAdapter;
 import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.adapter.ProBtnAdapter;
+import cn.walkpos.wpospad.login.WposAccount;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.module.GoodsModule;
@@ -98,6 +101,11 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     private InStockDialog payQuickDialog;
     private InStockDialog payDiscountDialog;
 
+    private double        totalAmount;
+    private double        totalDis;
+    private String        orderId;
+    private String        orderAmount;
+    private int           orderPayMethod;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -261,17 +269,19 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     private void updateBillTotal(double totalPrice) {
         billTotalv.setText("" + totalPrice);
 
-        double billdis = 1.0;
+        totalAmount = totalPrice;
+        totalDis = 1.0;
         String info = billDiscountv.getText().toString();
         try {
             Double newdis = Double.valueOf(info);
             if (newdis >= 0 && newdis <= 1)
-                billdis = newdis;
+                totalDis = newdis;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        incomeTotalv.setText(String.format("%.2f", totalPrice * billdis));
+        incomeTotalv.setText(StringUtil.formatMoney(totalPrice * totalDis));
+
     }
 
 
@@ -360,6 +370,36 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
     }
 
+
+    private void createOrder(int method) {
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        orderPayMethod = method;
+        mAjax.setId(WPosConfig.REQ_CREATE_ORDER);
+        mAjax.setData("method", "order.create");
+        mAjax.setData("store_bn", "S55FFA78EC7F56");
+        mAjax.setData("token","aaa4170ae15df5dbef18edaf0548b1b2");
+        mAjax.setData("bn","U564AF136A0F0B");
+        WposAccount act = WPosApplication.account;
+//        mAjax.setData("store", WPosApplication.StockBn);
+//        mAjax.setData("token", WPosApplication.GToken);
+//        mAjax.setData("bn", WPosApplication.account.bn);
+        mAjax.setData("total_amount", totalAmount);
+        mAjax.setData("total_discount", totalDis);
+
+        mAjax.setData("goods_info", buyAdapter.getTotalGoodsJsonString());
+
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -378,11 +418,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 //                loadProductPanel(pageno);
                 break;
             case R.id.pay_cash:
-                if (null == payCashDialog) {
-                    payCashDialog = new CashPayDialog(CashdeskActivity.this, incomeTotalv.getText().toString());
-                } else
-                    payCashDialog.setBill(incomeTotalv.getText().toString());
-                payCashDialog.show();
+                createOrder(R.id.pay_cash);
                 break;
             case R.id.pay_quick:
                 if (null == payQuickDialog) {
@@ -398,6 +434,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                                         goodsPaneLayout.setVisibility(View.GONE);
 
                                         updateBillTotal(setprice);
+
                                     } catch (Exception e) {
 
                                     }
@@ -445,11 +482,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 payOtherDialog.show();
                 break;
             case R.id.pay_bank:
-                if (null == payCardDialog) {
-                    payCardDialog = new CardPayDialog(CashdeskActivity.this, incomeTotalv.getText().toString());
-                } else
-                    payCardDialog.setBill(incomeTotalv.getText().toString());
-                payCardDialog.show();
+                createOrder(R.id.pay_bank);
                 break;
 
 
@@ -514,10 +547,40 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 allFetched = true;
 
             noproHintv.setVisibility(proArray.size() > 0 ? View.INVISIBLE : View.VISIBLE);
+        }
+        else if(response.getId() == WPosConfig.REQ_CREATE_ORDER)
+        {
 
+            JSONObject data = jsonObject.optJSONObject("data");
+            orderId = data.optString("order_id");
+            orderAmount = data.optString("total_amount");
+
+            payWithOrderId();
         }
     }
 
+    private void payWithOrderId()
+    {
+        switch (orderPayMethod)
+        {
+            case R.id.pay_cash:
+                if (null == payCashDialog)
+                    payCashDialog = new CashPayDialog(CashdeskActivity.this, orderId,orderAmount);
+                else
+                    payCashDialog.setPayInfo(orderId,orderAmount);
+
+                payCashDialog.show();
+                break;
+            case R.id.pay_bank:
+                if (null == payCardDialog)
+                    payCardDialog = new CardPayDialog(CashdeskActivity.this, orderId,orderAmount);
+                else
+                    payCardDialog.setPayInfo(orderId,orderAmount);
+                payCardDialog.show();
+                break;
+
+        }
+    }
 
     @Override
     public void onInfoChanged(View v, int pos) {

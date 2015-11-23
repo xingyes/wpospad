@@ -41,6 +41,12 @@ public class WPosConfig extends Config {
     //money
     public static final int   REQ_BINDED_CARDS= 701;
     public static final int   REQ_BIND_NEW_CARD = 702;
+
+    //order
+    public static final int   REQ_CREATE_ORDER = 801;
+    public static final int   REQ_PAY_CASH = 802;
+
+
     //////////Server api configuration.
     //login
     public static final String URL_LOGIN_IDENTITY = "URL_LOGIN_IDENTITY";

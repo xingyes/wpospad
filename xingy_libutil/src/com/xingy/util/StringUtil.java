@@ -1,5 +1,7 @@
 package com.xingy.util;
 import java.io.UnsupportedEncodingException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class StringUtil {
 
@@ -72,4 +74,12 @@ public class StringUtil {
 	    }
 	    return false;
 	}
+
+    public static String formatMoney(double value)
+    {
+        DecimalFormat df;
+        df = new DecimalFormat("0.00");
+        df.setRoundingMode(RoundingMode.DOWN);
+        return String.valueOf(df.format(value));
+    }
 }

@@ -25,10 +25,12 @@ import cn.walkpos.wpospad.R;
  */
 public class CardPayDialog extends Dialog implements View.OnClickListener {
 
+    private String  strOrderId;
     private String  strBill;
     private String  inputStr = "";
-    public CardPayDialog(Context context, String abill) {
+    public CardPayDialog(Context context, final String orderid,final String abill) {
         super(context, com.xingy.R.style.Dialog);
+        strOrderId = orderid;
         strBill = abill;
         if(TextUtils.isEmpty(strBill))
             strBill = "0.00";
@@ -72,8 +74,10 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
 
     }
 
-    public void setBill(String abill)
+
+    public void setPayInfo(final String orderid,final String abill)
     {
+        strOrderId = orderid;
         strBill = abill;
         if(TextUtils.isEmpty(strBill))
             strBill = "0.00";

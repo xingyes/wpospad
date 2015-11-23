@@ -13,24 +13,39 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.xingy.lib.ui.UiUtils;
+import com.xingy.util.ServiceConfig;
 import com.xingy.util.ToolUtil;
+import com.xingy.util.activity.BaseActivity;
+import com.xingy.util.ajax.Ajax;
+import com.xingy.util.ajax.OnErrorListener;
+import com.xingy.util.ajax.OnSuccessListener;
+import com.xingy.util.ajax.Response;
+
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
+import cn.walkpos.wpospad.main.WPosApplication;
+import cn.walkpos.wpospad.util.WPosConfig;
 
 /**
  * Created by xingyao on 2015/8/22.
  */
 public class CashPayDialog extends Dialog implements View.OnClickListener {
 
+    private BaseActivity mActivity;
+    private Ajax    mAjax;
+    private String  strOrderId;
     private String  strBill;
     private String  inputStr = "";
     private double   mIncome;
     private boolean inDecimals = false;
-    public CashPayDialog(Context context, String abill) {
+    public CashPayDialog(Context context, final String orderid,final String abill) {
         super(context, com.xingy.R.style.Dialog);
+        mActivity = (BaseActivity)context;
+        strOrderId = orderid;
         strBill = abill;
         if(TextUtils.isEmpty(strBill))
             strBill = "0.00";
@@ -95,8 +110,9 @@ public class CashPayDialog extends Dialog implements View.OnClickListener {
 
     }
 
-    public void setBill(String abill)
+    public void setPayInfo(final String orderid,final String abill)
     {
+        strOrderId = orderid;
         strBill = abill;
         if(TextUtils.isEmpty(strBill))
             strBill = "0.00";
@@ -212,7 +228,7 @@ public class CashPayDialog extends Dialog implements View.OnClickListener {
                 }
                 break;
             case R.id.cash_pay_ok:
-                dismiss();
+                pay();
                 break;
             default:
                 dismiss();
@@ -231,7 +247,44 @@ public class CashPayDialog extends Dialog implements View.OnClickListener {
         }
     }
 
+    private void pay()
+    {
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+        if (null == mAjax)
+            return;
 
+        mActivity.showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_PAY_CASH);
+        mAjax.setData("method", "cash.pay");
+        mAjax.setData("token",WPosApplication.GToken);
+        mAjax.setData("order_id", strOrderId);
+        mAjax.setData("payed", strBill);
+        mAjax.setOnSuccessListener(new OnSuccessListener<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject jsonObject, Response response) {
+                mActivity.closeLoadingLayer();
+
+                int errno = jsonObject.optInt("response_code", -1);
+                if (errno != 0) {
+                    String msg = jsonObject.optString("res", mActivity.getString(R.string.network_error));
+                    UiUtils.makeToast(mActivity, msg);
+                    return;
+                }
+                UiUtils.makeToast(mActivity, "结算完成");
+
+                dismiss();
+
+            }
+        });
+        mAjax.setOnErrorListener(new OnErrorListener() {
+            @Override
+            public void onError(Ajax ajax, Response response) {
+                UiUtils.makeToast(mActivity, "现金支付失败，请稍后重试");
+            }
+        });
+        mAjax.send();
+    }
 
     protected int setAttributes()
     {
