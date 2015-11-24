@@ -46,7 +46,7 @@ public class OtherPayDialog extends Dialog implements OnSuccessListener<JSONObje
     public static final int WX_BARCODE = 1;
     public static final int ALIPAY_BARCODE = 2;
     public static final int WX_SCAN = 3;
-    public static final int ALIPAY_SCAN = 3;
+    public static final int ALIPAY_SCAN = 4;
 
     private BaseActivity mActivity;
     private Ajax         mAjax;
@@ -95,7 +95,7 @@ public class OtherPayDialog extends Dialog implements OnSuccessListener<JSONObje
         if (response.getId() == WPosConfig.REQ_WX_BARCODE) {
             JSONObject data = jsonObject.optJSONObject("data");
 
-            barCodeBm = QRCodeEncoder.toBitmap(data.optString("payurl"), DPIUtil.dip2px(280),DPIUtil.dip2px(280), BarcodeFormat.QR_CODE);
+            barCodeBm = QRCodeEncoder.toBitmap(data.optString("paycode"), DPIUtil.dip2px(280),DPIUtil.dip2px(280), BarcodeFormat.QR_CODE);
             barCodev.setImageBitmap(barCodeBm);
             barCodev.setVisibility(View.VISIBLE);
             scanOptLayout.setVisibility(View.GONE);

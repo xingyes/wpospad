@@ -7,10 +7,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -19,7 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.xingy.lib.IPageCache;
-import com.xingy.lib.model.Account;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ServiceConfig;
@@ -40,7 +37,6 @@ import cn.walkpos.wpospad.adapter.BuyProAdapter;
 import cn.walkpos.wpospad.adapter.CashCateAdapter;
 import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.adapter.ProBtnAdapter;
-import cn.walkpos.wpospad.login.WposAccount;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.module.GoodsModule;
@@ -98,6 +94,12 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         }
     };
 
+    private Runnable checkWxSecretPay = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
     private CashPayDialog payCashDialog;
     private CardPayDialog payCardDialog;
     private OtherPayDialog payOtherDialog;
@@ -375,6 +377,11 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
 
     private void createOrder(int method) {
+        if(totalAmount<=0)
+        {
+            UiUtils.makeToast(this,"没有订单金额");
+            return;
+        }
         mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
         if (null == mAjax)
             return;
@@ -385,12 +392,14 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         mAjax.setId(WPosConfig.REQ_CREATE_ORDER);
         mAjax.setData("method", "order.create");
         mAjax.setData("store_bn", "S55FFA78EC7F56");
-        mAjax.setData("token","aaa4170ae15df5dbef18edaf0548b1b2");
-        mAjax.setData("bn","U564AF136A0F0B");
-        WposAccount act = WPosApplication.account;
-//        mAjax.setData("store", WPosApplication.StockBn);
-//        mAjax.setData("token", WPosApplication.GToken);
+//        mAjax.setData("store_bn", WPosApplication.StockBn);
+//        mAjax.setData("token","aaa4170ae15df5dbef18edaf0548b1b2");
+        mAjax.setData("token", WPosApplication.GToken);
+
+        mAjax.setData("bn","U56541CB88A79A");
 //        mAjax.setData("bn", WPosApplication.account.bn);
+
+
         mAjax.setData("total_amount", totalAmount);
         mAjax.setData("discount", totalDis);
 
@@ -447,7 +456,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                                 payQuickDialog.dismiss();
                         }
                     });
-                    payQuickDialog.setProperty("快速收款", "", "待收款", "", "", "", InputType.TYPE_CLASS_NUMBER);
+                    payQuickDialog.setProperty("快速收款", "", "待收款", "", "", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 }
                 payQuickDialog.show();
                 break;
@@ -559,14 +568,37 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         else if(response.getId() == WPosConfig.REQ_WX_SCAN)
         {
             JSONObject data = jsonObject.optJSONObject("data");
+//            {"data":{"result_code":"P0001","pay_type":"hassecret"},"res":"成功","response_code":"0000"}
             String transaction_id = data.optString("transaction_id");
             String total_fee = data.optString("total_fee");
             String result_code = data.optString("result_code");
-            String pay_type = data.optString("result_code");
+            String pay_type = data.optString("pay_type");
+            if(result_code.equals("P0001") || pay_type.equals("hassecret"))
+            {
+                UiUtils.makeToast(this,"等待微信用户输入支付密码");
+                showLoadingLayer();
+                mHandler.postDelayed(checkWxSecretPay,2000);
+                return;
+            }
             UiUtils.makeToast(this, "支付订单流水 " + transaction_id + "\n金额:" + total_fee);
+
+            clearOrder();
+            payOtherDialog.dismiss();
         }
     }
 
+    private void clearOrder()
+    {
+        buyAdapter.clear();
+        buyAdapter.notifyDataSetChanged();
+        totalAmount = 0.0;
+        totalDis = 1.0;
+        billDiscountv.setText(""+totalDis);
+
+        incomeTotalv.setText(""+totalAmount);
+        billTotalv.setText(""+totalAmount);
+
+    }
     private void payWithOrderId()
     {
         switch (orderPayMethod)

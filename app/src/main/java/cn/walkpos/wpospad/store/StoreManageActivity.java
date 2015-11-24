@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 import cn.walkpos.wpospad.R;
@@ -409,9 +410,16 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         mAjax.send();
     }
 
-    private void delProduct(final ArrayList<String>  array){
+    private void delProduct(HashSet<String> choose){
         if(requesting)
             return;
+
+        if(choose==null || choose.size()<=0)
+        {
+            UiUtils.makeToast(this,"没有需要删除的商品,请确认");
+            return;
+        }
+
         mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
         if (null == mAjax)
             return;
@@ -425,7 +433,15 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         mAjax.setData("store_bn", "S55FFA78EC7F56");
         mAjax.setData("token", WPosApplication.GToken);
 
-        mAjax.setData("goods_id",proArray.get(mInstockProIdx).goods_id);
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i < choose.size();i++)
+        for(String a : choose)
+        {
+            if(i!=0)
+                sb.append("|");
+            sb.append(a);
+        }
+        mAjax.setData("bn",sb.toString());
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -508,8 +524,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                                 public void onDialogClick(int nButtonId) {
                                     if(nButtonId == AppDialog.BUTTON_POSITIVE)
                                     {
-
-                                        UiUtils.makeToast(StoreManageActivity.this,R.string.del_succ);
+                                        delProduct(proAdapter.getChooseProSet());
                                     }
                                 }
                             });
@@ -660,8 +675,11 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         }
         else if(response.getId()==WPosConfig.REQ_DEL_GOODS)
         {
-            String msg = jsonObject.optString("res", getString(R.string.submit_succ));
+            String msg = jsonObject.optString("res", getString(R.string.del_succ));
             UiUtils.makeToast(this,msg);
+            allFetched = false;
+            pageno = 1;
+            loadProData(pageno);
             return;
         }
         else if(response.getId() == WPosConfig.REQ_GOODSLIST) {
