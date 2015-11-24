@@ -28,7 +28,6 @@ import com.xingy.util.ajax.Response;
 
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;

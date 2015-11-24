@@ -392,7 +392,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 //        mAjax.setData("token", WPosApplication.GToken);
 //        mAjax.setData("bn", WPosApplication.account.bn);
         mAjax.setData("total_amount", totalAmount);
-        mAjax.setData("total_discount", totalDis);
+        mAjax.setData("discount", totalDis);
 
         mAjax.setData("goods_info", buyAdapter.getTotalGoodsJsonString());
 

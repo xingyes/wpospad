@@ -30,6 +30,7 @@ import com.xingy.util.ajax.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -64,6 +65,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
 
     private ArrayList<BCardModule>  cardArray;
 
+    private BigDecimal   incomeTotal;
     private TextView incomeTotalv;
     private EditText transferAmountv;
 
@@ -92,6 +94,8 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
 
         //main part
         incomeTotalv = (TextView)this.findViewById(R.id.income_total);
+
+
         this.findViewById(R.id.check_detail).setOnClickListener(this);
         transferAmountv = (EditText)this.findViewById(R.id.amount);
 
@@ -150,6 +154,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             }
         });
 
+        loadTotalIncome();
         cardArray = new ArrayList<BCardModule>();
         loadCardData();
 
@@ -177,15 +182,48 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
 
     }
 
+    private void loadTotalIncome() {
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_BUSINESS);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        mAjax.setId(WPosConfig.REQ_TOTAL_INCOME);
+        mAjax.setData("method", "businescenter.bindquery");
+        mAjax.setData("card_number", "320911198912046021X");
+//        mAjax.setData("card_number", WPosApplication.account.card_number);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
+    }
+
     private void delCardItem(int pos)
     {
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_BUSINESS);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
         BCardModule card = cardArray.get(pos);
+
+        mAjax.setId(WPosConfig.REQ_DEL_CARD);
+        mAjax.setData("method", "businescenter.deletecard");
+        mAjax.setData("card_number", "320911198912046021X");
+        mAjax.setData("bank_card", card.bank_card);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
+
         if(card.bank_card.equals(cardAdapter.chooseId))
         {
             accountInfov.setText("");
         }
-        cardArray.remove(pos);
-        cardAdapter.notifyDataSetChanged();
     }
 
     private void bindNewCard()
@@ -206,6 +244,18 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
             return;
         }
 
+        card.mobile = accountPhonev.getText().toString();
+        if(TextUtils.isEmpty(card.mobile))
+        {
+            UiUtils.makeToast(this,"银行预留手机号不能为空");
+            return;
+        }
+        if(!accountAgreev.isChecked())
+        {
+            UiUtils.makeToast(this,"请阅读同意服务协议");
+            return;
+        }
+
         mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_BUSINESS);
         if (null == mAjax)
             return;
@@ -221,10 +271,47 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         mAjax.setData("bank_card", card.bank_card);
         mAjax.setData("account_bank", card.account_bank);
         mAjax.setData("user", card.usrname);
+        mAjax.setData("mobile", card.mobile);
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
         mAjax.send();
+    }
+
+    private void transferMoney(boolean verifyCodeSucc)
+    {
+        if(!verifyCodeSucc)
+        {
+            UiUtils.makeToast(MoneyManageActivity.this,"验证短信失败，无法转移资金");
+            return;
+        }
+
+        mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_BUSINESS);
+        if (null == mAjax)
+            return;
+
+        showLoadingLayer();
+
+        BigDecimal transferM = new BigDecimal(0.0);
+        try{
+            transferM = new BigDecimal(transferAmountv.getText().toString());
+        }catch (Exception e)
+        {
+        }
+
+        mAjax.setId(WPosConfig.REQ_TRANSFER_MONEY);
+        mAjax.setData("method", "businescenter.drawing");
+        mAjax.setData("card_number", "320911198912046021X");
+        mAjax.setData("bank_card", curCard.bank_card);
+        mAjax.setData("amount", transferM.doubleValue());
+        mAjax.setData("mobile", curCard.mobile);
+
+        mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
+        mAjax.send();
+
+
+
     }
 
     @Override
@@ -243,20 +330,38 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                 UiUtils.makeToast(this,"查看资金明细");
                 break;
             case R.id.money_transfer_btn:
+                if(null==curCard )
+                {
+                    UiUtils.makeToast(this,"请选择转入资金银行卡");
+                    break;
+                }
+
+                BigDecimal transferM = new BigDecimal(0.0);
+                try{
+                    transferM = new BigDecimal(transferAmountv.getText().toString());
+                    if(transferM.compareTo(incomeTotal) >0 )
+                    {
+                        UiUtils.makeToast(this,"超过目前总金额");
+                        break;
+                    }
+                }catch (Exception e)
+                {
+                    UiUtils.makeToast(this,"金额输入异常");
+                    break;
+                }
+
                 if(null == verifyDialog)
                 {
                     verifyDialog = new VerifyCodeDialog(this,new VerifyCodeDialog.VerifyResultListener() {
                         @Override
                         public boolean onVerifyDialogDismiss(boolean result) {
-                            if(result)
-                                UiUtils.makeToast(MoneyManageActivity.this,"验证短信成功转移资金成功");
-                            else
-                                UiUtils.makeToast(MoneyManageActivity.this,"验证短信失败，无法转移资金");
-                            return false;
+                            transferMoney(result);
+                            return true;
                         }
                     });
-                    verifyDialog.setProperty("验证码校验","信息已经发往您在银行绑定的手机",WPosApplication.account.mobile,"","");
+                    verifyDialog.setProperty("验证码校验","信息已经发往您在银行绑定的手机",curCard.mobile,"","");
                 }
+                verifyDialog.rewinder();
                 verifyDialog.show();
 
                 break;
@@ -343,13 +448,26 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
 
             cardAdapter.notifyDataSetChanged();
         }
-        else if(response.getId() == WPosConfig.REQ_BIND_NEW_CARD) {
+        else if(response.getId() == WPosConfig.REQ_BIND_NEW_CARD ||
+                response.getId() == WPosConfig.REQ_DEL_CARD) {
 
             cardDrawer.closeDrawer(leftLayout);
             loadCardData();
 
             cardDrawer.openDrawer(rightLayout);
         }
+        else if(response.getId() == WPosConfig.REQ_TRANSFER_MONEY)
+        {
+            String msg = jsonObject.optString("res", "成功");
+            UiUtils.makeToast(this,msg);
+            finish();
+        }
+        else if(response.getId() == WPosConfig.REQ_TOTAL_INCOME)
+        {
+            incomeTotal = new BigDecimal(19282939.0);
+            incomeTotalv.setText(incomeTotal.toString());
+        }
+
     }
 
 
@@ -431,12 +549,17 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
 
             holder.pickedv.setVisibility((!newadd && chooseId.equals(card.bank_card)) ? View.VISIBLE : View.INVISIBLE);
 
+            long lid = 0;
+            if(!TextUtils.isEmpty(card.bank_card) && TextUtils.isDigitsOnly(card.bank_card))
+            {
+                lid = Long.valueOf(card.bank_card)%3;
+            }
             if(newadd)
                 holder.mainlayout.setBackgroundResource(R.mipmap.dash_frame);
             else {
-                if (position % 3 == 0)
+                if (lid == 0)
                     holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_1);
-                else if (position % 3 == 1)
+                else if (lid == 1)
                     holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_2);
                 else
                     holder.mainlayout.setBackgroundResource(R.drawable.card_wpos_shape_3);

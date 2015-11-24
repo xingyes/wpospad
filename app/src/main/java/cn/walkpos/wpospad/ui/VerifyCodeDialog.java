@@ -130,6 +130,8 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
         mRequestVerifyBtn.setOnClickListener(this);
         mWinWidth = this.setAttributes();
 
+
+
     }
 
     public void setProperty(final String caption, final String info,final String phone,
@@ -138,6 +140,12 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
         setProperty(caption,info,phone,position,negative,COUTING_DOWN_SECOND);
     }
 
+    public void rewinder()
+    {
+        mHandler.removeCallbacksAndMessages(null);
+        mRequestVerifyBtn.setText("发送");
+        mRequestVerifyBtn.setEnabled(true);
+    }
     public void setProperty(final String caption, final String info,final String phone,
                             final String position, final String negative, final int countdown)
 
@@ -161,6 +169,8 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
 
         if(null!=mInputEt)
             mInputEt.setText("");
+
+        rewinder();
     }
 
 

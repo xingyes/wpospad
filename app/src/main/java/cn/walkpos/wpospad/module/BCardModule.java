@@ -9,10 +9,11 @@ import org.json.JSONObject;
  */
 public class BCardModule extends BaseModel {
 
-    public String bank_card;
-//    public String card_id;
+    public String bank_card; //卡号
+    public String account_bank; //银行
+    public String mobile;
+
     public String iconurl;
-    public String account_bank;
     public String usrname;
     public String cardtype;
 
@@ -24,9 +25,10 @@ public class BCardModule extends BaseModel {
     public void clear()
     {
         bank_card = "";
-//        card_id = "";
-        iconurl = "";
         account_bank = "";
+        mobile="";
+
+        iconurl = "";
         usrname = "";
         cardtype = "";
     }
@@ -37,9 +39,10 @@ public class BCardModule extends BaseModel {
             return;
         bank_card = json.optString("bank_card");
         account_bank = json.optString("account_bank");
+        mobile = json.optString("mobile");
 
-//        card_id = json.optString("bn");
         usrname = json.optString("short_name");
+        iconurl = json.optString("iconurl");
 
     }
 }

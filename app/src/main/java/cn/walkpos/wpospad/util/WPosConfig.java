@@ -41,6 +41,9 @@ public class WPosConfig extends Config {
     //money
     public static final int   REQ_BINDED_CARDS= 701;
     public static final int   REQ_BIND_NEW_CARD = 702;
+    public static final int   REQ_DEL_CARD = 703;
+    public static final int   REQ_TRANSFER_MONEY = 704;
+    public static final int   REQ_TOTAL_INCOME= 705;
 
     //order
     public static final int   REQ_CREATE_ORDER = 801;

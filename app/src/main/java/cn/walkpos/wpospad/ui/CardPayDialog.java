@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.xingy.lib.ui.UiUtils;
 import com.xingy.util.ToolUtil;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import cn.walkpos.wpospad.R;
