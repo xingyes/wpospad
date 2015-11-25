@@ -70,6 +70,7 @@
                     android:textColor="@color/global_gray"
                     android:id="@+id/send_sms_btn"
                     android:layout_width="200dp"
+                    android:text="@string/send"
                     android:layout_height="match_parent"
                     android:textSize="20dp"/>
 

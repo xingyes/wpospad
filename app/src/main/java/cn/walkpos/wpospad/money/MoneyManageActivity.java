@@ -278,11 +278,11 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         mAjax.send();
     }
 
-    private void transferMoney(boolean verifyCodeSucc)
+    private void transferMoney(final String smsCode)
     {
-        if(!verifyCodeSucc)
+        if(TextUtils.isEmpty(smsCode))
         {
-            UiUtils.makeToast(MoneyManageActivity.this,"验证短信失败，无法转移资金");
+            UiUtils.makeToast(MoneyManageActivity.this,"短信验证错误，请重试");
             return;
         }
 
@@ -305,6 +305,7 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         mAjax.setData("bank_card", curCard.bank_card);
         mAjax.setData("amount", transferM.doubleValue());
         mAjax.setData("mobile", curCard.mobile);
+        mAjax.setData("msgcode", smsCode);
 
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -354,8 +355,8 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
                 {
                     verifyDialog = new VerifyCodeDialog(this,new VerifyCodeDialog.VerifyResultListener() {
                         @Override
-                        public boolean onVerifyDialogDismiss(boolean result) {
-                            transferMoney(result);
+                        public boolean onVerifyDialogDismiss(final String smsCode) {
+                            transferMoney(smsCode);
                             return true;
                         }
                     });
@@ -460,7 +461,6 @@ public class MoneyManageActivity extends BaseActivity implements DrawerLayout.Dr
         {
             String msg = jsonObject.optString("res", "成功");
             UiUtils.makeToast(this,msg);
-            finish();
         }
         else if(response.getId() == WPosConfig.REQ_TOTAL_INCOME)
         {

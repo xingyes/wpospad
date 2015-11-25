@@ -94,9 +94,22 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         }
     };
 
+    private static final int CHECK_WX_DELAY = 4000;
     private Runnable checkWxSecretPay = new Runnable() {
         @Override
         public void run() {
+
+            UiUtils.makeToast(CashdeskActivity.this,"等待微信用户输入支付密码");
+
+            mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
+            if (null == mAjax)
+                return;
+
+            mAjax.setId(WPosConfig.REQ_WX_ORDER_QUERY);
+            mAjax.setData("method", "order.query");
+            mAjax.setData("order_id", orderId);
+            mAjax.setOnSuccessListener(CashdeskActivity.this);
+            mAjax.send();
 
         }
     };
@@ -510,6 +523,10 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         if (errno != 0) {
             String msg = jsonObject.optString("res", getString(R.string.network_error));
             UiUtils.makeToast(this, msg);
+            if(response.getId() == WPosConfig.REQ_WX_ORDER_QUERY)
+            {
+                mHandler.postDelayed(checkWxSecretPay,CHECK_WX_DELAY);
+            }
             return;
         }
 
@@ -575,12 +592,31 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
             String pay_type = data.optString("pay_type");
             if(result_code.equals("P0001") || pay_type.equals("hassecret"))
             {
-                UiUtils.makeToast(this,"等待微信用户输入支付密码");
-                showLoadingLayer();
-                mHandler.postDelayed(checkWxSecretPay,2000);
+                mHandler.postDelayed(checkWxSecretPay,CHECK_WX_DELAY);
                 return;
             }
             UiUtils.makeToast(this, "支付订单流水 " + transaction_id + "\n金额:" + total_fee);
+
+            clearOrder();
+            payOtherDialog.dismiss();
+        }else if(response.getId() == WPosConfig.REQ_WX_ORDER_QUERY)
+        {
+            JSONObject data = jsonObject.optJSONObject("data");
+            if(data==null)
+            {
+                mHandler.postDelayed(checkWxSecretPay,CHECK_WX_DELAY);
+                return;
+            }
+            int pay_status = data.optInt("pay_status");
+            if(pay_status<=0) //未来支付
+            {
+                mHandler.postDelayed(checkWxSecretPay,CHECK_WX_DELAY);
+                return;
+            }
+            double payed = data.optDouble("payed");
+            double final_amount = data.optDouble("final_amount");
+            String payment = data.optString("payment");
+            UiUtils.makeToast(this, "支付订单成功 金额:" + payed);
 
             clearOrder();
             payOtherDialog.dismiss();

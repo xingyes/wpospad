@@ -149,6 +149,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                 allFetched = false;
                 pageno = 1;
                 searchKey = "";
+                proArray.clear();
                 loadProData(pageno);
                 cateDrawer.closeDrawers();
                 return false;
@@ -182,6 +183,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                     allFetched = false;
                     pageno = 1;
                     searchKey = "";
+                    proArray.clear();
                     loadProData(pageno);
                     cateDrawer.closeDrawers();
 
@@ -428,18 +430,19 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
 
         requesting = true;
         mAjax.setId(WPosConfig.REQ_DEL_GOODS);
-        mAjax.setData("method", "goods.del");
+        mAjax.setData("method", "goods.delete");
 //        mAjax.setData("store", WPosApplication.StockBn);
         mAjax.setData("store_bn", "S55FFA78EC7F56");
         mAjax.setData("token", WPosApplication.GToken);
 
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i < choose.size();i++)
+        int idx = 0;
         for(String a : choose)
         {
-            if(i!=0)
+            if(idx!=0)
                 sb.append("|");
             sb.append(a);
+            idx++;
         }
         mAjax.setData("bn",sb.toString());
 
@@ -486,6 +489,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                 searchSortKey = SORT_DISCOUNT;
                 pageno = 1;
                 allFetched = false;
+                proArray.clear();
                 loadProData(pageno);
                 break;
             case R.id.by_stock_opt:
@@ -497,6 +501,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
                 searchSortKey = SORT_STOCK;
                 pageno = 1;
                 allFetched = false;
+                proArray.clear();
                 loadProData(pageno);
                 break;
             case R.id.batch_cancel_btn:
@@ -679,6 +684,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
             UiUtils.makeToast(this,msg);
             allFetched = false;
             pageno = 1;
+            proArray.clear();
             loadProData(pageno);
             return;
         }

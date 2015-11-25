@@ -50,7 +50,7 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
 
     public interface VerifyResultListener
     {
-        public boolean onVerifyDialogDismiss(boolean result);
+        public boolean onVerifyDialogDismiss(final String smsCode);
     }
     private VerifyResultListener mListener;
     protected Ajax          mAjax;
@@ -143,8 +143,10 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
     public void rewinder()
     {
         mHandler.removeCallbacksAndMessages(null);
-        mRequestVerifyBtn.setText("发送");
-        mRequestVerifyBtn.setEnabled(true);
+        if(null!=mRequestVerifyBtn) {
+            mRequestVerifyBtn.setText("发送");
+            mRequestVerifyBtn.setEnabled(true);
+        }
     }
     public void setProperty(final String caption, final String info,final String phone,
                             final String position, final String negative, final int countdown)
@@ -179,7 +181,7 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
     {
         if((null != mListener) && (keyCode == KeyEvent.KEYCODE_BACK))
         {
-            mListener.onVerifyDialogDismiss(false);
+            mListener.onVerifyDialogDismiss("");
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -210,7 +212,7 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
         else if(v == mNegative)
         {
             if(null!=mListener)
-                mListener.onVerifyDialogDismiss(false);
+                mListener.onVerifyDialogDismiss("");
             if(this.isShowing())
                 dismiss();
         }
@@ -249,7 +251,7 @@ public class VerifyCodeDialog extends Dialog implements View.OnClickListener {
     private void verifyCode()
     {
         if(null!=mListener)
-            mListener.onVerifyDialogDismiss(true);
+            mListener.onVerifyDialogDismiss(mInputEt.getText().toString());
 
         dismiss();
     }
