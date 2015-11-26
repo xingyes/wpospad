@@ -43,7 +43,7 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
     {
         for(GoodsModule pmod : prolist)
         {
-            chooseProIdSet.add(pmod.goods_id);
+            chooseProIdSet.add(pmod.bn);
         }
     }
     public void chooseNone()
@@ -93,13 +93,13 @@ public class ProInfoAdapter extends RecyclerView.Adapter<ProInfoAdapter.contHold
 
         holder.discountV.setText(String.valueOf(pro.discount));
         holder.instockV.setTag(position);
-        holder.chooseV.setTag(pro.goods_id);
-        holder.chooseV.setChecked(chooseProIdSet.contains(pro.goods_id));
+        holder.chooseV.setTag(pro.bn);
+        holder.chooseV.setChecked(chooseProIdSet.contains(pro.bn));
         if(batOptMod)
         {
             holder.instockV.setVisibility(View.GONE);
             holder.chooseV.setVisibility(View.VISIBLE);
-            holder.chooseV.setChecked(chooseProIdSet.contains(pro.goods_id));
+            holder.chooseV.setChecked(chooseProIdSet.contains(pro.bn));
         }
         else{
             holder.instockV.setVisibility(View.VISIBLE);

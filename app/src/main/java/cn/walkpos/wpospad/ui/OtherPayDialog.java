@@ -56,8 +56,14 @@ public class OtherPayDialog extends Dialog implements OnSuccessListener<JSONObje
     private Bitmap  barCodeBm;
     private ImageView  barCodev;
     private View    scanOptLayout;
-    public OtherPayDialog(Context context, final String orderid, final String abill) {
+    public interface OnQueryListener{
+        public void onQuery(final String orderid);
+        public void onCancel(final String orderid);
+    }
+    private OnQueryListener  queryListner;
+    public OtherPayDialog(Context context, OnQueryListener listner,final String orderid, final String abill) {
         super(context, com.xingy.R.style.Dialog);
+        queryListner = listner;
         mActivity = (BaseActivity)context;
         strOrderId = orderid;
         strBill = abill;
@@ -99,6 +105,11 @@ public class OtherPayDialog extends Dialog implements OnSuccessListener<JSONObje
             barCodev.setImageBitmap(barCodeBm);
             barCodev.setVisibility(View.VISIBLE);
             scanOptLayout.setVisibility(View.GONE);
+
+            if(queryListner!=null)
+            {
+                queryListner.onQuery(strOrderId);
+            }
         }
     }
 
@@ -144,6 +155,11 @@ public class OtherPayDialog extends Dialog implements OnSuccessListener<JSONObje
             strBill = "0.00";
         if(null!=billTotalv)
             billTotalv.setText(this.getContext().getString(R.string.income_x,strBill));
+
+        barCodev.setVisibility(View.GONE);
+        scanOptLayout.setVisibility(View.VISIBLE);
+
+
     }
 
 
@@ -157,8 +173,11 @@ public class OtherPayDialog extends Dialog implements OnSuccessListener<JSONObje
             scanOptLayout.setVisibility(View.VISIBLE);
             return true;
         }
-        else
+        else {
+            if(queryListner!=null)
+                queryListner.onCancel(strOrderId);
             return super.onKeyDown(keyCode, event);
+        }
     }
 
     @Override

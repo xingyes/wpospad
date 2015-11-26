@@ -51,7 +51,7 @@ import cn.walkpos.wpospad.zxing.android.Intents;
 
 
 public class CashdeskActivity extends BaseActivity implements OnSuccessListener<JSONObject>,
-                BuyProAdapter.InfoChangedListener {
+                BuyProAdapter.InfoChangedListener,OtherPayDialog.OnQueryListener {
 
     private Ajax mAjax;
 
@@ -99,7 +99,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         @Override
         public void run() {
 
-            UiUtils.makeToast(CashdeskActivity.this,"等待微信用户输入支付密码");
+            UiUtils.makeToast(CashdeskActivity.this, "等待微信用户扫码/输入支付密码");
 
             mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
             if (null == mAjax)
@@ -119,11 +119,12 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     private InStockDialog payQuickDialog;
     private InStockDialog payDiscountDialog;
 
-    private double        totalAmount;
-    private double        totalDis;
-    private String        orderId;
-    private String        orderAmount;
-    private int           orderPayMethod;
+    private double totalAmount;
+    private double totalDis;
+    private String orderId;
+    private String orderAmount;
+    private int orderPayMethod;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,9 +143,8 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         searchInputV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH)
-                {
-                    UiUtils.makeToast(CashdeskActivity.this,"搜索:" + searchInputV.getText().toString());
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    UiUtils.makeToast(CashdeskActivity.this, "搜索:" + searchInputV.getText().toString());
                 }
                 return false;
             }
@@ -163,11 +163,9 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                     curCatePos = pos;
                     curRootCateItem = cateGroupArray.get(pos);
                     curSubCateItem = null;
-                    if(curRootCateItem.subCateArray.size()<=0)
-                    {
+                    if (curRootCateItem.subCateArray.size() <= 0) {
                         cateAdapter.setPickIdx(pos);
-                    }
-                    else {
+                    } else {
                         cateAdapter.setDataset(curRootCateItem.subCateArray);
                         cateAdapter.setCateroot(false);
                         cateAdapter.setPickIdx(-1);
@@ -390,9 +388,8 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
 
     private void createOrder(int method) {
-        if(totalAmount<=0)
-        {
-            UiUtils.makeToast(this,"没有订单金额");
+        if (totalAmount <= 0) {
+            UiUtils.makeToast(this, "没有订单金额");
             return;
         }
         mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
@@ -409,7 +406,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 //        mAjax.setData("token","aaa4170ae15df5dbef18edaf0548b1b2");
         mAjax.setData("token", WPosApplication.GToken);
 
-        mAjax.setData("bn","U56541CB88A79A");
+        mAjax.setData("bn", "U56541CB88A79A");
 //        mAjax.setData("bn", WPosApplication.account.bn);
 
 
@@ -464,8 +461,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
                                     }
                                 }
-                            }
-                            else
+                            } else
                                 payQuickDialog.dismiss();
                         }
                     });
@@ -490,12 +486,11 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                                         e.printStackTrace();
                                     }
                                 }
-                            }
-                            else
+                            } else
                                 payDiscountDialog.dismiss();
                         }
                     });
-                    payDiscountDialog.setProperty("整单折扣", "", "折扣", "", "", "", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                    payDiscountDialog.setProperty("整单折扣", "", "折扣", "", "", "", InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 }
                 payDiscountDialog.show();
                 break;
@@ -523,9 +518,8 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         if (errno != 0) {
             String msg = jsonObject.optString("res", getString(R.string.network_error));
             UiUtils.makeToast(this, msg);
-            if(response.getId() == WPosConfig.REQ_WX_ORDER_QUERY)
-            {
-                mHandler.postDelayed(checkWxSecretPay,CHECK_WX_DELAY);
+            if (response.getId() == WPosConfig.REQ_WX_ORDER_QUERY) {
+                mHandler.postDelayed(checkWxSecretPay, CHECK_WX_DELAY);
             }
             return;
         }
@@ -572,45 +566,38 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 allFetched = true;
 
             noproHintv.setVisibility(proArray.size() > 0 ? View.INVISIBLE : View.VISIBLE);
-        }
-        else if(response.getId() == WPosConfig.REQ_CREATE_ORDER)
-        {
+        } else if (response.getId() == WPosConfig.REQ_CREATE_ORDER) {
 
             JSONObject data = jsonObject.optJSONObject("data");
             orderId = data.optString("order_id");
             orderAmount = data.optString("total_amount");
 
             payWithOrderId();
-        }
-        else if(response.getId() == WPosConfig.REQ_WX_SCAN)
-        {
+        } else if (response.getId() == WPosConfig.REQ_WX_SCAN) {
             JSONObject data = jsonObject.optJSONObject("data");
 //            {"data":{"result_code":"P0001","pay_type":"hassecret"},"res":"成功","response_code":"0000"}
             String transaction_id = data.optString("transaction_id");
             String total_fee = data.optString("total_fee");
             String result_code = data.optString("result_code");
             String pay_type = data.optString("pay_type");
-            if(result_code.equals("P0001") || pay_type.equals("hassecret"))
-            {
-                mHandler.postDelayed(checkWxSecretPay,CHECK_WX_DELAY);
+            if (result_code.equals("P0001") || pay_type.equals("hassecret")) {
+                mHandler.postDelayed(checkWxSecretPay, CHECK_WX_DELAY);
                 return;
             }
             UiUtils.makeToast(this, "支付订单流水 " + transaction_id + "\n金额:" + total_fee);
 
             clearOrder();
             payOtherDialog.dismiss();
-        }else if(response.getId() == WPosConfig.REQ_WX_ORDER_QUERY)
-        {
+        } else if (response.getId() == WPosConfig.REQ_WX_ORDER_QUERY) {
             JSONObject data = jsonObject.optJSONObject("data");
-            if(data==null)
-            {
-                mHandler.postDelayed(checkWxSecretPay,CHECK_WX_DELAY);
+            if (data == null) {
+                mHandler.postDelayed(checkWxSecretPay, CHECK_WX_DELAY);
                 return;
             }
             int pay_status = data.optInt("pay_status");
-            if(pay_status<=0) //未来支付
+            if (pay_status <= 0) //未来支付
             {
-                mHandler.postDelayed(checkWxSecretPay,CHECK_WX_DELAY);
+                mHandler.postDelayed(checkWxSecretPay, CHECK_WX_DELAY);
                 return;
             }
             double payed = data.optDouble("payed");
@@ -623,42 +610,40 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         }
     }
 
-    private void clearOrder()
-    {
+    private void clearOrder() {
         buyAdapter.clear();
         buyAdapter.notifyDataSetChanged();
         totalAmount = 0.0;
         totalDis = 1.0;
-        billDiscountv.setText(""+totalDis);
+        billDiscountv.setText("" + totalDis);
 
-        incomeTotalv.setText(""+totalAmount);
-        billTotalv.setText(""+totalAmount);
+        incomeTotalv.setText("" + totalAmount);
+        billTotalv.setText("" + totalAmount);
 
     }
-    private void payWithOrderId()
-    {
-        switch (orderPayMethod)
-        {
+
+    private void payWithOrderId() {
+        switch (orderPayMethod) {
             case R.id.pay_cash:
                 if (null == payCashDialog)
-                    payCashDialog = new CashPayDialog(CashdeskActivity.this, orderId,orderAmount);
+                    payCashDialog = new CashPayDialog(CashdeskActivity.this, orderId, orderAmount);
                 else
-                    payCashDialog.setPayInfo(orderId,orderAmount);
+                    payCashDialog.setPayInfo(orderId, orderAmount);
 
                 payCashDialog.show();
                 break;
             case R.id.pay_bank:
                 if (null == payCardDialog)
-                    payCardDialog = new CardPayDialog(CashdeskActivity.this, orderId,orderAmount);
+                    payCardDialog = new CardPayDialog(CashdeskActivity.this, orderId, orderAmount);
                 else
                     payCardDialog.setPayInfo(orderId, orderAmount);
                 payCardDialog.show();
                 break;
             case R.id.pay_other:
                 if (null == payOtherDialog)
-                    payOtherDialog = new OtherPayDialog(CashdeskActivity.this, orderId,orderAmount);
+                    payOtherDialog = new OtherPayDialog(CashdeskActivity.this, CashdeskActivity.this, orderId, orderAmount);
                 else
-                    payOtherDialog.setPayInfo(orderId,orderAmount);
+                    payOtherDialog.setPayInfo(orderId, orderAmount);
                 payOtherDialog.show();
 
         }
@@ -681,8 +666,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     }
 
 
-    private void reqWxScan(Intent data)
-    {
+    private void reqWxScan(Intent data) {
         String authcode = data.getStringExtra(Intents.Scan.RESULT);
         mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ALL);
         if (null == mAjax)
@@ -692,8 +676,8 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
         mAjax.setId(WPosConfig.REQ_WX_SCAN);
         mAjax.setData("method", "weixinpay.brushcard");
-        mAjax.setData("auth_code",authcode);
-        mAjax.setData("order_id",orderId);
+        mAjax.setData("auth_code", authcode);
+        mAjax.setData("order_id", orderId);
         mAjax.setData("token", WPosApplication.GToken);
         mAjax.setOnSuccessListener(this);
         mAjax.setOnErrorListener(this);
@@ -704,15 +688,15 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
     @Override
     public void onBackPressed() {
-        if(payCardDialog!=null && payCardDialog.isShowing())
+        if (payCardDialog != null && payCardDialog.isShowing())
             payCardDialog.dismiss();
-        else if(payCashDialog!=null && payCashDialog.isShowing())
+        else if (payCashDialog != null && payCashDialog.isShowing())
             payCashDialog.dismiss();
-        else if(payOtherDialog!=null && payOtherDialog.isShowing())
+        else if (payOtherDialog != null && payOtherDialog.isShowing())
             payOtherDialog.dismiss();
-        else if(payQuickDialog!=null && payQuickDialog.isShowing())
+        else if (payQuickDialog != null && payQuickDialog.isShowing())
             payQuickDialog.dismiss();
-        else if(payDiscountDialog!=null && payDiscountDialog.isShowing())
+        else if (payDiscountDialog != null && payDiscountDialog.isShowing())
             payDiscountDialog.dismiss();
         else
             super.onBackPressed();
@@ -721,24 +705,40 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == CaptureActivity.REQ_SCAN_CODE)
-        {
-            if(resultCode==RESULT_CANCELED || data == null || payOtherDialog == null)
-                UiUtils.makeToast(this,"扫码失败");
-            else
-            {
-                if(payOtherDialog.scanType == OtherPayDialog.ALIPAY_SCAN)
-                {
+        if (requestCode == CaptureActivity.REQ_SCAN_CODE) {
+            if (resultCode == RESULT_CANCELED || data == null || payOtherDialog == null)
+                UiUtils.makeToast(this, "扫码失败");
+            else {
+                if (payOtherDialog.scanType == OtherPayDialog.ALIPAY_SCAN) {
 
-                }
-                else if(payOtherDialog.scanType == OtherPayDialog.WX_SCAN)
-                {
+                } else if (payOtherDialog.scanType == OtherPayDialog.WX_SCAN) {
                     reqWxScan(data);
                 }
 
             }
-        }
-        else
-            super.onActivityResult(requestCode,resultCode,data);
+        } else
+            super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public void onQuery(String orderid) {
+        mHandler.removeCallbacksAndMessages(null);
+        mHandler.postDelayed(checkWxSecretPay, CHECK_WX_DELAY);
+    }
+
+
+    @Override
+    public void onCancel(String orderid) {
+        mHandler.removeCallbacksAndMessages(null);
+        UiUtils.makeToast(this,"主动取消支付");
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        if(null!=mHandler)
+            mHandler.removeCallbacksAndMessages(null);
+    }
+
 }

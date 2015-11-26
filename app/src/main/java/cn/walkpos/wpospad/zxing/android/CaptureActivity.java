@@ -104,6 +104,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_capture);
 
+        loadNavBar(R.id.scan_nav);
         Intent intent = getIntent();
 
 		Window window = getWindow();
@@ -224,7 +225,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    initCamera(surfaceHolder,true);
+                    initCamera(surfaceHolder,false);
                 }
             });
 		} else {
@@ -394,7 +395,7 @@ public class CaptureActivity extends BaseActivity implements Callback {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    initCamera(holder,true);
+                    initCamera(holder,false);
                 }
             });
 		}

@@ -9,7 +9,7 @@ import org.json.JSONObject;
  */
 public class GoodsModule extends BaseModel {
     public String goods_id;
-    public String bn;
+    public String bn; //编号
     public String   pricein;
     public String   priceout;
     public String name;

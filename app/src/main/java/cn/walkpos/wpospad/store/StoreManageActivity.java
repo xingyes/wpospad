@@ -623,7 +623,7 @@ public class StoreManageActivity extends BaseActivity implements DrawerLayout.Dr
         GoodsModule goods = proArray.get(pos);
         if(null!=batChooseAllBtn && batChooseAllBtn.getVisibility() == View.VISIBLE)
         {
-            proAdapter.changeChoose(goods.goods_id);
+            proAdapter.changeChoose(goods.bn);
             proAdapter.notifyDataSetChanged();
             return;
         }
