@@ -80,16 +80,17 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 10 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="libammsdk" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="zxing_core" level="project" />
     <orderEntry type="library" exported="" name="weibosdkcore" level="project" />
     <orderEntry type="library" exported="" name="open_sdk_r5043_lite" level="project" />
-    <orderEntry type="library" exported="" name="core" level="project" />
     <orderEntry type="library" exported="" name="disklrucache-2.0.1" level="project" />
-    <orderEntry type="library" exported="" name="AMap_3DMap_V2.2.1" level="project" />
+    <orderEntry type="library" exported="" name="mposlib" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="libammsdk" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="zxing_core" level="project" />
+    <orderEntry type="library" exported="" name="core" level="project" />
+    <orderEntry type="library" exported="" name="AMap_3DMap_V2.2.1" level="project" />
     <orderEntry type="library" exported="" name="Android_Location_V1.3.0" level="project" />
     <orderEntry type="library" exported="" name="camerautils" level="project" />
     <orderEntry type="module" module-name="library" exported="" />

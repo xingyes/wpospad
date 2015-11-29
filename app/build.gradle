@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "cn.walkpos.wpospad"
         minSdkVersion 18
-        targetSdkVersion 18
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
     }
@@ -20,7 +20,21 @@ android {
     }
 }
 
+
+//task nativeLibsToJar(type: Zip, description: "create a jar archive of the native libs") {
+//    destinationDir file("$projectDir/libs")
+//    baseName "Native_Libs2"
+//    extension "jar"
+//    from fileTree(dir: "libs", include: "**/*.so")
+//    into "lib"
+//}
+//
+//tasks.withType(JavaCompile) {
+//    compileTask -> compileTask.dependsOn(nativeLibsToJar)
+//}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':xingy_libutil')
+    debugCompile files('libs/mposlib.jar')
 }

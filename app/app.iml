@@ -85,6 +85,7 @@
     <orderEntry type="jdk" jdkName="Android API 18 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="mposlib" level="project" />
     <orderEntry type="module" module-name="xingy_libutil" exported="" />
   </component>
 </module>

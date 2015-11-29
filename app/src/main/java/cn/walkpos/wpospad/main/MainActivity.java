@@ -24,6 +24,7 @@ import com.xingy.util.ajax.Response;
 
 import org.json.JSONObject;
 
+import cn.walkpos.wpospad.BlueBle.ConnectBlueActivity;
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.cashdesk.CashdeskActivity;
 import cn.walkpos.wpospad.login.LoginActivity;
@@ -239,6 +240,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
                 break;
             case R.id.statistics_btn:
                 UiUtils.makeToast(this,"统计报表界面");
+                UiUtils.startActivity(this, ConnectBlueActivity.class,true);
                 break;
             case R.id.money_btn:
                 UiUtils.startActivity(this, MoneyManageActivity.class,true);
