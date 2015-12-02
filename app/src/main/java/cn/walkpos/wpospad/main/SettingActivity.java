@@ -1,22 +1,32 @@
 package cn.walkpos.wpospad.main;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.walktech.mposlib.mposService;
 import com.xingy.lib.AppStorage;
 import com.xingy.lib.IVersion;
 import com.xingy.lib.ui.CheckBox;
@@ -35,6 +45,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import cn.walkpos.wpospad.BlueBle.DeviceListActivity;
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.login.RegisterActivity;
 import cn.walkpos.wpospad.module.BranchInfoModule;
@@ -44,6 +55,18 @@ import cn.walkpos.wpospad.util.WPosConfig;
 
 public class SettingActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,
         ShareUtil.CallbackListener,OnSuccessListener<JSONObject>{
+
+    private static final int REQUEST_CONNECT_DEVICE = 1;
+    private static final int REQUEST_ENABLE_BT = 2;
+
+    // Message types sent from the BluetoothChatService Handler
+    public static final int MESSAGE_STATE_CHANGE = 1;
+    public static final int MESSAGE_READ = 2;
+    public static final int MESSAGE_WRITE = 3;
+    public static final int MESSAGE_DEVICE_NAME = 4;
+    public static final int MESSAGE_TOAST = 5;
+    public static final int   MSG_INTERVAL = 6;
+
 
     private Ajax         mAjax;
     private BranchInfoModule   mBranchInfo;
@@ -74,9 +97,20 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         public CheckBox       mposCheck;
         public CheckBox       swipCheck;
         public TextView       mposStatV;
+        public TextView       bindBtn;
 
     };
     private DevSetHolder   devHolder;
+    private BluetoothAdapter mBluetoothAdapter = null;
+//    private mposService   mmposService;
+    private String mConnectedDeviceName = null;
+    // Key names received from the BluetoothChatService Handler
+    public static final String DEVICE_NAME = "device_name";
+    public static final String TOAST = "toast";
+    private Thread mStateThread;
+    private Drawable yesDrawable;
+    private Drawable      noDrawable;
+
 
     private class PasswdSetHolder{
         public View  rootv;
@@ -117,7 +151,6 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
     public int otherTabIDs [] = {R.id.qa_rb,R.id.feedback_rb,R.id.share_rb,R.id.update_rb};
     private OtherInfoHolder   otherHolder;
 
-    public static final int   MSG_INTERVAL = 0x200;
 
     private Handler mHandler = new Handler(){
 
@@ -126,26 +159,65 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         {
             if(passwdHolder==null)
                 return;
-            if(msg.what == MSG_INTERVAL)
-            {
-                passwdHolder.mCounting--;
-                if(passwdHolder.mCounting > 0)
-                {
-                    passwdHolder.reqverifyBtn.setText(getString(R.string.left_second,passwdHolder.mCounting));
-                    mHandler.sendEmptyMessageDelayed(MSG_INTERVAL,1000);
-                }
-                else
-                {
-                    passwdHolder.reqverifyBtn.setText(getString(R.string.send));
-                    passwdHolder.mCounting = RegisterActivity.COUTING_DOWN_SECOND;
-                    passwdHolder.reqverifyBtn.setEnabled(true);
-                    passwdHolder.bSending = false;
-                }
 
+            switch (msg.what) {
+                case MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case mposService.STATE_CONNECTED:
+                            if(null!=devHolder)
+                            {
+                                devHolder.mposStatV.setText(R.string.yes_bind);
+                                devHolder.mposStatV.setCompoundDrawables(yesDrawable,null,null,null);
+                                devHolder.bindBtn.setVisibility(View.INVISIBLE);
+                            }
+                            break;
+                        case mposService.STATE_CONNECTING:
+                            UiUtils.makeToast(SettingActivity.this, getString(R.string.title_connecting));
+                            break;
+                        case mposService.STATE_DISCONNECTED:
+                            UiUtils.makeToast(SettingActivity.this,getString(R.string.title_disconnected));
+                            break;
+                        case mposService.STATE_NONE:
+                            break;
+                    }
+                    break;
+                case MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+//                    String writeMessage = bytes2HexString(writeBuf, writeBuf.length);
+                    break;
+                case MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+//                    String readMessage = bytes2HexString(readBuf, msg.arg1);
+                    break;
+                case MESSAGE_DEVICE_NAME:
+                    // save the connected device's name
+                    mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+                    UiUtils.makeToast(SettingActivity.this,"Connected to " + mConnectedDeviceName);
+                    break;
+                case MESSAGE_TOAST:
+                    UiUtils.makeToast(SettingActivity.this, msg.getData().getString(TOAST));
+                    break;
+                case MSG_INTERVAL:
+                    passwdHolder.mCounting--;
+                    if(passwdHolder.mCounting > 0)
+                    {
+                        passwdHolder.reqverifyBtn.setText(getString(R.string.left_second,passwdHolder.mCounting));
+                        mHandler.sendEmptyMessageDelayed(MSG_INTERVAL,1000);
+                    }
+                    else
+                    {
+                        passwdHolder.reqverifyBtn.setText(getString(R.string.send));
+                        passwdHolder.mCounting = RegisterActivity.COUTING_DOWN_SECOND;
+                        passwdHolder.reqverifyBtn.setEnabled(true);
+                        passwdHolder.bSending = false;
+                    }
+                    break;
+                default:
+                    super.handleMessage(msg);
+                    break;
             }
-            else
-                super.handleMessage(msg);
         }
+
     };
 
 
@@ -191,6 +263,17 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
                     case R.id.device_rb:
                         container.removeAllViews();
                         container.addView(devHolder.rootv,rl);
+                        if (!mBluetoothAdapter.isEnabled()) {
+                            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+                        }
+                        else {
+                            if (WPosApplication.GposService == null)
+                            {
+                                WPosApplication.GposService = new mposService(SettingActivity.this);
+                            }
+
+                        }
                         break;
                     case R.id.passwd_rb:
                         container.removeAllViews();
@@ -330,8 +413,21 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         devHolder.swipCheck = (CheckBox)devHolder.rootv.findViewById(R.id.swip_machine_ck);
 
         devHolder.mposStatV =(TextView)devHolder.rootv.findViewById(R.id.mpos_stat);
-        devHolder.rootv.findViewById(R.id.check_mposs_btn).setOnClickListener(this);
         devHolder.rootv.findViewById(R.id.mpos_bind_btn).setOnClickListener(this);
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mStateThread = new Thread(new StateThread());
+        mStateThread.start();
+
+        yesDrawable = getResources().getDrawable(R.mipmap.icon_y);
+        yesDrawable.setBounds(0, 0, yesDrawable.getMinimumWidth(), yesDrawable.getMinimumHeight());
+        noDrawable = getResources().getDrawable(R.mipmap.icon_x);
+        noDrawable.setBounds(0, 0, noDrawable.getMinimumWidth(), noDrawable.getMinimumHeight());
+
+        devHolder.bindBtn = (TextView)devHolder.rootv.findViewById(R.id.mpos_bind_btn);
+
+
+
     }
 
 
@@ -513,11 +609,10 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
                 submitStoreModify();
                 break;
 //            设备pg
-            case R.id.check_mposs_btn:
-                UiUtils.makeToast(this,"去查看其他mpos");
-                break;
             case R.id.mpos_bind_btn:
-                UiUtils.makeToast(this,"去绑定");
+                Intent serverIntent = new Intent(this, DeviceListActivity.class);
+                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+
                 break;
 //            密码pg
             case R.id.request_verify_code:
@@ -676,4 +771,90 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
             UiUtils.makeToast(this,jsonObject.optString("res","短信发送成功"));
         }
     }
+
+
+
+    @Override
+    protected void onDestroy()
+    {
+        if(null!=mStateThread)
+            mStateThread.interrupt();
+        super.onDestroy();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CONNECT_DEVICE:
+                // When DeviceListActivity returns with a device to connect
+                if (resultCode == Activity.RESULT_OK) {
+                    connectDevice(data);
+                }
+                break;
+
+            case REQUEST_ENABLE_BT:
+                // When the request to enable Bluetooth returns
+                if (resultCode != Activity.RESULT_OK) {
+                    // User did not enable Bluetooth or an error occurred
+                    Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+        }
+    }
+
+
+    private void connectDevice(Intent data) {
+        // Get the device MAC address
+        String address = data.getExtras()
+                .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+        // Get the BluetoothDevice object
+        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+        // Attempt to connect to the device
+
+        if(WPosApplication.GposService == null)
+        {
+            return;
+        }
+        WPosApplication.GposService.connect(device);
+
+        mConnectedDeviceName = device.getName();
+    }
+
+    public class StateThread implements Runnable {
+
+        @Override
+        public void run() {
+
+            int state;
+            int lastState = -1;
+            while (true)
+            {
+                if(WPosApplication.GposService != null)
+                {
+                    state = WPosApplication.GposService.getState();
+                    if(state != lastState)
+                    {
+                        lastState = state;
+                        mHandler.obtainMessage(MESSAGE_STATE_CHANGE, state, -1)
+                                .sendToTarget();
+                    }
+
+                }
+
+                if(Thread.interrupted() == true)
+                {
+                    return;
+                }
+                else
+                {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                }
+            }
+        }
+    };
+
+
 }

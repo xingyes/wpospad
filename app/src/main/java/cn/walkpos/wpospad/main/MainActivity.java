@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.walktech.mposlib.mposService;
 import com.xingy.lib.AppStorage;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.CircleImageView;
@@ -67,7 +68,7 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
     protected void onCreate(Bundle savedInstanceState) {
 
         WPosApplication.start();
-
+        WPosApplication.GposService = new mposService(this);
         PowerManager powerManager = (PowerManager)getSystemService(this.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
         wakeLock.acquire();

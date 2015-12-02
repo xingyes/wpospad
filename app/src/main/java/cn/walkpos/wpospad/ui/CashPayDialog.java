@@ -42,9 +42,16 @@ public class CashPayDialog extends Dialog implements View.OnClickListener {
     private String  inputStr = "";
     private double   mIncome;
     private boolean inDecimals = false;
-    public CashPayDialog(Context context, final String orderid,final String abill) {
+
+    public interface OnQueryListener{
+        public void onQuery(final String orderid);
+        public void onCancel(final String orderid);
+    }
+    private OnQueryListener  queryListner;
+    public CashPayDialog(Context context, OnQueryListener listner,final String orderid,final String abill) {
         super(context, com.xingy.R.style.Dialog);
         mActivity = (BaseActivity)context;
+        queryListner = listner;
         strOrderId = orderid;
         strBill = abill;
         if(TextUtils.isEmpty(strBill))
@@ -125,11 +132,10 @@ public class CashPayDialog extends Dialog implements View.OnClickListener {
     @Override
     public boolean onKeyDown (int keyCode, KeyEvent event)
     {
-//        if((null != mListener) && (keyCode == KeyEvent.KEYCODE_BACK))
-//        {
-//            mListener.onDialogClick(DialogInterface.BUTTON_NEGATIVE,inputArray);
-//            return true;
-//        }
+        if(queryListner!=null)
+        {
+            queryListner.onCancel(strOrderId);
+        }
         return super.onKeyDown(keyCode, event);
     }
 
@@ -272,7 +278,10 @@ public class CashPayDialog extends Dialog implements View.OnClickListener {
                     return;
                 }
                 UiUtils.makeToast(mActivity, "结算完成");
-
+                if(queryListner!=null)
+                {
+                    queryListner.onQuery(strOrderId);
+                }
                 dismiss();
 
             }

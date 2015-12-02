@@ -4,6 +4,7 @@ package cn.walkpos.wpospad.main;
 import android.text.TextUtils;
 
 import com.android.volley.utils.MemDiskImageCache;
+import com.walktech.mposlib.mposService;
 import com.xingy.lib.AppStorage;
 import com.xingy.util.MyApplication;
 import com.xingy.util.ServiceConfig;
@@ -20,8 +21,10 @@ public class WPosApplication extends MyApplication {
 
     public static MemDiskImageCache globalMDCache;
     private Ajax mAjax;
+    public static mposService GposService;
     public static WposAccount account;
     public static String    StockBn;
+//    public static mposService GposService;
     public void onCreate()
     {
         globalMDCache = new MemDiskImageCache(MyApplication.app);

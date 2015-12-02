@@ -25,6 +25,7 @@
     <string name="not_bind">未绑定</string>
     <string name="yes_bind">已绑定</string>
     <string name="bind_dev">绑定设备</string>
+    <string name="dev_list">设备列表</string>
 
     <string name="version_info_x">当前版本：%s</string>
     <string name="update_time_x">更新时间：%s</string>

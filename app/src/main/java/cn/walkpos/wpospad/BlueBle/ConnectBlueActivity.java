@@ -24,6 +24,10 @@ import com.xingy.lib.ui.UiUtils;
 
 import cn.walkpos.wpospad.R;
 
+
+/**
+ * This is the main Activity that displays the current chat session.
+ */
 public class ConnectBlueActivity extends Activity {
     // Debugging
     private static final String TAG = "WM31 MainActivity";
@@ -82,7 +86,7 @@ public class ConnectBlueActivity extends Activity {
 
         // If the adapter is null, then Bluetooth is not supported
         if (mBluetoothAdapter == null) {
-            UiUtils.makeToast(this, "Bluetooth is not available");
+            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -100,7 +104,6 @@ public class ConnectBlueActivity extends Activity {
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            // Otherwise, setup the chat session
         }
         else {
             if (mmposService == null)
@@ -203,12 +206,13 @@ public class ConnectBlueActivity extends Activity {
         }
 
         byte[] send = {(byte)0xAA,(byte) 0xBB,0x09,0x00,0x04,0x01,0x01,(byte)0xCC,(byte) 0xDD,0x1C};
+        int ret;
 
-        mmposService.sendMSG(send.length, send);
+        //mmposService.sendMSG(send.length, send);
 
-        Thread recv1 = new Thread(recv, "CMD1");
+        Thread recv2 = new Thread(recv, "CMD2");
 
-        recv1.start();
+        recv2.start();
 
         mHandler.obtainMessage(ConnectBlueActivity.MESSAGE_WRITE, 1, -1, send)
                 .sendToTarget();
@@ -229,6 +233,8 @@ public class ConnectBlueActivity extends Activity {
 
         mmposService.sendMSG(send.length, send);
 
+        recv.setTimeout(5000);
+
         Thread recv2 = new Thread(recv, "CMD2");
 
         recv2.start();
@@ -246,7 +252,6 @@ public class ConnectBlueActivity extends Activity {
             return;
         }
 
-        mmposService.setMSGDBG(sendmsg_dbg);
 
         Toast.makeText(this, "Set SendMSG DBG " + sendmsg_dbg, Toast.LENGTH_SHORT).show();
 
@@ -275,7 +280,16 @@ public class ConnectBlueActivity extends Activity {
         return ret;
     }
 
-    // The Handler that gets information back from the BluetoothChatService
+    public static String bytes2Ascii(byte[] b, int start,int length) {
+        StringBuffer sbu = new StringBuffer();
+        for (int i = start; i < start+length; i++) {
+            sbu.append((char)b[i]);
+        }
+        return sbu.toString();
+    }
+
+
+        // The Handler that gets information back from the BluetoothChatService
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -368,6 +382,12 @@ public class ConnectBlueActivity extends Activity {
     }
 
     public class RecvThread implements Runnable {
+        private int timeout = 0;
+
+        public void setTimeout(int t)
+        {
+            timeout = t;
+        }
 
         @Override
         public void run() {
@@ -375,11 +395,49 @@ public class ConnectBlueActivity extends Activity {
             int ret = 0;
             String cmd = Thread.currentThread().getName();
 
-            ret = mmposService.recvMSG(in, 1000);
+            if(timeout == 0)
+            {
+                timeout = 1000;
+            }
 
-            Log.e(TAG, cmd + " read return: " + ret);
+            ret = mmposService.getCommandStart();
 
-            if(ret <= 0)
+            if(ret >= 0)
+            {
+                byte[] byteDisp = new byte[512];
+                String str = "SWIPE CARD>>>";
+
+                byteDisp = str.getBytes();
+
+                ret = mmposService.getCommandDisp((byte)0x00,(byte)0x00,(byte)0x00,(byte)0x00, byteDisp);
+
+            }
+
+
+            if(ret >= 0)
+            {
+                byte[] byteMag = new byte[1024];
+
+                ret = mmposService.getCommandMag(byteMag, 500);
+
+
+                String readMessage = bytes2Ascii(byteMag,0, 100);
+
+
+            }
+
+            //if(ret >= 0)
+            {
+                ret = mmposService.getCommandEnd();
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(ret < 0)
             {
                 return;
             }
@@ -421,7 +479,7 @@ public class ConnectBlueActivity extends Activity {
                 else
                 {
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         Log.e(TAG,"StateThread sleep InterruptedException: " + e);
@@ -452,4 +510,6 @@ public class ConnectBlueActivity extends Activity {
         }
         return false;
     }
+
+
 }

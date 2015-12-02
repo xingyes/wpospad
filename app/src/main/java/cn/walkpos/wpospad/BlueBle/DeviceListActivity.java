@@ -21,10 +21,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.xingy.util.activity.BaseActivity;
+
 import cn.walkpos.wpospad.R;
 
 
-public class DeviceListActivity extends Activity {
+public class DeviceListActivity extends BaseActivity {
     // Debugging
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
@@ -42,9 +44,8 @@ public class DeviceListActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         // Setup the window
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.device_list);
-
+        loadNavBar(R.id.device_list_nav);
         // Set result CANCELED in case the user backs out
         setResult(Activity.RESULT_CANCELED);
 
@@ -179,5 +180,25 @@ public class DeviceListActivity extends Activity {
             }
         }
     };
+
+    public static String bytes2Ascii(byte[] b, int start,int length) {
+        StringBuffer sbu = new StringBuffer();
+        for (int i = start; i < start+length; i++) {
+            sbu.append((char)b[i]);
+        }
+        return sbu.toString();
+    }
+
+    public static String bytes2HexString(byte[] b, int length) {
+        String ret = "";
+        for (int i = 0; i < length; i++) {
+            String hex = Integer.toHexString(b[i] & 0xFF);
+            if (hex.length() == 1) {
+                hex = '0' + hex;
+            }
+            ret += hex.toUpperCase();
+        }
+        return ret;
+    }
 
 }

@@ -14,10 +14,21 @@
      limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <com.xingy.lib.ui.NavigationBar
+        android:id="@+id/device_list_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:text="@string/dev_list"
+        inmost:drawableLeft="@drawable/ico_back"
+        inmost:bgColor="@color/nav_wpos_bg"
+        inmost:textColor="@color/white"/>
+
     <TextView android:id="@+id/title_paired_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

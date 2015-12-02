@@ -1,5 +1,6 @@
 package cn.walkpos.wpospad.cashdesk;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.walktech.mposlib.mposService;
 import com.xingy.lib.IPageCache;
 import com.xingy.lib.ui.AppDialog;
 import com.xingy.lib.ui.UiUtils;
@@ -37,6 +39,7 @@ import cn.walkpos.wpospad.adapter.BuyProAdapter;
 import cn.walkpos.wpospad.adapter.CashCateAdapter;
 import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.adapter.ProBtnAdapter;
+import cn.walkpos.wpospad.main.SettingActivity;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
 import cn.walkpos.wpospad.module.GoodsModule;
@@ -51,7 +54,7 @@ import cn.walkpos.wpospad.zxing.android.Intents;
 
 
 public class CashdeskActivity extends BaseActivity implements OnSuccessListener<JSONObject>,
-                BuyProAdapter.InfoChangedListener,OtherPayDialog.OnQueryListener {
+                BuyProAdapter.InfoChangedListener {
 
     private Ajax mAjax;
 
@@ -115,6 +118,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
     };
     private CashPayDialog payCashDialog;
     private CardPayDialog payCardDialog;
+//    private mposService mmposService;
     private OtherPayDialog payOtherDialog;
     private InStockDialog payQuickDialog;
     private InStockDialog payDiscountDialog;
@@ -131,7 +135,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         setContentView(R.layout.activity_cashdesk);
 
         loadNavBar(R.id.cashdesk_nav);
-
+//        mmposService = new mposService(CashdeskActivity.this);
         backCaterootv = (TextView) this.findViewById(R.id.back_cate_level1);
         backCaterootv.setVisibility(View.GONE);
         backCaterootv.setOnClickListener(this);
@@ -278,6 +282,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         this.findViewById(R.id.pay_other).setOnClickListener(this);
 
         loadCateData(false);
+
 
     }
 
@@ -626,22 +631,66 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         switch (orderPayMethod) {
             case R.id.pay_cash:
                 if (null == payCashDialog)
-                    payCashDialog = new CashPayDialog(CashdeskActivity.this, orderId, orderAmount);
+                    payCashDialog = new CashPayDialog(CashdeskActivity.this, new CashPayDialog.OnQueryListener() {
+                        @Override
+                        public void onQuery(String orderid) {
+                            clearOrder();
+                        }
+
+                        @Override
+                        public void onCancel(String orderid) {
+                            mHandler.removeCallbacksAndMessages(null);
+                            UiUtils.makeToast(CashdeskActivity.this,"主动取消支付");
+                        }
+                    },orderId, orderAmount);
                 else
                     payCashDialog.setPayInfo(orderId, orderAmount);
 
                 payCashDialog.show();
                 break;
             case R.id.pay_bank:
+                if(null==WPosApplication.GposService ||
+                        WPosApplication.GposService.getState()!= mposService.STATE_CONNECTED)
+                {
+                    UiUtils.makeToast(CashdeskActivity.this,"请前往绑定MPOS设备");
+                    UiUtils.startActivity(CashdeskActivity.this, SettingActivity.class,true);
+                    return;
+                }
                 if (null == payCardDialog)
-                    payCardDialog = new CardPayDialog(CashdeskActivity.this, orderId, orderAmount);
+                    payCardDialog = new CardPayDialog(CashdeskActivity.this, new CardPayDialog.OnQueryListener() {
+                        @Override
+                        public void onQuery(String orderid) {
+                            clearOrder();
+
+                        }
+
+                        @Override
+                        public void onCancel(String orderid) {
+                            mHandler.removeCallbacksAndMessages(null);
+                            UiUtils.makeToast(CashdeskActivity.this,"主动取消支付");
+                        }
+                    },orderId, orderAmount);
                 else
                     payCardDialog.setPayInfo(orderId, orderAmount);
                 payCardDialog.show();
+                payCardDialog.startThread();
                 break;
             case R.id.pay_other:
                 if (null == payOtherDialog)
-                    payOtherDialog = new OtherPayDialog(CashdeskActivity.this, CashdeskActivity.this, orderId, orderAmount);
+                    payOtherDialog = new OtherPayDialog(CashdeskActivity.this, new OtherPayDialog.OnQueryListener(){
+                        @Override
+                        public void onQuery(final String orderid)
+                        {
+                            mHandler.removeCallbacksAndMessages(null);
+                            mHandler.postDelayed(checkWxSecretPay, CHECK_WX_DELAY);
+                        }
+
+                        @Override
+                        public void onCancel(String orderid) {
+                            mHandler.removeCallbacksAndMessages(null);
+                            UiUtils.makeToast(CashdeskActivity.this,"主动取消支付");
+                        }
+                    }, orderId, orderAmount);
                 else
                     payOtherDialog.setPayInfo(orderId, orderAmount);
                 payOtherDialog.show();
@@ -720,18 +769,9 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
             super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    public void onQuery(String orderid) {
-        mHandler.removeCallbacksAndMessages(null);
-        mHandler.postDelayed(checkWxSecretPay, CHECK_WX_DELAY);
-    }
 
 
-    @Override
-    public void onCancel(String orderid) {
-        mHandler.removeCallbacksAndMessages(null);
-        UiUtils.makeToast(this,"主动取消支付");
-    }
+
 
     @Override
     protected void onDestroy()

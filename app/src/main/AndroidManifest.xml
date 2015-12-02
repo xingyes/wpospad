@@ -36,8 +36,7 @@
         android:label="@string/app_name"
         android:theme="@style/TransparentAppTheme">
         <activity
-            android:name=".BlueBle.ConnectBlueActivity"
-            android:theme="@android:style/Theme.Holo.Light"
+            android:name=".login.LoginActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -83,7 +82,7 @@
             android:screenOrientation="landscape"/>
 
         <!--蓝牙-->
-        <activity android:name=".login.LoginActivity"
+        <activity android:name=".BlueBle.ConnectBlueActivity"
             android:screenOrientation="landscape"/>
         <activity android:name=".BlueBle.DeviceListActivity"
             android:screenOrientation="landscape"/>
