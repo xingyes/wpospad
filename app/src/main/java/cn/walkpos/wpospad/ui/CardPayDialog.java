@@ -68,7 +68,9 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
         }
     };
 
-    private Thread   swapThread = new Thread(new SwapThread());
+    private SwapDeamon   swapDemon = new SwapDeamon();
+    private Thread   swapThread = new Thread(swapDemon);
+
     protected int           mWinWidth;
 
     protected TextView         billTotalv;
@@ -84,6 +86,7 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
 
 
     private TextView   opTv;
+    private TextView   okBtn;
     @Override
     protected void onCreate(Bundle aSavedInstanceState) {
         super.onCreate(aSavedInstanceState);
@@ -91,12 +94,17 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
         // Load the default configuration.
         setContentView(R.layout.dialog_paycard);
 
-        this.findViewById(R.id.card_pay_ok).setOnClickListener(this);
+        okBtn = (TextView)findViewById(R.id.card_pay_ok);
+        okBtn.setOnClickListener(this);
+        okBtn.setVisibility(View.INVISIBLE);
         opTv = (TextView)this.findViewById(R.id.mpos_operation);
         billTotalv = (TextView) this.findViewById(R.id.bill_total_tv);
         if(null!=billTotalv)
             billTotalv.setText(this.getContext().getString(R.string.income_x,strBill));
         mWinWidth = this.setAttributes();
+
+        swapThread.start();
+
 
 
 
@@ -104,12 +112,16 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
 
     public void startThread()
     {
-        swapThread.start();
+        swapDemon.stopFlag  = false;
+        synchronized (swapDemon) {
+            swapDemon.notify();
+        }
+        okBtn.setVisibility(View.INVISIBLE);
     }
 
     public void stopThread()
     {
-        swapThread.interrupt();
+        swapDemon.stopFlag  = true;
         blueHandler.removeCallbacksAndMessages(null);
     }
 
@@ -138,6 +150,7 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
 //            mListener.onDialogClick(DialogInterface.BUTTON_NEGATIVE,inputArray);
 //            return true;
 //        }
+        dismiss();
         return super.onKeyDown(keyCode, event);
     }
 
@@ -188,28 +201,51 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    private int timeout = 0;
-
-    public class SwapThread implements Runnable {
-
-        public void setTimeout(int t)
-        {
-            timeout = t;
-        }
-
+    public class SwapDeamon implements Runnable {
+        public int timeout = 0;
+        public boolean stopFlag = false;
         @Override
         public void run() {
 
-            opTv.setText("请在MPOS上进行刷卡操作:");
+            while(!stopFlag) {
+                blueHandler.obtainMessage(SHOW_READ, 0, -1,"请在MPOS上进行刷卡操作:")
+                        .sendToTarget();
 
-            swapCard();
+                boolean succ = swapCard(timeout);
 
-            inputKey();
+                if(succ && !stopFlag)
+                    succ = inputKey();
+
+                if(!succ && !stopFlag)
+                    continue;
+                else {
+                    if(!stopFlag)
+                    {
+                        blueHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                okBtn.setVisibility(View.VISIBLE);
+                            }
+                        });
+                    }
+                    try {
+                        synchronized (this) {
+                            wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
         }
     }
 
-    private void swapCard()
+    private boolean swapCard(int timeout)
     {
+        boolean succ = false;
         byte[] in = new byte[1024];
         int ret = 0;
         String cmd = Thread.currentThread().getName();
@@ -238,12 +274,42 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
 
             ret = WPosApplication.GposService.getCommandMag(byteMag, 500);
 
+            int start = -1;
+            int end = -1;
+            int idx = 0;
+            while(idx++<byteMag.length)
+            {
+                if(byteMag[idx] >=48 && byteMag[idx]<=57)
+                {
+                    if(start<0)
+                        start = idx;
+                }
+                if(start>=0 &&
+                        (byteMag[idx] <48 || byteMag[idx]>57))
+                {
+                    if(idx-start<14)
+                    {
+                        start = -1;
+                        continue;
+                    }
+                    else {
+                        end = idx;
+                        break;
+                    }
+                }
+            }
+            if(start<0)
+                start = 0;
+            if(end<0)
+                end = byteMag.length-1;
 
-            String readMessage = DeviceListActivity.bytes2Ascii(byteMag, 0, ret);
+
+            String readMessage = DeviceListActivity.bytes2Ascii(byteMag, start, end-start);
 
             blueHandler.obtainMessage(SHOW_READ, ret, -1,readMessage + "\n请在MPOS上输入密码：")
                     .sendToTarget();
 
+            succ = true;
         }
 
         //if(ret >= 0)
@@ -257,15 +323,14 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
             }
         }
 
-        if(ret < 0)
-        {
-            return;
-        }
+        return succ;
+
     }
 
 
-    private void inputKey()
+    private boolean inputKey()
     {
+        boolean succ = false;
         byte[] byteKey = new byte[20];
 
         int ret = WPosApplication.GposService.getCommandStart();
@@ -284,15 +349,18 @@ public class CardPayDialog extends Dialog implements View.OnClickListener {
         if(ret>= 0) {
             ret = WPosApplication.GposService.getCommandKeyInput((byte) 0x02, (byte) 0x00, (byte) 'P', (byte) 0x06, (byte) 0x06, byteKey, (byte) 0x1D);
 
-            if (ret <= 0) {
-                UiUtils.makeToast(getContext(), "get Key timeout");
+            if (ret <= 1) {
+                blueHandler.obtainMessage(SHOW_READ, ret, -1,"获得密码超时").sendToTarget();
             } else {
                 String info = DeviceListActivity.bytes2Ascii(byteKey,0, ret);
                 blueHandler.obtainMessage(SHOW_READ, ret, -1,"获得密码:" + info).sendToTarget();
+
+                succ = true;
             }
         }
 
         ret = WPosApplication.GposService.getCommandEnd();
+        return succ;
     }
 
     @Override

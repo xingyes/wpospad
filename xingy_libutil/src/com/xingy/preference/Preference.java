@@ -103,8 +103,11 @@ public final class Preference
     {
         return getString(PREF_STOCK_BRANCHNUM);
     }
-	
-	public void setBarcodeAccess(int accessValue)
+
+    public void setMPosDevAddress(String addr){this.setValue(PREF_MPOS_DEV_ADDRESS,addr);}
+    public String getMPosDevAddress(){return getString(PREF_MPOS_DEV_ADDRESS);}
+
+    public void setBarcodeAccess(int accessValue)
 	{
 		this.setValue(PREF_BARCODE_ACESS, accessValue);
 	}
@@ -323,6 +326,7 @@ public final class Preference
 	public  static final String PREF_PROJ_VERSION  = "PROJ_VERSION";
 
     public static final String  PREF_STOCK_BRANCHNUM = "STOCK_BRANCHNUM";
+    public static final String  PREF_MPOS_DEV_ADDRESS = "MPOS_DEV_ADDRESS";
 
 
     private static final String[] PROPERTIES = {
@@ -336,8 +340,9 @@ public final class Preference
 												PREF_BARCODE_ACESS,
 												PREF_CALL_ACESS,
 
-                                                PREF_STOCK_BRANCHNUM
-												
+                                                PREF_STOCK_BRANCHNUM,
+                                                PREF_MPOS_DEV_ADDRESS
+
 												};
 	// Default values for the preference.
 	private static final int      MUTABLE_SIZE = 0;
@@ -346,6 +351,6 @@ public final class Preference
 		"1","",
 		DEFAULT_INTERVAL,"0",
 		"", "0", "0",
-        "S55FFA78EC7F56"
+        "S55FFA78EC7F56",""
 		};
 }

@@ -578,6 +578,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
             orderAmount = data.optString("total_amount");
 
             payWithOrderId();
+            return;
         } else if (response.getId() == WPosConfig.REQ_WX_SCAN) {
             JSONObject data = jsonObject.optJSONObject("data");
 //            {"data":{"result_code":"P0001","pay_type":"hassecret"},"res":"成功","response_code":"0000"}
@@ -652,8 +653,10 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
                 if(null==WPosApplication.GposService ||
                         WPosApplication.GposService.getState()!= mposService.STATE_CONNECTED)
                 {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(SettingActivity.TAB_IDX,R.id.device_rb);
                     UiUtils.makeToast(CashdeskActivity.this,"请前往绑定MPOS设备");
-                    UiUtils.startActivity(CashdeskActivity.this, SettingActivity.class,true);
+                    UiUtils.startActivity(CashdeskActivity.this, SettingActivity.class,bundle,true);
                     return;
                 }
                 if (null == payCardDialog)

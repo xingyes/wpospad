@@ -56,6 +56,7 @@ import cn.walkpos.wpospad.util.WPosConfig;
 public class SettingActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener,
         ShareUtil.CallbackListener,OnSuccessListener<JSONObject>{
 
+    public static final String TAB_IDX = "tab_idx";
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
 
@@ -293,7 +294,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
             }
         });
 
-        setRg.check(R.id.store_rb);
+        setRg.check(getIntent().getIntExtra(TAB_IDX,R.id.store_rb));
 
     }
 
@@ -806,6 +807,7 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         // Get the device MAC address
         String address = data.getExtras()
                 .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+
         // Get the BluetoothDevice object
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
         // Attempt to connect to the device
@@ -817,6 +819,9 @@ public class SettingActivity extends BaseActivity implements RadioGroup.OnChecke
         WPosApplication.GposService.connect(device);
 
         mConnectedDeviceName = device.getName();
+        Preference.getInstance().setMPosDevAddress(address);
+        Preference.getInstance().savePreference();
+
     }
 
     public class StateThread implements Runnable {

@@ -1,5 +1,8 @@
 package cn.walkpos.wpospad.main;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.text.TextUtils;
@@ -26,6 +29,7 @@ import com.xingy.util.ajax.Response;
 import org.json.JSONObject;
 
 import cn.walkpos.wpospad.BlueBle.ConnectBlueActivity;
+import cn.walkpos.wpospad.BlueBle.DeviceListActivity;
 import cn.walkpos.wpospad.R;
 import cn.walkpos.wpospad.cashdesk.CashdeskActivity;
 import cn.walkpos.wpospad.login.LoginActivity;
@@ -62,13 +66,13 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
 
     private ImageLoader   mImgLoader;
     private AppDialog     userShiftDialog;
-
+    private BluetoothAdapter mBluetoothAdapter = null;
+//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         WPosApplication.start();
-        WPosApplication.GposService = new mposService(this);
         PowerManager powerManager = (PowerManager)getSystemService(this.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
         wakeLock.acquire();
@@ -116,6 +120,8 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
         AppStorage.setData(APPSTORAGE_BRANCH_INFO_MODIFIED,"true",true);
         initUserInfo();
 
+        autoBindMpos();
+
     }
 
 
@@ -128,6 +134,26 @@ public class MainActivity extends BaseActivity implements OnSuccessListener<JSON
             loadBranchInfo();
             AppStorage.setData(APPSTORAGE_BRANCH_INFO_MODIFIED, "false", false);
         }
+    }
+
+    private void autoBindMpos()
+    {
+        WPosApplication.GposService = new mposService(this);
+
+        String address = Preference.getInstance().getMPosDevAddress();
+        if(TextUtils.isEmpty(address))
+            return;
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // Get the BluetoothDevice object
+        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+        // Attempt to connect to the device
+
+        if(WPosApplication.GposService == null)
+        {
+            return;
+        }
+        WPosApplication.GposService.connect(device);
     }
     /**
      *

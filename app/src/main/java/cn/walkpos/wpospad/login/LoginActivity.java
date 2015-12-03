@@ -193,6 +193,7 @@ public class LoginActivity extends BaseActivity implements OnSuccessListener<JSO
         mAjax.setData("imei", ToolUtil.getDeviceUid(this));
 
         mAjax.setOnSuccessListener(this);
+        mAjax.setOnErrorListener(this);
         mAjax.send();
     }
 
