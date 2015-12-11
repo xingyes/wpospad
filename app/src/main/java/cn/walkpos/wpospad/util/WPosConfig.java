@@ -6,6 +6,7 @@ public class WPosConfig extends Config {
 
     public static final String URL_API_ALL = "URL_API_ALL";
     public static final String URL_API_BUSINESS = "URL_API_BUSINESS";
+    public static final String URL_API_ORDERCENTER = "URL_API_ORDERCENTER";
 
     //login
     public static final int REQ_LOGIN = 100;

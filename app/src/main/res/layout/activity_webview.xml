@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:inmost="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/global_bg" >
+
+    <com.xingy.lib.ui.NavigationBar
+        android:id="@+id/html5_navbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        inmost:leftVisiable="true"
+        inmost:drawableLeft="@drawable/ico_back"
+        inmost:bgColor="@color/nav_wpos_bg"
+        inmost:textColor="@color/white"/>
+    <WebView
+        android:id="@+id/web_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/html5_navbar" />
+
+    <include layout="@layout/global_loading" />
+
+
+</RelativeLayout>

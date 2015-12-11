@@ -408,8 +408,13 @@ public class VerifyDetailActivity extends BaseActivity implements OnSuccessListe
             return;
         }
 
+        JSONObject data = jsonObject.optJSONObject("data");
+        Bundle bundle = new Bundle();
+        if(null!=data) {
+            bundle.putString(VerifyPicActivity.WEIXIN_URL, data.optString("weixin_url"));
+        }
         UiUtils.makeToast(this,jsonObject.optString("res", "认证成功请继续上传照片资料"));
-        UiUtils.startActivity(VerifyDetailActivity.this, VerifyPicActivity.class, true);
+        UiUtils.startActivity(VerifyDetailActivity.this, VerifyPicActivity.class, bundle,true);
     }
 
 

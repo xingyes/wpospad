@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -39,6 +40,7 @@ import cn.walkpos.wpospad.adapter.BuyProAdapter;
 import cn.walkpos.wpospad.adapter.CashCateAdapter;
 import cn.walkpos.wpospad.adapter.DividerItemDecoration;
 import cn.walkpos.wpospad.adapter.ProBtnAdapter;
+import cn.walkpos.wpospad.main.HTML5Activity;
 import cn.walkpos.wpospad.main.SettingActivity;
 import cn.walkpos.wpospad.main.WPosApplication;
 import cn.walkpos.wpospad.module.CateItemModule;
@@ -135,6 +137,7 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
         setContentView(R.layout.activity_cashdesk);
 
         loadNavBar(R.id.cashdesk_nav);
+        this.findViewById(R.id.bill_detail_btn).setOnClickListener(this);
 //        mmposService = new mposService(CashdeskActivity.this);
         backCaterootv = (TextView) this.findViewById(R.id.back_cate_level1);
         backCaterootv.setVisibility(View.GONE);
@@ -429,7 +432,14 @@ public class CashdeskActivity extends BaseActivity implements OnSuccessListener<
 
     @Override
     public void onClick(View v) {
+        Bundle bundle = new Bundle();
         switch (v.getId()) {
+            case R.id.bill_detail_btn:
+                mAjax = ServiceConfig.getAjax(WPosConfig.URL_API_ORDERCENTER);
+//                bundle.putString(HTML5Activity.ORI_URL,mAjax.getUrl() + "/#!/" + WPosApplication.StockBn);
+                bundle.putString(HTML5Activity.ORI_URL,mAjax.getUrl() + "/#!/S55FFA78EC7F56");
+                UiUtils.startActivity(this, HTML5Activity.class,bundle,true);
+                break;
             case R.id.back_cate_level1:
                 cateAdapter.setPickIdx(-1);
                 curRootCateItem = null;

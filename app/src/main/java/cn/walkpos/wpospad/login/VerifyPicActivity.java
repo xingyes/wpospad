@@ -12,7 +12,7 @@ import cn.walkpos.wpospad.main.MainActivity;
 
 public class VerifyPicActivity extends BaseActivity {
 
-
+    public static final String WEIXIN_URL = "weixin_url";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +38,7 @@ public class VerifyPicActivity extends BaseActivity {
 //        Bundle  bundle = null;
         switch (v.getId()) {
             case R.id.use_wx:
+
                 UiUtils.makeToast(this, "call wx");
                 break;
             case R.id.pic_upload_btn:

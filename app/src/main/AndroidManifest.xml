@@ -64,6 +64,8 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".main.StaffManageActivity"
             android:screenOrientation="landscape"/>
+        <activity android:name=".main.HTML5Activity"
+            android:screenOrientation="landscape"/>
 
         <activity android:name=".store.AddProductActivity"
             android:screenOrientation="landscape"/>
